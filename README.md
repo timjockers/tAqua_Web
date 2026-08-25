@@ -1,10 +1,10 @@
-# tAqua_Daemon
+# tAqua_Web
 
-`tAqua_Daemon` is a component of the **tAqua** project, an automated irrigation controller.
+`tAqua_Web` is a component of the **tAqua** project, an automated irrigation controller.
 
-The overall project consists of several components. While **tAqua_Web** is responsible for configuration and operation through a web interface, **tAqua_Daemon** handles the actual hardware control and execution of the irrigation logic.
+The overall project consists of several components. While **tAqua_Daemon** is responsible for hardware control and execution of the irrigation logic, **tAqua_Web** provides the web interface for configuring and operating the irrigation controller.
 
-The daemon runs on a **Raspberry Pi 1 Model B+** using **Raspberry Pi OS** and controls eight relays as well as buttons and status LEDs.
+The web interface is intended to run directly on the same Raspberry Pi as `tAqua_Daemon`.
 
 ## Architecture
 
@@ -16,6 +16,8 @@ The project is divided into two main components:
 │                     │
 │ Web interface       │
 │ Configuration       │
+│ Status              │
+│ Manual operation    │
 └──────────┬──────────┘
            │
            │ writes
@@ -32,9 +34,7 @@ The project is divided into two main components:
 │ Configuration       │
 │ Scheduling          │
 │ Event Queue         │
-│ Buttons             │
-│ LEDs                │
-│ Relays              │
+│ Hardware control    │
 └──────────┬──────────┘
            │
            ▼
@@ -49,239 +49,233 @@ The project is divided into two main components:
 └─────────────────────────────┘
 ```
 
-`tAqua_Web` writes the settings to the `taqua.cfg` file. `tAqua_Daemon` reads this file and applies the configured settings and schedules to the hardware.
+`tAqua_Web` and `tAqua_Daemon` are separate programs. The web interface does not directly control the relay hardware. Instead, configuration changes are stored in the shared `taqua.cfg` configuration file.
 
-Therefore, no direct communication between the web interface and the hardware is required.
+When the configuration is changed, the daemon can be notified by a signal and reloads the configuration.
 
-## Hardware
+This keeps the web interface and the hardware control logic separated.
 
-The daemon is designed for the following hardware:
+## Web Interface
 
-* **Raspberry Pi 1 Model B+**
-* **8 relays**
-* **Buttons for manual operation**
-* **Green LEDs**
-* **Yellow LEDs**
+`tAqua_Web` is intended to provide a central interface for configuring and monitoring the irrigation controller.
 
-The Raspberry Pi controls the inputs and outputs and executes the irrigation logic.
+The exact design of the web interface is still under development. The following functionality is planned or currently being considered.
 
-## Relays
+### Relay Configuration
 
-Each of the eight relays can be assigned a different function through the configuration.
+Each of the eight relays can be configured through the web interface.
 
-### Unused
+The available relay types are:
 
-The relay is not used by the irrigation controller.
+* **Unused**
+* **Valve**
+* **Permanent Power**
 
-### Valve
+These relay types correspond to the functionality implemented by `tAqua_Daemon`.
 
-The relay controls an irrigation valve.
+The configuration is stored in `taqua.cfg`.
 
-A relay configured as a valve can have scheduled irrigation times. The valve can also be activated manually using the corresponding button.
+### Irrigation Scheduling
 
-### Permanent Power
+For each relay configured as a valve, irrigation times can be configured.
 
-A relay can also be configured as a **permanent power relay**.
+A scheduled irrigation event can contain information such as:
 
-Such a relay is normally active. As soon as another relay controlling an irrigation valve is switched on, the permanent power relay is switched off.
+* Day of the week
+* Start time
+* Irrigation duration
+* Conditions under which the event should be executed
 
-This can be used, for example, to control a pond filling system with its own sensor:
+Multiple irrigation times can be configured for different days and valves.
 
-```text
-Normal operation:
+The exact configuration options and scheduling behaviour are still subject to change during development.
 
-Pond filler
-     │
-     ▼
-Permanent power
-     │
-     ▼
-  Sensor
-```
+## Events
 
-During irrigation:
+Irrigation is handled by the event queue of `tAqua_Daemon`.
+
+The web interface can be used to create manual irrigation events in addition to the automatically scheduled events.
+
+For example:
 
 ```text
-Irrigation valve is activated
-             │
-             ▼
-     Permanent power relay
-             │
-             ▼
-            OFF
+Web interface
+      │
+      │ manual irrigation
+      ▼
+  Event Queue
+      │
+      ▼
+tAqua_Daemon
+      │
+      ▼
+   Valve ON
 ```
 
-This prevents, for example, a pond filling system from drawing water during an irrigation cycle.
+This means that manual operation through the web interface uses the same event-based system as scheduled irrigation.
 
-## Manual Operation
+In the future, the web interface is also intended to provide functionality for cancelling or stopping events. The exact behaviour of event cancellation, especially for events that are already being executed, is still being developed.
 
-The irrigation controller can also be operated directly using the buttons without requiring the web interface.
+## Status
 
-When the button corresponding to a relay configured as a **valve** is pressed, a manual irrigation event is created for that valve.
+The web interface is intended to provide a live overview of the current state of the irrigation controller.
 
-The valve is then activated for **5 minutes**.
+This should include information corresponding to the hardware status LEDs, such as:
 
-The manual activation is processed through the same event queue as an automatically scheduled irrigation event.
+* Which relays are currently active
+* Which valves are currently being irrigated
+* Which irrigation events are scheduled or approaching
 
-## LEDs
+The exact presentation of this information has not yet been defined. The goal is to provide a clear overview without simply reproducing the physical LED indicators of the controller.
 
-Status information for each relay is displayed using LEDs.
+## Upcoming Irrigation
 
-### Green LED
+The web interface is intended to display upcoming irrigation events.
 
-The **green LED** indicates that the corresponding relay is currently switched on.
+This allows users to see when the next irrigation events are expected to start and which valves will be activated.
+
+The exact layout and amount of information shown are still under development.
+
+## Irrigation Log
+
+A log is planned to provide information about recent irrigation events.
+
+This can be used to see, for example, which valves were irrigated recently and when an irrigation event was executed.
+
+The exact contents and storage of the log are not yet finalized.
+
+## Weather Conditions
+
+One of the planned features of tAqua is weather-dependent irrigation.
+
+The long-term goal is to retrieve weather information from the Internet and use it when deciding whether a scheduled irrigation event should be executed.
+
+An initial approach is to consider both recent and forecast precipitation.
+
+For example, a future irrigation event could be executed only if:
 
 ```text
-Green ON
-  │
-  └──> Relay is currently active
+Rainfall during the previous 12 hours
++
+Expected rainfall during the next 12 hours
 ```
 
-### Yellow LED
+is below a configured threshold.
 
-The **yellow LED** indicates that an irrigation cycle for the corresponding valve is scheduled to start soon.
+If sufficient rainfall has already occurred or is expected, the irrigation event could be skipped for that day.
 
-```text
-Yellow ON
-  │
-  └──> Valve will be irrigated soon
-```
+The exact thresholds, weather service, data source and conditions are still under development and may change.
 
-This allows the current and upcoming state of the irrigation system to be determined directly from the controller without using the web interface.
+Possible future weather-related features include:
 
-## Event Queue
-
-Relay control is based on an **event queue**.
-
-Different types of events can therefore be processed independently of their source.
-
-Examples of events include:
-
-* scheduled irrigation times
-* manual button presses
-* future weather-related events
-* other automatically generated control commands
-
-For example, a manually triggered 5-minute irrigation event is added to the queue in the same way as a previously scheduled time-based event.
-
-Simplified:
-
-```text
-                 ┌─────────────────────┐
-                 │ Scheduled times     │
-                 └──────────┬──────────┘
-                            │
-                            ▼
-                       ┌─────────┐
-                       │         │
-Button ───────────────►│ Event   │
-                       │ Queue   │
-Future events ────────►│         │
-                       └────┬────┘
-                            │
-                            ▼
-                    ┌───────────────┐
-                    │ Event Handler │
-                    └───────┬───────┘
-                            │
-                            ▼
-                       Relay control
-```
-
-This architecture allows new types of events to be added in the future without having to completely redesign the underlying relay control.
+* Taking recent rainfall into account
+* Taking forecast rainfall into account
+* Skipping irrigation when sufficient rain has occurred or is expected
+* Adjusting irrigation duration based on weather conditions
+* Adding further weather-dependent conditions
 
 ## Configuration
 
-The irrigation controller configuration is created by **tAqua_Web** and stored in the file
+`tAqua_Web` creates and modifies the configuration file:
 
 ```text
 taqua.cfg
 ```
 
-`tAqua_Daemon` reads this file and processes the settings contained within it.
+The configuration file uses **libconfig**.
 
-The exact syntax and structure of the configuration file can be found in the **example configuration file** included in the repository.
+The same configuration file is used by `tAqua_Daemon`, which reads the settings and applies them to the irrigation controller.
 
-```text
-taqua.cfg
-```
+The exact syntax and structure of the configuration file can be found in the example configuration included in the project repositories.
 
-Among other things, the configuration file defines the function of each relay and the scheduled irrigation times.
+For more information about the configuration and how it is processed, see the **tAqua_Daemon** repository.
+
+## Technology
+
+`tAqua_Web` is planned as a lightweight web application running directly on the Raspberry Pi.
+
+The project uses:
+
+* **C++**
+* **cpp-httplib** (`httplib.h`)
+* **HTML**
+* **CSS**
+* **JavaScript**
+* **libconfig**
+
+The web server is implemented in C++ using `httplib.h`.
+
+The exact implementation and project structure are still under development.
 
 ## Installation
 
-The daemon is written in **C++** and is intended to run on a Raspberry Pi using Raspberry Pi OS.
+`tAqua_Web` is intended to run on the same Raspberry Pi as `tAqua_Daemon`.
 
-The project uses **CMake** as its build system.
+The repository can be cloned to a suitable directory on the Raspberry Pi.
 
-### 1. Copy the repository to the Raspberry Pi
+The exact build and installation procedure has not yet been finalized because development of the web component has not started yet.
 
-The repository can be copied to any suitable directory on the Raspberry Pi.
+A future installation will likely follow the general approach used by `tAqua_Daemon`.
 
-### 2. Build the project using CMake
+## Remote Access
 
-From the project directory, configure the project using the included `CMakeLists.txt`:
+A future goal is to make the irrigation controller accessible outside the local network.
 
-```bash
-cmake .
-```
+One possible approach is to use a **Cloudflare Tunnel** to expose the web interface without directly exposing the Raspberry Pi to the Internet.
 
-Then compile the project:
+The exact remote-access and authentication concept has not yet been finalized.
 
-```bash
-make
-```
-
-### 3. Start the daemon
-
-After a successful compilation, the daemon can be started with:
-
-```bash
-./_daemon
-```
-
-## Requirements
-
-* Raspberry Pi 1 Model B+
-* Raspberry Pi OS
-* CMake
-* `make`
-* C++ compiler
-* Connected tAqua hardware
-* Valid `taqua.cfg`
+The intended goal is to allow the irrigation controller to be monitored and operated remotely while keeping access to the system protected.
 
 ## Development Status
 
-`tAqua_Daemon` is currently **under development**.
+`tAqua_Web` is currently **under development**.
 
-The basic architecture and planned features are still being developed. In particular, the configuration format, event queue, and hardware control may change during development.
+At the moment, development is focused primarily on **tAqua_Daemon**. The web component is planned as the corresponding user interface for the daemon and the overall tAqua system.
+
+The architecture, configuration format, web interface, event handling and individual features may change during development.
+
+Some features described in this README are therefore planned functionality rather than currently implemented functionality.
 
 ## Planned Features
 
-A long-term goal of the project is to connect the irrigation controller to the Internet.
+Possible future features include:
 
-This would allow the daemon to retrieve current weather data and take it into account when planning irrigation.
+* Web-based relay configuration
+* Configuration of irrigation schedules
+* Manual irrigation through the web interface
+* Live system status
+* Overview of upcoming irrigation events
+* Irrigation history and logging
+* Event cancellation
+* Stopping currently running irrigation events
+* Weather-dependent irrigation
+* Rainfall-based irrigation conditions
+* Remote access through a secure tunnel
+* Authentication and access control
 
-Possible features include:
-
-* Retrieving current weather data
-* Taking rainfall into account
-* Weather-dependent irrigation scheduling
-* Skipping irrigation when rain is expected
-* Adjusting irrigation duration based on weather conditions
-
-The exact implementation of the weather integration has not yet been decided.
+The exact implementation of these features has not yet been decided.
 
 ## Related Projects
 
-### tAqua_Web
+### tAqua_Daemon
 
-`tAqua_Web` provides the web interface for configuring and operating the irrigation controller.
+`tAqua_Daemon` is responsible for the actual hardware control and execution of the irrigation logic.
 
-The web interface writes the settings to the `taqua.cfg` file used by the daemon.
+It handles scheduling, the event queue, buttons, LEDs and the eight relay outputs.
 
-`tAqua_Web` has not been published yet, but will be available soon at
+The daemon reads the configuration generated by `tAqua_Web` from `taqua.cfg`.
+
+The repository is available at:
 
 ```text
-https://github.com/timjockers/tAqua_Web
+https://github.com/timjockers/tAqua_Daemon
 ```
+
+### tAqua_Web
+
+This repository contains the web interface for the tAqua irrigation controller.
+
+The web interface is intended to provide configuration, monitoring and manual operation of the irrigation system.
+
+The project is currently in an early stage of development.
