@@ -246,7 +246,7 @@ For detailed instructions on installing and building `tAqua_Daemon`, see the [tA
 ```
 
 ### 2. Copy the repository to the Raspberry Pi
-After installing `tAqua_Daemon`, the folder `~/taqua/` should already exist. Enter it:
+After installing `tAqua_Daemon`, the folder `~/taqua/` should already exist. Change to this directory:
 
 ```text
 cd ~/taqua/
