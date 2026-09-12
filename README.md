@@ -215,13 +215,32 @@ The exact implementation and project structure are still under development.
 
 ## Installation
 
-`tAqua_Web` is intended to run on the same Raspberry Pi as `tAqua_Daemon`.
+`tAqua_Web` is designed to run on the same Raspberry Pi as `tAqua_Daemon`.
 
-The repository can be cloned to a suitable directory on the Raspberry Pi.
+The project is written in **C++** and uses **CMake** as its build system.
 
-The exact build and installation procedure has not yet been finalized because development of the web component has not started yet.
+### Directory Structure
 
-A future installation will likely follow the general approach used by `tAqua_Daemon`.
+`tAqua_Web` expects certain files, such as `taqua.cfg` and `taqua.pid`, to be located in the `tAqua_Daemon` directory. Therefore, both projects must be cloned into the same parent directory.
+
+The resulting directory structure should look like this:
+
+```text
+~/taqua/
+├── tAqua_Daemon/
+│   ├── _daemon
+│   ├── taqua.cfg
+│   └── taqua.pid
+└── tAqua_Web/
+    └── _web
+```
+
+### Build Order
+
+It is recommended to build and configure `tAqua_Daemon` before building `tAqua_Web`.
+
+For detailed instructions on installing and building `tAqua_Daemon`, see the [tAqua_Daemon installation guide](https://github.com/timjockers/tAqua_Daemon/blob/main/README.md#installation).
+
 
 ## Remote Access
 
