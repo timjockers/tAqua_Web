@@ -237,7 +237,7 @@ The intended goal is to allow the irrigation controller to be monitored and oper
 
 `tAqua_Web` is currently **under development**.
 
-At the moment, development is focused primarily on **tAqua_Daemon**. The web component is planned as the corresponding user interface for the daemon and the overall tAqua system.
+The web component is planned as the corresponding user interface for the daemon and the overall tAqua system.
 
 The architecture, configuration format, web interface, event handling and individual features may change during development.
 
