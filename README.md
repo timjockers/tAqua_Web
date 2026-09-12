@@ -1,6 +1,6 @@
 # tAqua_Web
 
-`tAqua_Web` is a component of the [**tAqua** project]{https://timjockers.github.io/tAqua/}, an automated irrigation controller.
+`tAqua_Web` is a component of the [**tAqua** project](https://timjockers.github.io/tAqua/), an automated irrigation controller.
 
 The overall project consists of several components. While **tAqua_Daemon** is responsible for hardware control and execution of the irrigation logic, **tAqua_Web** provides the web interface for configuring and operating the irrigation controller.
 
