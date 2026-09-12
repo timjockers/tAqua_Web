@@ -4,11 +4,11 @@
 
 The overall project consists of several components. While **tAqua_Daemon** is responsible for hardware control and execution of the irrigation logic, **tAqua_Web** provides the web interface for configuring and operating the irrigation controller.
 
-The web interface is intended to run directly on the same Raspberry Pi as `tAqua_Daemon`.
+The web interface is designed to run directly on the same Raspberry Pi as `tAqua_Daemon`.
 
 ## Architecture
 
-The project is divided into two main components:
+The tAqua project is divided into two main components:
 
 ```text
 ┌─────────────────────┐
@@ -53,7 +53,8 @@ The project is divided into two main components:
 
 When the configuration is changed, the daemon can be notified by a signal and reloads the configuration.
 
-This keeps the web interface and the hardware control logic separated.
+This separation keeps the web interface independent from the hardware
+control logic.
 
 ## Web Interface
 
@@ -77,14 +78,14 @@ The configuration is stored in `taqua.cfg`.
 
 ### Irrigation Scheduling
 
-For each relay configured as a valve, irrigation events can be configured.
+For each relay configured as a valve, irrigation events can be defined.
 
 A scheduled irrigation event is defined in `taqua.cfg` as follows:
 
 * Relay
-* Start (Weekday and Starttime)
+* Start (Weekday and start time)
 * Irrigation duration
-* Conditions under which the event should be executed, e.g., weather conditions
+* Conditions under which the event should be executed (e.g., weather conditions)
 
 Multiple irrigation events can be configured for different days and valves.
 
@@ -112,7 +113,7 @@ tAqua_Daemon
 
 This means that manual operation through the web interface uses the same event-based system as scheduled irrigation.
 
-In the future, the web interface is also intended to provide functionality for cancelling or stopping events. The exact behaviour of event cancellation, especially for events that are already being executed, is still being developed.
+In the future, the web interface is also intended to provide functionality for cancelling or stopping events. The exact behavior of event cancellation, especially for events that are already being executed, is still being developed.
 
 ## Status
 
@@ -126,7 +127,7 @@ This should include information corresponding to the hardware status LEDs, such 
 
 The exact presentation of this information has not yet been defined. The goal is to provide a clear overview without simply reproducing the physical LED indicators of the controller.
 
-## Upcoming Irrigation
+## Upcoming Irrigation Events
 
 The web interface is intended to display upcoming irrigation events.
 
@@ -146,7 +147,7 @@ The exact contents and storage of the log are not yet finalized.
 
 One of the planned features of tAqua is weather-dependent irrigation.
 
-The long-term goal is to retrieve weather information from the Internet and use it when deciding whether a scheduled irrigation event should be executed.
+The long-term goal is to retrieve weather data from an external service and use it when deciding whether a scheduled irrigation event should be executed.
 
 An initial approach is to consider both recent and forecast precipitation.
 
@@ -245,23 +246,23 @@ For detailed instructions on installing and building `tAqua_Daemon`, see the [tA
 ```text
 ```
 
-### 2. Copy the repository to the Raspberry Pi
-After installing `tAqua_Daemon`, the folder `~/taqua/` should already exist. Change to this directory:
+### 2. Clone the repository
+After installing `tAqua_Daemon`, the directory `~/taqua/` should already exist. Change to this directory:
 
 ```text
 cd ~/taqua/
 ```
 
-Then clone the `tAqua_Web` git repository:
+Then clone the `tAqua_Web` Git repository:
 
 ```text
 git clone https://github.com/timjockers/tAqua_Web
 ```
 
-The folder `tAqua_Web/` should have been created automatically.
+The directory `tAqua_Web/` should have been created automatically.
 
 ### 3. Build the project using CMake
-Configure the project using the included `CMakeLists.txt`. Run the following commands in the `~/taqua/tAqua_Web/` folder:
+Configure the project using the included `CMakeLists.txt`. Run the following commands in the `~/taqua/tAqua_Web/` directory:
 
 ```text
 cd tAqua_Web
@@ -274,15 +275,14 @@ Then compile the project:
 make
 ```
 
-### 4. Start the webserver
+### 4. Start the web server
 
-After successful compilation, the webserver can be started manually with:
+After successful compilation, the web server can be started manually with:
 
 ```text
 ./_web
 ```
-
-It is recommended to start the `tAqua_Web` (as well as `tAqua_Daemon`) automatically when the Raspberry Pi boots. Run the following commands to set this up:
+It is recommended to start `tAqua_Web` automatically when the Raspberry Pi boots, just like `tAqua_Daemon`. Run the following commands to set this up:
 
 ```text
 Add instructions here
@@ -290,13 +290,12 @@ Add instructions here
 
 ## Remote Access
 
-A future goal is to make the irrigation controller accessible outside the local network.
+Remote access is planned for a future release. One possible approach is
+to use a Cloudflare Tunnel to provide secure access to the web interface
+without directly exposing the Raspberry Pi to the Internet.
 
-One possible approach is to use a **Cloudflare Tunnel** to expose the web interface without directly exposing the Raspberry Pi to the Internet.
-
-The exact remote-access and authentication concept has not yet been finalized.
-
-The intended goal is to allow the irrigation controller to be monitored and operated remotely while keeping access to the system protected.
+The exact implementation and authentication concept have not yet been
+finalized.
 
 ## Development Status
 
