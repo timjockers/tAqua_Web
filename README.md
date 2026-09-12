@@ -195,7 +195,7 @@ Die Konfigurationsdatei liegt im `tAqua_Daemon` Verzeichnis. Damit `tAqua_Web` a
     └── _web
 ```
 
-For more information about the exact syntax and structure of the configuration file, [see the **tAqua_Daemon** repository](https://github.com/timjockers/tAqua_Daemon).
+For more information about the exact syntax and structure of the configuration file, [see the `tAqua_Daemon` repository](https://github.com/timjockers/tAqua_Daemon).
 ## Technology
 
 `tAqua_Web` is planned as a lightweight web application running directly on the Raspberry Pi.
