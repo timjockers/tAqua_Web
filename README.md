@@ -174,7 +174,7 @@ Possible future weather-related features include:
 
 ## Configuration
 
-`tAqua_Web` creates and modifies the configuration file:
+`tAqua_Web` modifies the configuration file:
 
 ```text
 taqua.cfg
@@ -183,10 +183,19 @@ taqua.cfg
 The configuration file uses **libconfig**.
 
 The same configuration file is used by `tAqua_Daemon`, which reads the settings and applies them to the irrigation controller.
+Die Konfigurationsdatei liegt im tAqua_Daemon Verzeichnis. Damit tAqua_Web auf die Konfigurationsdatei zugreifen kann, muss die Dateistruktur wie folgt aussehen:
 
-The exact syntax and structure of the configuration file can be found in the example configuration included in the project repositories.
+```text
+~/taqua/
+├── tAqua_Daemon/
+│   ├── _daemon
+│   ├── taqua.cfg
+│   └── taqua.pid
+└── tAqua_Web/
+    └── _web
+```
 
-For more information about the configuration and how it is processed, see the **tAqua_Daemon** repository.
+For more information about the exact syntax and structure of the configuration file, see the **tAqua_Daemon** repository.
 
 ## Technology
 
