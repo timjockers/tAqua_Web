@@ -241,6 +241,52 @@ It is recommended to build and configure `tAqua_Daemon` before building `tAqua_W
 
 For detailed instructions on installing and building `tAqua_Daemon`, see the [tAqua_Daemon installation guide](https://github.com/timjockers/tAqua_Daemon/blob/main/README.md#installation).
 
+### 1. Install additional required packages
+```text
+```
+
+### 2. Copy the repository to the Raspberry Pi
+After installing `tAqua_Daemon`, the folder `~/taqua/` should already exist. Enter it:
+
+```text
+cd ~/taqua/
+```
+
+Then clone the `tAqua_Web` git repository:
+
+```text
+git clone https://github.com/timjockers/tAqua_Web
+```
+
+The folder `tAqua_Web/` should have been created automatically.
+
+### 3. Build the project using CMake
+Configure the project using the included `CMakeLists.txt`. Run the following commands in the `~/taqua/tAqua_Web/` folder:
+
+```text
+cd tAqua_Web
+cmake .
+```
+
+Then compile the project:
+
+```text
+make
+```
+
+### 4. Start the webserver
+
+After successful compilation, the webserver can be started manually with:
+
+```text
+./_web
+```
+
+It is recommended to start the `tAqua_Web` (as well as `tAqua_Daemon`) automatically when the Raspberry Pi boots. Run the following commands to set this up:
+
+```text
+Add instructions here
+```
 
 ## Remote Access
 
