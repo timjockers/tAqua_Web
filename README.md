@@ -77,18 +77,16 @@ The configuration is stored in `taqua.cfg`.
 
 ### Irrigation Scheduling
 
-For each relay configured as a valve, irrigation times can be configured.
+For each relay configured as a valve, irrigation events can be configured.
 
-A scheduled irrigation event can contain information such as:
+A scheduled irrigation event is defined in `taqua.cfg` as follows:
 
-* Day of the week
-* Start time
+* Relay
+* Start (Weekday and Starttime)
 * Irrigation duration
-* Conditions under which the event should be executed
+* Conditions under which the event should be executed, e.g., weather conditions
 
-Multiple irrigation times can be configured for different days and valves.
-
-The exact configuration options and scheduling behaviour are still subject to change during development.
+Multiple irrigation events can be configured for different days and valves.
 
 ## Events
 
