@@ -183,7 +183,7 @@ taqua.cfg
 The configuration file uses **libconfig**.
 
 The same configuration file is used by `tAqua_Daemon`, which reads the settings and applies them to the irrigation controller.
-Die Konfigurationsdatei liegt im `tAqua_Daemon` Verzeichnis. Damit `tAqua_Web` auf die Konfigurationsdatei zugreifen kann, muss die Dateistruktur wie folgt aussehen:
+The configuration file is located in the `tAqua_Daemon` directory. For `tAqua_Web` to access the configuration file, the directory structure must look like this:
 
 ```text
 ~/taqua/
@@ -195,7 +195,7 @@ Die Konfigurationsdatei liegt im `tAqua_Daemon` Verzeichnis. Damit `tAqua_Web` a
     └── _web
 ```
 
-For more information about the exact syntax and structure of the configuration file, [see the `tAqua_Daemon` repository](https://github.com/timjockers/tAqua_Daemon).
+For more information about the exact syntax and structure of the configuration file, [see the **tAqua_Daemon** repository](https://github.com/timjockers/tAqua_Daemon).
 ## Technology
 
 `tAqua_Web` is planned as a lightweight web application running directly on the Raspberry Pi.
