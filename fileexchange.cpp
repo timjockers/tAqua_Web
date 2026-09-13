@@ -36,4 +36,5 @@ void ConfigManager::read()
 
 void ConfigManager::store()
 {
+    cfg.write(stdout);
 }
