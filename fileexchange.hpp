@@ -10,6 +10,7 @@ class ConfigManager {
 public:
     ConfigManager(const std::string& filepath);
 
+    void read();
     bool write();
 
     void setRelayConfig(const std::array<RelayConfig, 8>& config);

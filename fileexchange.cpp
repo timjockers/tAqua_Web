@@ -8,6 +8,12 @@ using namespace std;
 ConfigManager::ConfigManager(const string& filepath)
     : path(filepath)
 {
+    read();
+}
+
+void ConfigManager::read()
+{
+
 }
 
 bool ConfigManager::write()
