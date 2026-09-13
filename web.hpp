@@ -9,5 +9,8 @@ public:
     ~tAquaWeb();
 
     void run();
+
+private:
+    ConfigManager configM;
 };
 

@@ -2,6 +2,7 @@
 
 
 tAquaWeb::tAquaWeb()
+    : configM("../tAqua_Daemon/taqua.cfg")
 {}
 
 tAquaWeb::~tAquaWeb()
