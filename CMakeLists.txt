@@ -11,6 +11,7 @@ pkg_check_modules(LIBCONFIGPP REQUIRED libconfig++)
 add_executable(_web
     main.cpp
     fileexchange.cpp
+    web.cpp
 )
 
 target_link_libraries(_web PRIVATE ${LIBCONFIGPP_LIBRARIES})
