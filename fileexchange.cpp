@@ -12,5 +12,10 @@ ConfigManager::ConfigManager(const string& filepath)
 
 void ConfigManager::write()
 {
-    
+
+}
+
+void ConfigManager::setRelayConfig(const array<RelayConfig, 8>& config) {
+    relayConfig = config;
+    relayConfigChanged = true;
 }

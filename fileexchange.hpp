@@ -12,6 +12,8 @@ public:
 
     void write();
 
+    void setRelayConfig(const std::array<RelayConfig, 8>& config);
+
 private:
     const std::string path;
 
