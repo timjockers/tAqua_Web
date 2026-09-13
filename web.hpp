@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fileexchange.hpp"
+#include "types.hpp"
 
 
 class tAquaWeb {
