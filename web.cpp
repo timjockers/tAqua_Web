@@ -25,4 +25,15 @@ void tAquaWeb::run()
     std::cout << std::endl;
 
     std::cout << "Button irrigation time: " << configM.getButtonIrrTime().count() << "s" << std::endl;
+
+    const std::vector<scheduledEvent> s_events = configM.getScheduledEvents();
+
+    for (auto& ev : s_events)
+    {
+        std::cout << "EVENT Relay: " << static_cast<int>(ev.relay)   // Relay
+                  << "  Start(wd): " << static_cast<int>(ev.weekday) // Start - Weekday
+                  << "  Start(mpm): " << ev.startTime.count()        // Start - Minutes past midnight
+                  << "  Duration: " << ev.duration.count()
+                  << std::endl;
+    }
 }
