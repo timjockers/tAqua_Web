@@ -13,9 +13,9 @@ class ConfigManager {
 public:
     ConfigManager(const std::string& filepath);
 
-    const std::array<RelayConfig, 8>& getRelayConfig();
-    const std::chrono::seconds& getButtonIrrTime();
-    const std::vector<scheduledEvent>& getScheduledEvents();
+    const std::array<RelayConfig, 8>& getRelayConfig() const;
+    const std::chrono::seconds& getButtonIrrTime() const;
+    const std::vector<scheduledEvent>& getScheduledEvents() const;
     
     void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
 

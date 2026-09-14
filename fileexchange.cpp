@@ -112,17 +112,17 @@ void ConfigManager::store()
     }
 }
 
-const array<RelayConfig, 8>& ConfigManager::getRelayConfig()
+const array<RelayConfig, 8>& ConfigManager::getRelayConfig() const
 {
     return relayConfig;
 }
 
-const chrono::seconds& ConfigManager::getButtonIrrTime()
+const chrono::seconds& ConfigManager::getButtonIrrTime() const
 {
     return buttonIrrTime;
 }
 
-const vector<scheduledEvent>& ConfigManager::getScheduledEvents()
+const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 {
     return scheduledEvents;
 }
