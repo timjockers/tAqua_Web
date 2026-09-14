@@ -6,7 +6,7 @@
 #include <chrono>
 
 tAquaWeb::tAquaWeb()
-    : configM("../tAqua_Daemon/taqua.cfg")
+    : configM("../tAqua_Daemon/taqua.cfg", "../tAqua_Daemon/taqua.pid")
 {}
 
 tAquaWeb::~tAquaWeb()
