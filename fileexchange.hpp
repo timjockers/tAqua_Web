@@ -26,6 +26,7 @@ public:
 
 private:
     bool readDaemonPID();
+    bool notifyDaemonConfigChanged();
     pid_t daemon_pid;
     bool daemon_pid_loaded;
 

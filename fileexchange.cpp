@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <fstream>
 #include <stdexcept>
+#include <csignal>
 using namespace libconfig;
 using namespace std;
 
@@ -18,10 +19,11 @@ ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_p
     daemon_pid_loaded = readDaemonPID();
     if (!daemon_pid_loaded)
     {
-        cerr << "WARNING: Could not find taqua.pid in " << pid_path
+        cout << "WARNING: Could not find taqua.pid in " << pid_path
              << ". Please start the daemon first, then restart the web server." << endl;
     }
 }
+
 
 bool ConfigManager::readDaemonPID()
 {
@@ -49,6 +51,30 @@ bool ConfigManager::readDaemonPID()
 
     return true;
 }
+
+bool ConfigManager::notifyDaemonConfigChanged()
+{
+    if (!daemon_pid_loaded)
+    {   
+        cout << "WARNING: Could not notify daemon: daemon pid not loaded!" << endl;
+        return false;
+    }
+
+    if (kill(daemon_pid, 0) != 0)
+    {
+        perror("Daemon is not running");
+        return false;
+    }
+
+    if (kill(daemon_pid, SIGUSR1) != 0)
+    {
+        perror("Could not send SIGUSR1");
+        return false;
+    }
+
+    return true;
+}
+
 
 void ConfigManager::loadConfig()
 {
@@ -148,6 +174,7 @@ void ConfigManager::store()
     }
 }
 
+
 bool ConfigManager::writeConfig()
 {
     try
@@ -236,6 +263,7 @@ void ConfigManager::updateScheduledEvents()
     }
 }
 
+
 const array<RelayConfig, 8>& ConfigManager::getRelayConfig() const
 {
     return relayConfig;
@@ -250,6 +278,7 @@ const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 {
     return scheduledEvents;
 }
+
 
 void ConfigManager::setRelayConfig(const array<RelayConfig, 8>& relay_config)
 {
