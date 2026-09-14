@@ -12,6 +12,7 @@ add_executable(_web
     main.cpp
     fileexchange.cpp
     web.cpp
+    server.cpp
 )
 
 target_link_libraries(_web PRIVATE ${LIBCONFIGPP_LIBRARIES})
