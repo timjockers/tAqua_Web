@@ -98,16 +98,21 @@ void ConfigManager::store()
             int weekday = start[0];
             int minutes = start[1];
 
-            scheduledEvents.emplace_back(
+            scheduledEvents.push_back({
                 static_cast<Relay>(relay),
                 std::chrono::seconds(duration),
                 static_cast<Weekday>(weekday),
                 std::chrono::minutes(minutes)
-            );
+            });
         }
     }
     catch (const SettingNotFoundException&)
     {
         cerr << "Error reading schedule" << endl;
     }
+}
+
+const array<RelayConfig, 8>& ConfigManager::getRelayConfig()
+{
+    return relayConfig;
 }

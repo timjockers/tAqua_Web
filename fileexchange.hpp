@@ -12,6 +12,8 @@
 class ConfigManager {
 public:
     ConfigManager(const std::string& filepath);
+
+    const std::array<RelayConfig, 8>& getRelayConfig();
     
 private:
     void loadConfig();
