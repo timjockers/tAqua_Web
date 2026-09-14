@@ -116,3 +116,8 @@ const array<RelayConfig, 8>& ConfigManager::getRelayConfig()
 {
     return relayConfig;
 }
+
+const chrono::seconds ConfigManager::getButtonIrrTime()
+{
+    return buttonIrrTime;
+}

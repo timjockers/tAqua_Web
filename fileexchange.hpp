@@ -14,6 +14,7 @@ public:
     ConfigManager(const std::string& filepath);
 
     const std::array<RelayConfig, 8>& getRelayConfig();
+    const std::chrono::seconds getButtonIrrTime();
     
 private:
     void loadConfig();
