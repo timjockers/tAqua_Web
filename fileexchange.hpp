@@ -6,12 +6,12 @@
 #include <chrono>
 #include <libconfig.h++>
 #include "types.hpp"
+#include "events.hpp"
 
 
 class ConfigManager {
 public:
     ConfigManager(const std::string& filepath);
-
     
 private:
     void loadConfig();

@@ -99,7 +99,7 @@ void ConfigManager::store()
             int minutes = start[1];
 
             scheduledEvents.emplace_back(
-                RELAYS[relay],
+                static_cast<Relay>(relay),
                 std::chrono::seconds(duration),
                 static_cast<Weekday>(weekday),
                 std::chrono::minutes(minutes)
