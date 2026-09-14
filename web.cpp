@@ -66,6 +66,6 @@ void tAquaWeb::run()
 
     if (!configM.writeConfig())
     {
-        std::cerr << "Error writing taqua.cfg!" << endl;
+        std::cerr << "Error writing taqua.cfg!" << std::endl;
     }
 }
