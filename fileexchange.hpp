@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <chrono>
+#include <unistd.h>
 #include <libconfig.h++>
 #include "types.hpp"
 #include "events.hpp"
@@ -11,7 +12,7 @@
 
 class ConfigManager {
 public:
-    ConfigManager(const std::string& filepath);
+    ConfigManager(const std::string& taqua_cfg_path, const std::string& taqua_pid_path);
 
     const std::array<RelayConfig, 8>& getRelayConfig() const;
     const std::chrono::seconds& getButtonIrrTime() const;
@@ -24,6 +25,10 @@ public:
     bool writeConfig();
 
 private:
+    bool readDaemonPID();
+    pid_t daemon_pid;
+    bool daemon_pid_loaded;
+
     void loadConfig();
     void read();
     void store();
@@ -33,6 +38,7 @@ private:
     void updateScheduledEvents();
 
     const std::string path;
+    const std::string pid_path;
 
     libconfig::Config cfg;
 

@@ -2,17 +2,51 @@
 
 #include <iostream>
 #include <cstddef>
+#include <fstream>
 #include <stdexcept>
 using namespace libconfig;
 using namespace std;
 
 
-ConfigManager::ConfigManager(const string& filepath)
-    : path(filepath)
+ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_pid_path)
+    : path(taqua_cfg_path), pid_path(taqua_pid_path)
 {
     relayConfig = {RelayConfig::UNUSED};
 
     loadConfig();
+
+    daemon_pid_loaded = readDaemonPID();
+    if (daemon_pid_loaded)
+    {
+        cout << "Daemon PID: " << daemon_pid << endl;
+    }
+}
+
+bool ConfigManager::readDaemonPID()
+{
+    ifstream pidFile(pid_path);
+
+    if (!pidFile)
+    {
+        cerr << "Could not open taqua.pid" << endl;
+        return false;
+    }
+
+    pidFile >> daemon_pid;
+
+    if (!daemon_pid)
+    {
+        cerr << "Could not read PID from taqua.pid" << endl;
+        return false;
+    }
+
+    if (daemon_pid <= 0)
+    {
+        cerr << "Invalid daemon PID: " << daemon_pid << endl;
+        return false;
+    }
+
+    return true;
 }
 
 void ConfigManager::loadConfig()
