@@ -15,6 +15,7 @@ public:
 
     const std::array<RelayConfig, 8>& getRelayConfig();
     const std::chrono::seconds getButtonIrrTime();
+    const std::vector<scheduledEvent>& getScheduledEvents();
     
 private:
     void loadConfig();

@@ -121,3 +121,8 @@ const chrono::seconds ConfigManager::getButtonIrrTime()
 {
     return buttonIrrTime;
 }
+
+const vector<scheduledEvent>& ConfigManager::getScheduledEvents()
+{
+    return scheduledEvents;
+}
