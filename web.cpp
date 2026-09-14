@@ -20,6 +20,6 @@ void tAquaWeb::run()
 
     for (auto& i : rc)
     {
-        std::cout << std::to_string(static_cast<int>(i)) << std::endl;
+        std::cout << std::to_string(static_cast<int>(i)) << " ";
     }
 }
