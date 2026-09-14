@@ -20,7 +20,9 @@ void tAquaWeb::run()
 
     for (auto& i : rc)
     {
-        std::cout << std::to_string(static_cast<int>(i)) << " ";
+        std::cout << static_cast<int>(i) << " ";
     }
     std::cout << std::endl;
+
+    std::cout << "Button irrigation time: " << configM.getButtonIrrTime().count() << "s" << std::endl;
 }
