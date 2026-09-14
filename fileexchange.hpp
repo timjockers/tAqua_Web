@@ -14,9 +14,11 @@ public:
     ConfigManager(const std::string& filepath);
 
     const std::array<RelayConfig, 8>& getRelayConfig();
-    const std::chrono::seconds getButtonIrrTime();
+    const std::chrono::seconds& getButtonIrrTime();
     const std::vector<scheduledEvent>& getScheduledEvents();
     
+    void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
+
 private:
     void loadConfig();
     void read();

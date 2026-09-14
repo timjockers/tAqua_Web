@@ -117,7 +117,7 @@ const array<RelayConfig, 8>& ConfigManager::getRelayConfig()
     return relayConfig;
 }
 
-const chrono::seconds ConfigManager::getButtonIrrTime()
+const chrono::seconds& ConfigManager::getButtonIrrTime()
 {
     return buttonIrrTime;
 }
@@ -125,4 +125,9 @@ const chrono::seconds ConfigManager::getButtonIrrTime()
 const vector<scheduledEvent>& ConfigManager::getScheduledEvents()
 {
     return scheduledEvents;
+}
+
+void ConfigManager::setRelayConfig(const array<RelayConfig, 8>& relay_config)
+{
+    relayConfig = relay_config;
 }
