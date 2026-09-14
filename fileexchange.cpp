@@ -112,6 +112,11 @@ void ConfigManager::store()
     }
 }
 
+bool ConfigManager::writeConfig()
+{
+    
+}
+
 const array<RelayConfig, 8>& ConfigManager::getRelayConfig() const
 {
     return relayConfig;

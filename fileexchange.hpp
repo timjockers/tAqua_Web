@@ -21,6 +21,8 @@ public:
     void setButtonIrrTime(const std::chrono::seconds& irrigation_time);
     void setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events);
 
+    bool writeConfig();
+
 private:
     void loadConfig();
     void read();
