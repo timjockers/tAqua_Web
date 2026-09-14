@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cstddef>
+#include <stdexcept>
 using namespace libconfig;
 using namespace std;
 
@@ -114,7 +115,90 @@ void ConfigManager::store()
 
 bool ConfigManager::writeConfig()
 {
-    
+    try
+    {
+        updateRelayConfig();
+        updateButtonIrrTime();
+        updateScheduledEvents();
+
+        cfg.writeFile(path.c_str());
+
+        return true;
+    }
+    catch (const FileIOException& ex)
+    {
+        cerr << "I/O error while writing config file: "
+             << ex.what() << endl;
+    }
+    catch (const SettingNotFoundException& ex)
+    {
+        cerr << "Config setting not found while writing file: "
+             << ex.getPath() << endl;
+    }
+    catch (const SettingTypeException& ex)
+    {
+        cerr << "Config setting has wrong type while writing file: "
+             << ex.getPath() << endl;
+    }
+
+    return false;
+}
+
+void ConfigManager::updateRelayConfig()
+{
+    Setting& r = cfg.lookup("relayConfig");
+
+    if (r.getLength() != static_cast<int>(relayConfig.size()))
+    {
+        throw runtime_error("relayConfig has unexpected length");
+    }
+
+    for (size_t i = 0; i < relayConfig.size(); ++i)
+    {
+        r[i] = static_cast<int>(relayConfig[i]);
+    }
+}
+
+void ConfigManager::updateButtonIrrTime()
+{
+    Setting& setting = cfg.lookup("buttonIrrigationTime");
+
+    setting = static_cast<int>(buttonIrrTime.count());
+}
+
+void ConfigManager::updateScheduledEvents()
+{
+    Setting& scheduled = cfg.lookup("scheduled");
+
+    // Bestehende Einträge entfernen.
+    while (scheduled.getLength() > 0)
+    {
+        scheduled.remove(scheduled.getLength() - 1);
+    }
+
+    // Aktuelle scheduledEvents wieder aufbauen.
+    for (const auto& event : scheduledEvents)
+    {
+        Setting& item = scheduled.add(Setting::TypeGroup);
+
+        item.add("relay", Setting::TypeInt)
+            = static_cast<int>(event.relay);
+
+        item.add("duration", Setting::TypeInt)
+            = static_cast<int>(event.duration.count());
+
+        Setting& start = item.add("start", Setting::TypeArray);
+
+        start.add(Setting::TypeInt)
+            = static_cast<int>(event.weekday);
+
+        start.add(Setting::TypeInt)
+            = static_cast<int>(
+                std::chrono::duration_cast<std::chrono::minutes>(
+                    event.startTime
+                ).count()
+            );
+    }
 }
 
 const array<RelayConfig, 8>& ConfigManager::getRelayConfig() const

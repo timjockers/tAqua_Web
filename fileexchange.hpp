@@ -28,6 +28,10 @@ private:
     void read();
     void store();
 
+    void updateRelayConfig();
+    void updateButtonIrrTime();
+    void updateScheduledEvents();
+
     const std::string path;
 
     libconfig::Config cfg;
