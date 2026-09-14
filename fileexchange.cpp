@@ -131,3 +131,13 @@ void ConfigManager::setRelayConfig(const array<RelayConfig, 8>& relay_config)
 {
     relayConfig = relay_config;
 }
+
+void ConfigManager::setButtonIrrTime(const chrono::seconds& irrigation_time)
+{
+    buttonIrrTime = irrigation_time;
+}
+
+void ConfigManager::setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events)
+{
+    scheduledEvents = scheduled_events;
+}

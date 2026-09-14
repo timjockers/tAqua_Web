@@ -18,6 +18,8 @@ public:
     const std::vector<scheduledEvent>& getScheduledEvents() const;
     
     void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
+    void setButtonIrrTime(const std::chrono::seconds& irrigation_time);
+    void setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events);
 
 private:
     void loadConfig();
