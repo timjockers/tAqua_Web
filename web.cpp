@@ -1,5 +1,7 @@
 #include "web.hpp"
 
+#include <iostream>
+#include <string>
 #include <array>
 
 tAquaWeb::tAquaWeb()
@@ -15,4 +17,9 @@ void tAquaWeb::run()
     configM.setRelayConfig(rc);
     configM.write();*/
     const std::array<RelayConfig, 8> rc = configM.getRelayConfig();
+
+    for (auto& i : rc)
+    {
+        std::cout << std::to_string(static_cast<int>(i)) << std::endl;
+    }
 }
