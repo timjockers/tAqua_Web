@@ -185,6 +185,12 @@ bool ConfigManager::writeConfig()
 
         cfg.writeFile(path.c_str());
 
+        if (!notifyDaemonConfigChanged())
+        {
+            cerr << "Could not notify daemon" << endl;
+            return false;
+        }
+
         return true;
     }
     catch (const FileIOException& ex)
