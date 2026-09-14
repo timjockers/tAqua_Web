@@ -63,4 +63,9 @@ void tAquaWeb::run()
             std::chrono::minutes(1380)
         }
     });
+
+    if (!configM.writeConfig())
+    {
+        std::cerr << "Error writing taqua.cfg!" << endl;
+    }
 }
