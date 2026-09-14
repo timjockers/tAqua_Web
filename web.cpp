@@ -22,4 +22,5 @@ void tAquaWeb::run()
     {
         std::cout << std::to_string(static_cast<int>(i)) << " ";
     }
+    std::cout << std::endl;
 }
