@@ -16,9 +16,10 @@ ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_p
     loadConfig();
 
     daemon_pid_loaded = readDaemonPID();
-    if (daemon_pid_loaded)
+    if (!daemon_pid_loaded)
     {
-        cout << "Daemon PID: " << daemon_pid << endl;
+        cerr << "WARNING: Could not find taqua.pid in " << pid_path
+             << ". Please start the daemon first, then restart the web server." << endl;
     }
 }
 
