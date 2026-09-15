@@ -244,6 +244,9 @@ For detailed instructions on installing and building `tAqua_Daemon`, see the [tA
 
 ### 1. Install additional required packages
 ```text
+sudo apt update
+sudo apt upgrade
+sudo apt install nlohmann-json3-dev
 ```
 
 ### 2. Clone the repository
