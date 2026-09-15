@@ -298,5 +298,11 @@ void ConfigManager::setButtonIrrTime(const chrono::seconds& irrigation_time)
 
 void ConfigManager::setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events)
 {
-    scheduledEvents = scheduled_events;
+    scheduledEvents.clear();
+    scheduledEvents.reserve(scheduled_events.size());
+
+    for (const auto& event : scheduled_events)
+    {
+        scheduledEvents.push_back(event);
+    }
 }
