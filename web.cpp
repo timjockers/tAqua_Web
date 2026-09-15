@@ -5,13 +5,15 @@
 #include <csignal>
 #include <thread>
 
-namespace {
-std::atomic_bool shutdownRequested{false};
+using namespace std;
 
-void requestShutdown(int)
-{
-    shutdownRequested.store(true, std::memory_order_relaxed);
-}
+namespace {
+    atomic_bool shutdownRequested{false};
+
+    void requestShutdown(int)
+    {
+        shutdownRequested.store(true, memory_order_relaxed);
+    }
 }
 
 tAquaWeb::tAquaWeb()
@@ -24,18 +26,17 @@ tAquaWeb::~tAquaWeb()
 
 void tAquaWeb::run()
 {
-    std::signal(SIGINT, requestShutdown);
-    std::signal(SIGTERM, requestShutdown);
+    signal(SIGINT, requestShutdown);
+    signal(SIGTERM, requestShutdown);
 
-    std::atomic_bool serverStopped{false};
-    std::thread serverThread([this, &serverStopped]() {
+    atomic_bool serverStopped{false};
+    thread serverThread([this, &serverStopped]() {
         httpserver.start("0.0.0.0", 8080);
-        serverStopped.store(true, std::memory_order_relaxed);
+        serverStopped.store(true, memory_order_relaxed);
     });
 
-    while (!shutdownRequested.load(std::memory_order_relaxed)
-           && !serverStopped.load(std::memory_order_relaxed)) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    while (!shutdownRequested.load(memory_order_relaxed) && !serverStopped.load(memory_order_relaxed)) {
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
 
     stop();
