@@ -4,6 +4,9 @@
 #include <sstream>
 #include <iostream>
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 using namespace std;
 
 static string read_html_file(const string& path) {
@@ -68,23 +71,18 @@ void HTTPServer::setupRoutes() {
         res.set_content(json_payload, "application/json");
     });
     
-    /*svr.Post("/api/relayConfig", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Post("/api/relayConfig", [&](const httplib::Request& req, httplib::Response& res) {
         try {
             auto j = json::parse(req.body);
-            int id = j.at("id").get<int>();
-            int status = j.at("status").get<int>();
-
-            if (id >= 0 && id <= 7 && status >= 0 && status <= 2) {
-                ctrl->setConfigure(id, status);
-                res.set_content("JSON received", "text/plain");
-                return;
-            }
+            
+            res.set_content("JSON received", "text/plain");
+            return;
         } catch (...) {
             // Invalid JSON
         }
         res.status = 400;
         res.set_content("Invalid JSON", "text/plain");
-    });*/
+    });
 }
 
 void HTTPServer::start(const string& host, int port) {
