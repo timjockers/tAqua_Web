@@ -13,6 +13,8 @@ public:
     void run();
 
 private:
+    void stop() noexcept;
+
     ConfigManager configM;
     HTTPServer httpserver;
 };
