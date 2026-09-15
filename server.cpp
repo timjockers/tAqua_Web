@@ -25,6 +25,11 @@ HTTPServer::HTTPServer(ConfigManager* configManager)
     setupRoutes();
 }
 
+HTTPServer::~HTTPServer()
+{
+    svr.stop();
+}
+
 void HTTPServer::setupWebpage() {
     if (!svr.set_mount_point("/static/", "./static")) {
         cerr << "The directory static does not exist." << endl;
@@ -88,4 +93,9 @@ void HTTPServer::start(const string& host, int port) {
     if (!svr.listen(host.c_str(), port)) {
         cerr << "Error: Port 8080 is already in use!" << endl;
     }
+}
+
+void HTTPServer::stop() noexcept
+{
+    svr.stop();
 }

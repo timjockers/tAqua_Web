@@ -7,7 +7,9 @@
 class HTTPServer {
 public:
     HTTPServer(ConfigManager* configManager);
+    ~HTTPServer();
     void start(const std::string& host, int port);
+    void stop() noexcept;
 
 private:
     httplib::Server svr;
