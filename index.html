@@ -14,6 +14,20 @@
             <h1>
                 Hello from raspberry pi!
             </h1>
+            <h2 id="rc"></h2>
         </header>
+
+
+        
+        <!--SCRIPT-->
+        <script type="text/javascript" src="static/helper.js"></script>
+        <script>
+            function loadConfig() {
+                getJSON('/api/relayConfig').then(conf => {
+                    document.getElementById("rc").textContent = JSON.stringify(conf);
+                });
+            }
+            loadConfig();
+        </script>
     </body>
 </html>
