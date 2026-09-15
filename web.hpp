@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fileexchange.hpp"
+#include "server.hpp"
 #include "types.hpp"
 
 
@@ -13,5 +14,6 @@ public:
 
 private:
     ConfigManager configM;
+    HTTPServer httpserver;
 };
 
