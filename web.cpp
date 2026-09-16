@@ -31,7 +31,7 @@ void tAquaWeb::run()
 
     atomic_bool serverStopped{false};
     thread serverThread([this, &serverStopped]() {
-        httpserver.start("0.0.0.0", 8080);
+        httpserver.start("0.0.0.0", 80);
         serverStopped.store(true, memory_order_relaxed);
     });
 

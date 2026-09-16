@@ -86,10 +86,10 @@ void HTTPServer::setupRoutes() {
 }
 
 void HTTPServer::start(const string& host, int port) {
-    cout << "Server starting at http://localhost:8080..." << endl;
+    cout << "Server starting at http://localhost:" << port << "..." << endl;
 
     if (!svr.listen(host.c_str(), port)) {
-        cerr << "Error: Port 8080 is already in use!" << endl;
+        cerr << "Error: Port " << port << " is already in use or inaccessible!" << endl;
     }
 }
 
