@@ -1,7 +1,60 @@
 .duration-picker {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 8px;
+}
+
+.duration-input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 96px;
+    height: 42px;
+    padding: 0 10px;
+    border: 2px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.duration-input-group:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    transform: translateY(-1px);
+}
+
+.duration-input-group input {
+    width: 42px;
+    max-width: 42px;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: #1f2937;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    appearance: auto;
+    -moz-appearance: auto;
+}
+
+.duration-input-group span {
+    min-width: 26px;
+    color: #475569;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.duration-separator {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #64748b;
 }
