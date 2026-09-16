@@ -18,16 +18,8 @@
         </header>
 
 
-        
         <!--SCRIPT-->
         <script type="text/javascript" src="static/helper.js"></script>
-        <script>
-            function loadConfig() {
-                getJSON('/api/relayConfig').then(conf => {
-                    document.getElementById("rc").textContent = JSON.stringify(conf);
-                });
-            }
-            loadConfig();
-        </script>
+        <script type="text/javascript" src="static/script.js"></script>
     </body>
 </html>
