@@ -38,3 +38,17 @@ function writeJSON(path, data) {
             throw error;
         });
 }
+
+
+// POPUP
+function openPopup(p) {
+    overlay.classList.remove('overlay-hidden');
+    p.classList.remove('popup-hidden');
+}
+
+function closeAllPopup() {
+    overlay.classList.add('overlay-hidden');
+    document.querySelectorAll('.tpopup').forEach(p => {
+        p.classList.add('popup-hidden');
+    });
+}
