@@ -11,9 +11,8 @@ settingsButton.addEventListener('click', function(event) { openPopup(settingsPop
 
 // RELAIS-CONFIGURATION
 function loadConfig() {
-    getJSON('/api/configure').then(conf => {
+    getJSON('/api/relayConfig').then(conf => {
         const valveBtns = document.querySelectorAll('.settings-valve');
-        console.log(conf);
         for (let v = 0; v < 8; v++) {
             valveBtns.item(v).dataset.state = conf[v];
         }
@@ -36,6 +35,6 @@ document.querySelectorAll('.settings-valve').forEach(valve => {
             valve.setAttribute('data-state', "0");
         }
         
-        writeJSON("/api/configure", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
+        writeJSON("/api/relayConfig", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
     });
 });
