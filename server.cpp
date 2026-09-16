@@ -7,6 +7,8 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+#include "types.hpp"
+
 using namespace std;
 
 static string read_html_file(const string& path) {
@@ -74,7 +76,10 @@ void HTTPServer::setupRoutes() {
     svr.Post("/api/relayConfig", [&](const httplib::Request& req, httplib::Response& res) {
         try {
             auto j = json::parse(req.body);
-            
+            const Relay id = static_cast<Relay>(j.at("id").get<int>());
+            const RelayConfig status = static_cast<RelayConfig>(j.at("status").get<int>());
+
+            configM->setRelayConfigR(id, status);
             res.set_content("JSON received", "text/plain");
             return;
         } catch (...) {
