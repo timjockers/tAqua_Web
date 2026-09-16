@@ -291,6 +291,11 @@ void ConfigManager::setRelayConfig(const array<RelayConfig, 8>& relay_config)
     relayConfig = relay_config;
 }
 
+void ConfigManager::setRelayConfigR(const Relay& relay, const RelayConfig& relay_config)
+{
+    relayConfig[static_cast<int>(relay)] = relay_config;
+}
+
 void ConfigManager::setButtonIrrTime(const chrono::seconds& irrigation_time)
 {
     buttonIrrTime = irrigation_time;
