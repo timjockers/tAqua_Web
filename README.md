@@ -278,7 +278,20 @@ Then compile the project:
 make
 ```
 
-### 4. Start the web server
+### 4. Allow the web server to use port 80
+
+The web server listens on port 80, which is a privileged port on Linux. By default, only processes with elevated privileges can bind to ports below 1024.
+
+Instead of running the web server as `root` using `sudo`, the required network capability can be assigned directly to the compiled executable. This allows the web server to listen on port 80 while still running as a regular user.
+
+Run the following command from the ~/taqua/tAqua_Web/ directory:
+```text
+sudo setcap 'cap_net_bind_service=+ep' ./_web
+```
+
+After assigning the capability, the web server can be started without `sudo`.
+
+### 5. Start the web server
 
 After successful compilation, the web server can be started manually with:
 
