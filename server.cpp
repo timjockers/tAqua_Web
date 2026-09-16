@@ -80,8 +80,19 @@ void HTTPServer::setupRoutes() {
             const RelayConfig status = static_cast<RelayConfig>(j.at("status").get<int>());
 
             configM->setRelayConfigR(id, status);
-            res.set_content("JSON received", "text/plain");
-            return;
+            if (configM->writeConfig())
+            {
+                res.status = 200;
+                res.set_content("Configuration updated successfully", "text/plain");
+                return;
+            }
+            else
+            {
+                cerr << "Error writing config file after setRelayConfigR!" << endl;
+                res.status = 500;
+                res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
+                return;
+            }
         } catch (...) {
             // Invalid JSON
         }
