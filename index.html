@@ -120,15 +120,17 @@
                         <div class="popup-card">
                             <h2>Button Irrigation Duration</h2>
                             
-                            <div class="duration-row">
-                                <div>
-                                    <label for="minutes">Minutes</label>
-                                    <input id="minutes" type="number" min="0" max="119" value="0">
+                            <div class="duration-picker">
+                                <div class="duration-input-group">
+                                    <input type="number" min="0" max="119" placeholder="0" aria-label="Minutes" value="0">
+                                    <span>Min</span>
                                 </div>
-
-                                <div>
-                                    <label for="seconds">Seconds</label>
-                                    <input id="seconds" type="number" min="0" max="59" value="30">
+                                
+                                <span class="duration-separator">:</span>
+                                
+                                <div class="duration-input-group">
+                                    <input type="number" min="0" max="59" placeholder="0" aria-label="Seconds" value="0">
+                                    <span>Sec</span>
                                 </div>
                             </div>
                         </div>
