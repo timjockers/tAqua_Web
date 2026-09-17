@@ -46,7 +46,12 @@ const secondInput = document.getElementById('btn-irr-duration-s');
 let oldIrrTime = -1;
 
 function loadBtnIrrTime() {
-    
+    getJSON('/api/buttonIrrigationTime').then(conf => {
+        oldIrrTime = conf["seconds"];
+
+        minuteInput.value = Math.floor(oldIrrTime / 60);
+        secondInput.value = oldIrrTime % 60;
+    });
 }
 loadBtnIrrTime();
 
