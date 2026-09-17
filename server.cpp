@@ -109,6 +109,32 @@ void HTTPServer::setupRoutes() {
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_content(json_payload, "application/json");
     });
+
+    svr.Post("/api/buttonIrrigationTime", [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            auto j = json::parse(req.body);
+            const chrono::seconds duration = static_cast<chrono::seconds>(j.at("seconds").get<int>());
+            
+            configM->setButtonIrrTime(duration);
+            if (configM->writeConfig())
+            {
+                res.status = 200;
+                res.set_content("Configuration updated successfully", "text/plain");
+                return;
+            }
+            else
+            {
+                cerr << "Error writing config file after setRelayConfigR!" << endl;
+                res.status = 500;
+                res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
+                return;
+            }
+        } catch (...) {
+            // Invalid JSON
+        }
+        res.status = 400;
+        res.set_content("Invalid JSON", "text/plain");
+    });
 }
 
 void HTTPServer::start(const string& host, int port) {
