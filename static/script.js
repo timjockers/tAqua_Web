@@ -67,7 +67,7 @@ function saveDuration() {
 
     if (oldIrrTime != totalSeconds) {
         oldIrrTime = totalSeconds;
-        writeJSON("/api/buttonIrrigationDuration", JSON.stringify({
+        writeJSON("/api/buttonIrrigationTime", JSON.stringify({
             seconds: totalSeconds
         }));
     }
