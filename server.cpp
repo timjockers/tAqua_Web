@@ -104,7 +104,7 @@ void HTTPServer::setupRoutes() {
     svr.Get("/api/buttonIrrigationTime", [&](const httplib::Request& req, httplib::Response& res) {
         const auto& btnIrrTime = configM->getButtonIrrTime();
 
-        string json_payload = "{seconds: " + to_string(btnIrrTime.count()) + "}";
+        string json_payload = "{\"seconds\": " + to_string(btnIrrTime.count()) + "}";
         
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_content(json_payload, "application/json");
