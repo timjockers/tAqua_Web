@@ -66,7 +66,6 @@ function saveDuration() {
     const totalSeconds = getDurationSeconds();
 
     if (oldIrrTime != totalSeconds) {
-        console.log("SAVE");
         oldIrrTime = totalSeconds;
         writeJSON("/api/buttonIrrigationDuration", JSON.stringify({
             seconds: totalSeconds
