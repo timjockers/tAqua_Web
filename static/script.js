@@ -38,3 +38,36 @@ document.querySelectorAll('.settings-valve').forEach(valve => {
         writeJSON("/api/relayConfig", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
     });
 });
+
+// BTN-IRR-DURATION-CONFIGURATION
+const minuteInput = document.getElementById('btn-irr-duration-m');
+const secondInput = document.getElementById('btn-irr-duration-s');
+
+let oldIrrTime = -1;
+
+function loadBtnIrrTime() {
+    
+}
+loadBtnIrrTime();
+
+function getDurationSeconds() {
+    const minutes = Number(minuteInput.value || 0);
+    const seconds = Number(secondInput.value || 0);
+
+    return minutes * 60 + seconds;
+}
+
+function saveDuration() {
+    const totalSeconds = getDurationSeconds();
+
+    if (oldIrrTime != totalSeconds) {
+        console.log("SAVE");
+        oldIrrTime = totalSeconds;
+        writeJSON("/api/buttonIrrigationDuration", JSON.stringify({
+            seconds: totalSeconds
+        }));
+    }
+}
+
+minuteInput.addEventListener('blur', saveDuration);
+secondInput.addEventListener('blur', saveDuration);
