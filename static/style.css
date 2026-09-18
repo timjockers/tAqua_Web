@@ -53,5 +53,48 @@ span {
 }
 
 .tAquaCaption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tAquaCaption > .name {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -2px;
+}
+
+.tAquaCaption > .name > span:first-child {
     color: #2c2ca0;
+    font-size: 34px;
+    margin-top: auto;
+}
+
+.tAquaCaption > .name > span:nth-child(2) {
+    color: #5599ff;
+}
+
+.tAquaCaption > .name > .wave {
+    height: 26px;
+    width: auto;
+    display: block;
+}
+
+.tAquaCaption > .subtitle {
+  margin-top: 6px;
+
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+
+  color: #2c2ca0;
+
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
 }
