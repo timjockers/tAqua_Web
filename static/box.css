@@ -1,3 +1,9 @@
+.border-box {
+    border: 2px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 16px;
+}
+
 .fixed-box-area {
     position: fixed;
     inset: 90px 20px 60px;
