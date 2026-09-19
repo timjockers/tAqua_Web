@@ -35,6 +35,10 @@
     flex-direction: column;
 }
 
+.fixed-box > h1 {
+    font-size: 5.5vh;
+}
+
 .fixed-widget {
     width: calc(100% - 16px);
     min-height: 0;
