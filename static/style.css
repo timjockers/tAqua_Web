@@ -87,14 +87,14 @@ span {
 }
 
 .tAquaCaption > .subtitle {
-  margin-top: 6px;
+    margin-top: 6px;
 
-  font-size: 9px;
-  font-weight: 500;
-  line-height: 1;
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1;
 
-  color: #2c2ca0;
+    color: #2c2ca0;
 
-  text-transform: uppercase;
-  letter-spacing: 0.42em;
+    text-transform: uppercase;
+    letter-spacing: 0.42em;
 }
