@@ -1,19 +1,62 @@
 .fixed-box-area {
+    position: fixed;
+    inset: 90px 20px 60px;
+}
 
+.fixed-box-wrapper {
+    width: max(min(100%, 1200px), 400px);
+    height: 100%;
+    margin: 0 auto;
 }
 
 .box-vertical {
-
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 16px;
 }
 
 .box-horizontal {
-
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: 16px;
 }
 
 .fixed-box {
+    flex: 1 1 0;
+    min-height: 0;
+    margin: 0 8px;
 
+    display: flex;
+    flex-direction: column;
 }
 
 .fixed-widget {
-    
+    width: calc(100% - 16px);
+    min-height: 0;
+    margin: 8px 8px;
+}
+
+.box-svg-area {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scheduled-box {
+}
+
+.quick-control-box {
+}
+
+.next-events-widget {
+    height: 150px;
 }
