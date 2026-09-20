@@ -36,6 +36,8 @@ document.querySelectorAll('.settings-valve').forEach(valve => {
         }
         
         writeJSON("/api/relayConfig", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
+
+        updateStatusHTML();
     });
 });
 
