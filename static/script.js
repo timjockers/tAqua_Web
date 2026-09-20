@@ -9,6 +9,13 @@ const settingsPopup = document.querySelector('.settings-popup');
 settingsPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
 settingsButton.addEventListener('click', function(event) { openPopup(settingsPopup); });
 
+// SCHEDULED-POPUP
+const scheduledButton = document.querySelector('.scheduled-box');
+const scheduledPopup = document.querySelector('.scheduled-popup');
+
+scheduledPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
+scheduledButton.addEventListener('click', function(event) { openPopup(scheduledPopup); });
+
 // RELAIS-CONFIGURATION
 function loadConfig() {
     getJSON('/api/relayConfig').then(conf => {
