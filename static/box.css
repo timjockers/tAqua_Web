@@ -4,6 +4,9 @@
 .border-box:hover {
     transform: scale(1.02);
 }
+.border-box:active {
+    transform: scale(0.98);
+}
 
 .fixed-box-area {
     position: fixed;
