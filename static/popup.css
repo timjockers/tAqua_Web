@@ -50,7 +50,7 @@
     position: absolute;
     top: 0px;
     left: 50%;
-    width: calc(100% - 40px);
+    width: calc(100% - 16px);
     height: 100%;
     transform: translateX(-50%);
 
@@ -62,7 +62,14 @@
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
-    padding: 0 8px 20px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.popup-wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 .popup-header {
@@ -77,7 +84,7 @@
 
 .popup-content {
     flex: 0 0 auto;
-    width: 100%;
+    width: 95%;
     margin-bottom: 20px;
 
     display: flex;
