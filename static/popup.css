@@ -94,6 +94,9 @@
     justify-content: flex-start;
     gap: 15px;
 }
+.popup-content.hidden {
+    display: none;
+}
 
 .popup-card {
     width: 100%;
