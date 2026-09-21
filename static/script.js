@@ -28,10 +28,10 @@ function loadConfig() {
 loadConfig();
 
 document.querySelectorAll('.settings-valve').forEach(valve => {
-    valve.addEventListener('click', () => {
+    valve.addEventListener('click', async () => {
         const currentState = valve.getAttribute('data-state');
 
-        s = "0";
+        let s = "0";
         if (currentState === "0") {
             valve.setAttribute('data-state', "1");
             s = "1";
@@ -41,10 +41,13 @@ document.querySelectorAll('.settings-valve').forEach(valve => {
         } else {
             valve.setAttribute('data-state', "0");
         }
-        
-        writeJSON("/api/relayConfig", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
 
-        updateStatusHTML();
+        try {
+            await writeJSON("/api/relayConfig", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
+            updateStatusHTML();
+        } catch (error) {
+            console.error('Error saving relay configuration: ', error);
+        }
     });
 });
 
