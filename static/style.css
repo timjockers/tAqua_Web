@@ -165,6 +165,10 @@ span {
     justify-content: center;
 }
 
+.valve-status.hidden {
+    display: none;
+}
+
 .valve-status.y {
     background-color: #ffff55;
 }
