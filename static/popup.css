@@ -10,6 +10,7 @@
     background-color: aliceblue;
     border-radius: 15px;
     box-shadow: 0 0 10px #3b82f667;
+    overflow: hidden;
 
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
@@ -58,10 +59,15 @@
     align-items: center;
     justify-content: flex-start;
     gap: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 0 8px 20px 0;
 }
 
 .popup-header {
     margin-bottom: 0;
+    flex-shrink: 0;
 }
 .popup-header > h2 {
     margin: 0;
@@ -70,7 +76,7 @@
 }
 
 .popup-content {
-    flex-grow: 1;
+    flex: 0 0 auto;
     width: 100%;
     margin-bottom: 20px;
 
