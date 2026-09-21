@@ -39,6 +39,16 @@
     min-height: 0;
     gap: 16px;
 }
+@media (max-width: 600px) {
+    .box-horizontal {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        flex: 1 1 auto;
+        min-height: 0;
+        gap: 16px;
+    }
+}
 
 .fixed-box {
     flex: 1 1 0;
@@ -47,6 +57,15 @@
 
     display: flex;
     flex-direction: column;
+}
+@media (max-height: 500px) {
+    .fixed-box {
+        flex-direction: row;
+        gap: min(4vw, 24px);
+        
+        justify-content: center; 
+        align-items: center;
+    }
 }
 
 .fixed-box > h1 {
@@ -62,11 +81,22 @@
 .box-svg-area {
     flex: 1 1 auto;
     width: 80%;
-    min-height: 80px;
+    min-height: 60px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+}
+@media (max-height: 500px) {
+    .box-svg-area {
+        height: 80%;
+        min-height: 60px;
+        flex: 0 1 auto;
+
+        width: auto;
+
+        aspect-ratio: 1/1;
+    }
 }
 
 .next-events-widget {
