@@ -122,6 +122,15 @@ header {
     padding: 10px;
 }
 
+html, body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
 .bottom-status {
     height: 100%;
 
@@ -182,5 +191,25 @@ header {
 }
 .valve-status.g {
     background-color: #55ff55;
+}
+
+@media (max-height: 415px) {
+    html, body {
+        min-height: 100%;
+    }
+
+    body {
+        overflow-y: auto;
+    }
+
+    header {
+        position: static;
+    }
+
+    .bottom-line {
+        position: static;
+        width: auto;
+        margin-top: 12px;
+    }
 }
 

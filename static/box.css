@@ -102,3 +102,20 @@
 .next-events-widget {
     height: 130px;
 }
+
+@media (max-height: 415px) {
+    .fixed-box-area {
+        position: static;
+        inset: auto;
+        margin-top: 8px;
+    }
+
+    .fixed-box-wrapper {
+        width: 100%;
+        height: auto;
+    }
+
+    .box-vertical {
+        height: auto;
+    }
+}
