@@ -6,3 +6,36 @@
     max-width: 800px;
     max-height: 600px;
 }
+
+.scheduled-plus {
+    height: 1.8rem;
+    margin-right: auto;
+    margin-top: -40px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+
+    padding: 6px;
+    border-radius: 1.8rem;
+}
+.scheduled-plus > svg {
+    height: 100%;
+    aspect-ratio: 1/1;
+}
+
+.scheduled-event {
+    height: 3.6rem;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.scheduled-event > svg {
+    height: 50%;
+    aspect-ratio: 1/1;
+}
