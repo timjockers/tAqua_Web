@@ -34,7 +34,8 @@
 
 .scheduled-event {
     height: 3rem;
-    width: calc(100% - 20px);
+    width: calc(100% - 30px);
+    margin: 0 10px;
 
     display: flex;
     flex-direction: row;
