@@ -55,6 +55,16 @@
 
     gap: 7px;
 }
+.scheduled-event .hover-group {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.scheduled-event .hover-group:hover {
+    transform: scale(1.1);
+}
+.scheduled-event .hover-group:active {
+    transform: scale(0.98);
+}
 
 .scheduled-event .minus {
     height: 60%;
