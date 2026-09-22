@@ -23,6 +23,13 @@
 .scheduled-plus > svg {
     height: 100%;
     aspect-ratio: 1/1;
+    transition: color 0.2s ease-in-out;
+}
+.scheduled-plus:hover > svg {
+    color: #00aa00;
+}
+.scheduled-plus:active > svg {
+    color: #009900;
 }
 
 .scheduled-event {
@@ -41,4 +48,15 @@
 .scheduled-event > svg {
     height: 60%;
     aspect-ratio: 1/1;
+
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+    cursor: pointer;
+}
+.scheduled-event > svg:hover {
+    transform: scale(1.15);
+    color: #ff1111;
+}
+.scheduled-event > svg:active {
+    transform: scale(0.98);
+    color: #ee2222;
 }
