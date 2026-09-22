@@ -66,11 +66,16 @@
     transform: scale(0.98);
 }
 
+.scheduled-event .seperator {
+    height: 100%;
+    width: 2px;
+    background-color: #e2e8f0;
+    margin: 0 5px;
+}
+
 .scheduled-event .minus {
     height: 60%;
     aspect-ratio: 1/1;
-
-    margin-right: 15px;
 
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
     cursor: pointer;
