@@ -92,4 +92,9 @@
 .scheduled-event .icon {
     height: 50%;
     aspect-ratio: 1/1;
+
+    transition: color 0.2s ease-in-out;
+}
+.scheduled-event .hover-group:hover .icon {
+    color: #5599ff;
 }
