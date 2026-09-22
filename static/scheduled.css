@@ -34,29 +34,47 @@
 
 .scheduled-event {
     height: 3rem;
-    margin-right: auto;
+    width: calc(100% - 20px);
 
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
 
-    padding: 6px;
+    padding: 6px 15px;
     border-radius: 3rem;
 }
 
-.scheduled-event > svg {
+.scheduled-event > .group {
+    height: 100%;
+    width: auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.scheduled-event .minus {
     height: 60%;
     aspect-ratio: 1/1;
+
+    margin-right: 15px;
 
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
     cursor: pointer;
 }
-.scheduled-event > svg:hover {
+.scheduled-event .minus:hover {
     transform: scale(1.15);
     color: #ff1111;
 }
-.scheduled-event > svg:active {
+.scheduled-event .minus:active {
     transform: scale(0.98);
     color: #ee2222;
+}
+
+.scheduled-event .icon {
+    height: 50%;
+    aspect-ratio: 1/1;
 }
