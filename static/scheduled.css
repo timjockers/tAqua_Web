@@ -7,11 +7,10 @@
     max-height: 600px;
 }
 
-.scheduled-plus {
+.scheduled-plus,
+.scheduled-minus {
     height: 3rem;
     width: 3rem;
-    margin-right: auto;
-    margin-top: -50px;
 
     display: flex;
     align-items: center;
@@ -19,7 +18,8 @@
 
     border-radius: 3rem;
 }
-.scheduled-plus > svg {
+.scheduled-plus > svg,
+.scheduled-minus > svg {
     height: 60%;
     aspect-ratio: 1/1;
     transition: color 0.2s ease-in-out;
@@ -30,71 +30,19 @@
 .scheduled-plus:active > svg {
     color: #009900;
 }
-
-.scheduled-event {
-    height: 3rem;
-    width: calc(100% - 30px);
-    margin: 0 10px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 6px 15px;
-    border-radius: 3rem;
-}
-
-.scheduled-event .group {
-    height: 100%;
-    width: auto;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    gap: 7px;
-}
-.scheduled-event .hover-group {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-.scheduled-event .hover-group:hover {
-    transform: scale(1.1);
-}
-.scheduled-event .hover-group:active {
-    transform: scale(0.98);
-}
-
-.scheduled-event .seperator {
-    height: 100%;
-    width: 2px;
-    background-color: #e2e8f0;
-    margin: 0 5px;
-}
-
-.scheduled-event .minus {
-    height: 60%;
-    aspect-ratio: 1/1;
-
-    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
-    cursor: pointer;
-}
-.scheduled-event .minus:hover {
-    transform: scale(1.15);
+.scheduled-minus:hover > svg {
     color: #ff1111;
 }
-.scheduled-event .minus:active {
-    transform: scale(0.98);
+.scheduled-minus:active > svg {
     color: #ee2222;
 }
 
-.scheduled-event .icon {
+.scheduled-table .icon {
     height: 50%;
     aspect-ratio: 1/1;
 
     transition: color 0.2s ease-in-out;
 }
-.scheduled-event .hover-group:hover .icon {
+.scheduled-table .icon:hover {
     color: #5599ff;
 }
