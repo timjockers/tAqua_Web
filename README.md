@@ -298,7 +298,7 @@ After successful compilation, the web server can be started manually with:
 ```text
 ./_web
 ```
-It is recommended to start `tAqua_Web` automatically when the Raspberry Pi boots, just like `tAqua_Daemon`. Run the following commands to set this up:
+It is recommended to start `tAqua_Web` automatically when the Raspberry Pi boots, just like `tAqua_Daemon`. We use a systemd service for this purpose. Run the following commands to set this up:
 
 ```text
 Add instructions here
