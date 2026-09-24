@@ -7,6 +7,17 @@
     max-height: 600px;
 }
 
+.scheduled-table {
+    margin-top: -50px;
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+.scheduled-table td {
+    height: 3rem;
+}
+
 .scheduled-plus,
 .scheduled-minus {
     height: 3rem;
