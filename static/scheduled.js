@@ -12,6 +12,8 @@ function iconBoxClicked(clickedBox) {
     const expandedBoxes = document.querySelectorAll('.icon-box.expanded');
     expandedBoxes.forEach(box => {
         box.classList.remove('expanded');
+        box.querySelector('.icon').classList.remove('hidden');
+        box.querySelector('.close').classList.add('hidden');
     });
 
     const iconSVG = clickedBox.querySelector('.icon');
