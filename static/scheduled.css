@@ -29,11 +29,15 @@
     flex: 1 0 3rem;
     max-height: 3rem;
 
+    display: flex;
+    align-items: center;
+    justify-content: left;
+
     background: linear-gradient(90deg, greenyellow, blue);
 }
 
 .icon-box > svg {
-    height: 1.5rem;
+    height: 2rem;
     aspect-ratio: 1/1;
 
     transition: color 0.2s ease-in-out;
