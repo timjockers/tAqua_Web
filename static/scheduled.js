@@ -1,10 +1,12 @@
 document.addEventListener('click', (event) => {
-    if (event.target.matches('.icon-box')) {
-        iconBoxClicked(event);
+    const iconBox = event.target.closest('.icon-box');
+    
+    if (iconBox) {
+        iconBoxClicked(iconBox);
     }
 });
 
-function iconBoxClicked(event) {
+function iconBoxClicked(clickedBox) {
     const isAlreadyExpanded = clickedBox.classList.contains('expanded');
 
     const expandedBoxes = document.querySelectorAll('.icon-box.expanded');
