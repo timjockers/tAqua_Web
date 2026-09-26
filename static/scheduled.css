@@ -35,7 +35,7 @@
     align-items: center;
     justify-content: left;
     border: 1px solid transparent;
-    border-radius: 999999px;
+    border-radius: 1.5rem;
     
     cursor: pointer;
 
