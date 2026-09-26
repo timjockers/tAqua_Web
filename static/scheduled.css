@@ -76,7 +76,14 @@
 
     cursor: auto;
 }
+.icon-box.expanded:hover > svg {
+    color: inherit;
+    transform: scale(1);
+}
 
+.icon-box.expanded > svg {
+    cursor: pointer;
+}
 .icon-box.expanded > svg:hover {
     color: #5599ff;
     transform: scale(1.1);
