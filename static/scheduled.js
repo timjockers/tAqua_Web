@@ -10,6 +10,14 @@ document.addEventListener('click', (event) => {
         const parentIconBox = closeIcon.closest('.icon-box');
         closeIconBox(parentIconBox);
     }
+
+    /////////////
+
+    const weekdaySelect = event.target.closest('.weekday-select > span');
+    
+    if (weekdaySelect) {
+        weekdaySelect.classList.toggle('selected');
+    }
 });
 
 function iconBoxClicked(clickedBox) {
