@@ -23,14 +23,17 @@ function iconBoxClicked(clickedBox) {
         box.classList.remove('expanded');
         box.querySelector('.icon').classList.remove('hidden');
         box.querySelector('.close').classList.add('hidden');
+        box.querySelector('.expanded-content').classList.add('hidden');
     });
 
     const iconSVG = clickedBox.querySelector('.icon');
     const closeSVG = clickedBox.querySelector('.close');
+    const expandedContent = clickedBox.querySelector('.expanded-content');
 
     clickedBox.classList.add('expanded');
     iconSVG.classList.add('hidden');
     closeSVG.classList.remove('hidden');
+    expandedContent.classList.remove('hidden');
 }
 
 function closeIconBox(clickedBox) {
@@ -38,6 +41,8 @@ function closeIconBox(clickedBox) {
 
     const iconSVG = clickedBox.querySelector('.icon');
     const closeSVG = clickedBox.querySelector('.close');
+    const expandedContent = clickedBox.querySelector('.expanded-content');
     iconSVG.classList.remove('hidden');
     closeSVG.classList.add('hidden');
+    expandedContent.classList.add('hidden');
 }
