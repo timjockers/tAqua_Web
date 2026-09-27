@@ -148,16 +148,17 @@
     border: 2px solid transparent;
     border-radius: 99999px;
 
-    transition: border-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+    transition: border-color 0.2s ease-in-out, transform 0.1s ease-in-out;
 }
 .weekday-select > span.selected {
     border-color: #009900;
+    background-color: #00990011;
 }
 .weekday-select > span:hover{
-    border-color: #06bc06;
+    border-color: #e2e8f0;
 }
 .weekday-select > span.selected:hover {
-    border-color: #e2e8f0;
+    border-color: #06bc06;
 }
 
 .weekday-select > span:active {
