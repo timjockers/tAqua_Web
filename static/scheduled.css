@@ -120,3 +120,46 @@
 .scheduled-minus:active > svg {
     color: #ee2222;
 }
+
+/* EXPANDED CONTENT */
+.expanded-content {
+    width: 100%;
+    height: 100%;
+    
+    position: relative;
+}
+
+.weekday-select {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2%;
+    
+    display: grid;
+  
+    grid-template-columns: repeat(3, 1fr);
+    
+    gap: 7px;
+}
+.weekday-select > span {
+    width: 100%;
+    cursor: pointer;
+
+    border: 2px solid transparent;
+    border-radius: 99999px;
+
+    transition: border-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+}
+.weekday-select > span.selected {
+    border-color: #009900;
+}
+.weekday-select > span:hover{
+    border-color: #06bc06;
+}
+.weekday-select > span.selected:hover {
+    border-color: #e2e8f0;
+}
+
+.weekday-select > span:active {
+    transform: scale(0.95);
+}
