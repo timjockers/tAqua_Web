@@ -42,7 +42,7 @@
     
     cursor: pointer;
 
-    transition: border 0.2s ease-in-out, height 0.3s ease-in-out;
+    transition: border 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 .icon-box:hover {
     border-color: #e2e8f0;
@@ -67,7 +67,7 @@
 .icon-box.expanded {
     height: auto;
 
-    border-color: #e2e8f0;
+    border-color: #999999;
 
     padding: 0.5rem;
 
