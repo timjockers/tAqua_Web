@@ -30,16 +30,19 @@ function iconBoxClicked(clickedBox) {
     expandedBoxes.forEach(box => {
         box.classList.remove('expanded');
         box.querySelector('.icon').classList.remove('hidden');
+        box.querySelector('.icon-box-text').classList.remove('hidden');
         box.querySelector('.close').classList.add('hidden');
         box.querySelector('.expanded-content').classList.add('hidden');
     });
 
     const iconSVG = clickedBox.querySelector('.icon');
+    const iconBoxText = clickedBox.querySelector('.icon-box-text');
     const closeSVG = clickedBox.querySelector('.close');
     const expandedContent = clickedBox.querySelector('.expanded-content');
 
     clickedBox.classList.add('expanded');
     iconSVG.classList.add('hidden');
+    iconBoxText.classList.add('hidden');
     closeSVG.classList.remove('hidden');
     expandedContent.classList.remove('hidden');
 }
@@ -48,9 +51,11 @@ function closeIconBox(clickedBox) {
     clickedBox.classList.remove('expanded');
 
     const iconSVG = clickedBox.querySelector('.icon');
+    const iconBoxText = clickedBox.querySelector('.icon-box-text');
     const closeSVG = clickedBox.querySelector('.close');
     const expandedContent = clickedBox.querySelector('.expanded-content');
     iconSVG.classList.remove('hidden');
+    iconBoxText.classList.remove('hidden');
     closeSVG.classList.add('hidden');
     expandedContent.classList.add('hidden');
 }
