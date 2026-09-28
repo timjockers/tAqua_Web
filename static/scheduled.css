@@ -193,3 +193,12 @@
 .time-select > input:placeholder-shown {
     border-color: red;
 }
+
+.duration-select {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
