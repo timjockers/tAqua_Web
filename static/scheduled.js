@@ -11,17 +11,19 @@ document.addEventListener('click', (event) => {
         closeIconBox(parentIconBox);
     }
 
-    /////////////
+    // TOGGLE WEEKDAY SELECT
 
     const weekdaySelect = event.target.closest('.weekday-select > span');
     
     if (weekdaySelect) {
         weekdaySelect.classList.toggle('selected');
+        updateWeekdayIconBoxText(weekdaySelect.closest('.weekday-select'));
     }
 });
 
 function iconBoxClicked(clickedBox) {
     const isAlreadyExpanded = clickedBox.classList.contains('expanded');
+
     if (isAlreadyExpanded) {
         return;
     }
@@ -59,3 +61,15 @@ function closeIconBox(clickedBox) {
     closeSVG.classList.add('hidden');
     expandedContent.classList.add('hidden');
 }
+
+// FUNCTIONS - ICONBOX
+function updateWeekdayIconBoxText(weekday_select) {
+    console.log(weekday_select);
+}
+
+// INITIAL CALLS
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.weekday-select').forEach(element => {
+        updateWeekdayIconBoxText(element);
+    });
+});
