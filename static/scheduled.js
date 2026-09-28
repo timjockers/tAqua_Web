@@ -64,7 +64,18 @@ function closeIconBox(clickedBox) {
 
 // FUNCTIONS - ICONBOX
 function updateWeekdayIconBoxText(weekday_select) {
-    console.log(weekday_select);
+    const iconBox = weekday_select.closest('.icon-box');
+    const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
+
+    if (!textObject) {
+        return;
+    }
+
+    const selectedDays = Array.from(
+        weekday_select.closest('.weekday-select')?.querySelectorAll('span.selected') || []
+    ).map(day => day.textContent.trim()).join(', ');
+
+    textObject.textContent = selectedDays || 'Select weekday(s)';
 }
 
 // INITIAL CALLS
