@@ -89,6 +89,10 @@
     transform: scale(1.1);
 }
 
+.icon-box-text {
+    margin-left: 7px;
+}
+
 /* SCHEDULED-PLUS & SCHEDULED-MINUS */
 .scheduled-plus,
 .scheduled-minus {
