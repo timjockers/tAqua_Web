@@ -135,6 +135,22 @@ void HTTPServer::setupRoutes() {
         res.status = 400;
         res.set_content("Invalid JSON", "text/plain");
     });
+
+    svr.Get("/api/scheduled", [&](const httplib::Request& req, httplib::Response& res) {
+        const auto& scheduledEvents = configM->getScheduledEvents();
+        
+        string json_payload = "{[";
+
+        for (const auto& scheduledE : scheduledEvents)
+        {
+            json_payload.append("[], ");
+        }
+
+        json_payload.append("]}");
+        
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_content(json_payload, "application/json");
+    });
 }
 
 void HTTPServer::start(const string& host, int port) {
