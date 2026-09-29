@@ -172,14 +172,18 @@ class ScheduledTable {
         if (!this.container) return;
         
         this.container.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-plus preview-icon">
-                <path d="M16 18h6 M19 15v6"/>
-                <path d="M16 2v3"/>
-                <path d="M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3"/>
-                <path d="M3 9h18"/>
-                <path d="M8 2v3"/>
-            </svg>`
-        ;
+            <div class="scheduled-row">
+                <div class="scheduled-plus tbutton hover-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-plus preview-icon">
+                        <path d="M16 18h6 M19 15v6"/>
+                        <path d="M16 2v3"/>
+                        <path d="M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3"/>
+                        <path d="M3 9h18"/>
+                        <path d="M8 2v3"/>
+                    </svg>
+                </div>
+            </div>
+        `;
 
         try {
             const eventData = await this.fetchData();
