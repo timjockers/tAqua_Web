@@ -246,4 +246,11 @@ class ScheduledTable {
 
 
 const valve1Table = new ScheduledTable('#scheduled-table-1');
+const valve2Table = new ScheduledTable('#scheduled-table-2');
+const valve3Table = new ScheduledTable('#scheduled-table-3');
+const valve4Table = new ScheduledTable('#scheduled-table-4');
+const valve5Table = new ScheduledTable('#scheduled-table-5');
+const valve6Table = new ScheduledTable('#scheduled-table-6');
+const valve7Table = new ScheduledTable('#scheduled-table-7');
+const valve8Table = new ScheduledTable('#scheduled-table-8');
 
