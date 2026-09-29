@@ -159,3 +159,87 @@ document.addEventListener('DOMContentLoaded', function() {
         syncDurationValue();
     });
 });
+
+// SCHEDULED TABLE BUILDER
+class ScheduledTable {
+    constructor(containerSelector) {
+        this.container = document.querySelector(containerSelector);
+        
+        this.init();
+    }
+
+    async init() {
+        if (!this.container) return;
+        
+        this.container.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-plus preview-icon">
+                <path d="M16 18h6 M19 15v6"/>
+                <path d="M16 2v3"/>
+                <path d="M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3"/>
+                <path d="M3 9h18"/>
+                <path d="M8 2v3"/>
+            </svg>`
+        ;
+
+        try {
+            const eventData = await this.fetchData();
+            
+            this.render(eventData);
+        } catch (error) {
+            console.error("Error loading scheduled events from server:", error);
+        }
+    }
+
+    async fetchData() {
+        return;
+        const response = await fetch(this.apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        }
+        return await response.json();
+    }
+
+    createCardTemplate(user) {
+        return '';
+        return `
+            <article class="user-card" data-id="${user.id}">
+                <img src="${user.avatar || 'https://placeholder.com'}" alt="${user.name}">
+                <h2>${user.name}</h2>
+                <p>Email: <a href="mailto:${user.email}">${user.email}</a></p>
+                <button data-action="delete" class="btn-delete">Löschen</button>
+            </article>
+        `;
+    }
+
+    render(users) {
+        return;
+        this.container.innerHTML = '';
+
+        // Alle User-Templates zu einem großen String zusammenfügen
+        const htmlStructure = users.map(user => this.createCardTemplate(user)).join('');
+
+        // Performantes Einfügen in das DOM
+        this.container.insertAdjacentHTML('beforeend', htmlStructure);
+        
+        // Optionale Logik: Event-Listener an die neuen Elemente hängen
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        return;
+        this.container.addEventListener('click', (event) => {
+            const deleteButton = event.target.closest('[data-action="delete"]');
+            if (deleteButton) {
+                const card = deleteButton.closest('.user-card');
+                const userId = card.dataset.id;
+                
+                alert(`User mit ID ${userId} wird gelöscht.`);
+                card.remove(); // Entfernt das Element aus dem HTML
+            }
+        });
+    }
+}
+
+
+const valve1Table = new ScheduledTable('#scheduled-table-1');
+
