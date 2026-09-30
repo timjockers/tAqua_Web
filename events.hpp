@@ -6,6 +6,6 @@
 struct scheduledEvent {
     Relay relay;
     std::chrono::seconds duration;
-    Weekday weekday;
+    WeekdayMask weekdays;
     std::chrono::minutes startTime;
 };
