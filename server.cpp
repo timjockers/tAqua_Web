@@ -175,7 +175,7 @@ void HTTPServer::setupRoutes() {
             }
 
             response.push_back({
-                {"weekday", static_cast<int>(scheduledE.weekday)},
+                {"weekdays", static_cast<int>(scheduledE.weekdays)},
                 {"time", scheduledE.startTime.count()},
                 {"duration", scheduledE.duration.count()}
             });
