@@ -153,17 +153,55 @@ void ConfigManager::store()
             int relay = 0;
             int duration = 0;
 
-            item.lookupValue("relay", relay);
-            item.lookupValue("duration", duration);
+            if (!item.lookupValue("relay", relay)
+                || !item.lookupValue("duration", duration)
+                || relay < 0 || relay >= static_cast<int>(relayConfig.size()))
+            {
+                cerr << "Invalid scheduled event relay or duration" << endl;
+                continue;
+            }
 
-            const Setting& start = item.lookup("start");
-            int weekday = start[0];
-            int minutes = start[1];
+            int minutes = 0;
+            WeekdayMask weekdays = 0;
+
+            if (item.exists("weekdays"))
+            {
+                int weekdayMask = 0;
+                if (!item.lookupValue("weekdays", weekdayMask)
+                    || weekdayMask < 0 || weekdayMask > 0x7f
+                    || !item.lookupValue("start", minutes))
+                {
+                    cerr << "Invalid scheduled event weekday mask or start time" << endl;
+                    continue;
+                }
+
+                weekdays = static_cast<WeekdayMask>(weekdayMask);
+            }
+            else
+            {
+                const Setting& start = item.lookup("start");
+                const int weekday = start[0];
+                minutes = start[1];
+
+                if (weekday < 0 || weekday > 6)
+                {
+                    cerr << "Invalid legacy scheduled event weekday" << endl;
+                    continue;
+                }
+
+                weekdays = weekdayBit(static_cast<Weekday>(weekday));
+            }
+
+            if (minutes < 0 || minutes >= 24 * 60)
+            {
+                cerr << "Invalid scheduled event start time" << endl;
+                continue;
+            }
 
             scheduledEvents.push_back({
                 static_cast<Relay>(relay),
                 std::chrono::seconds(duration),
-                static_cast<Weekday>(weekday),
+                weekdays,
                 std::chrono::minutes(minutes)
             });
         }
@@ -238,13 +276,11 @@ void ConfigManager::updateScheduledEvents()
 {
     Setting& scheduled = cfg.lookup("scheduled");
 
-    // Bestehende Einträge entfernen.
     while (scheduled.getLength() > 0)
     {
         scheduled.remove(scheduled.getLength() - 1);
     }
 
-    // Aktuelle scheduledEvents wieder aufbauen.
     for (const auto& event : scheduledEvents)
     {
         Setting& item = scheduled.add(Setting::TypeGroup);
@@ -255,12 +291,10 @@ void ConfigManager::updateScheduledEvents()
         item.add("duration", Setting::TypeInt)
             = static_cast<int>(event.duration.count());
 
-        Setting& start = item.add("start", Setting::TypeArray);
+        item.add("weekdays", Setting::TypeInt)
+            = static_cast<int>(event.weekdays);
 
-        start.add(Setting::TypeInt)
-            = static_cast<int>(event.weekday);
-
-        start.add(Setting::TypeInt)
+        item.add("start", Setting::TypeInt)
             = static_cast<int>(
                 std::chrono::duration_cast<std::chrono::minutes>(
                     event.startTime
