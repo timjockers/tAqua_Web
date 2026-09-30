@@ -137,23 +137,44 @@ void HTTPServer::setupRoutes() {
     });
 
     svr.Get("/api/scheduled", [&](const httplib::Request& req, httplib::Response& res) {
-        const auto& scheduledEvents = configM->getScheduledEvents();
-
-        json response = json::object();
-        for (int relay = 0; relay < 8; ++relay)
+        if (!req.has_param("relay"))
         {
-            response["v" + to_string(relay + 1)] = json::array();
+            res.status = 400;
+            res.set_content("Missing relay parameter", "text/plain");
+            return;
         }
+
+        const string relayParam = req.get_param_value("relay");
+        size_t parsedLength = 0;
+        int relayNumber = 0;
+        try
+        {
+            relayNumber = stoi(relayParam, &parsedLength);
+        }
+        catch (const exception&)
+        {
+            relayNumber = 0;
+        }
+
+        if (parsedLength != relayParam.size() || relayNumber < 1 || relayNumber > 8)
+        {
+            res.status = 400;
+            res.set_content("Relay must be a number from 1 to 8", "text/plain");
+            return;
+        }
+
+        const auto& scheduledEvents = configM->getScheduledEvents();
+        const int relayIndex = relayNumber - 1;
+        json response = json::array();
 
         for (const auto& scheduledE : scheduledEvents)
         {
-            const int relay = static_cast<int>(scheduledE.relay);
-            if (relay < 0 || relay >= 8)
+            if (static_cast<int>(scheduledE.relay) != relayIndex)
             {
                 continue;
             }
 
-            response["v" + to_string(relay + 1)].push_back({
+            response.push_back({
                 {"weekday", static_cast<int>(scheduledE.weekday)},
                 {"time", scheduledE.startTime.count()},
                 {"duration", scheduledE.duration.count()}
