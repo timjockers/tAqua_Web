@@ -138,18 +138,30 @@ void HTTPServer::setupRoutes() {
 
     svr.Get("/api/scheduled", [&](const httplib::Request& req, httplib::Response& res) {
         const auto& scheduledEvents = configM->getScheduledEvents();
-        
-        string json_payload = "{[";
+
+        json response = json::object();
+        for (int relay = 0; relay < 8; ++relay)
+        {
+            response["v" + to_string(relay + 1)] = json::array();
+        }
 
         for (const auto& scheduledE : scheduledEvents)
         {
-            json_payload.append("[], ");
+            const int relay = static_cast<int>(scheduledE.relay);
+            if (relay < 0 || relay >= 8)
+            {
+                continue;
+            }
+
+            response["v" + to_string(relay + 1)].push_back({
+                {"weekday", static_cast<int>(scheduledE.weekday)},
+                {"time", scheduledE.startTime.count()},
+                {"duration", scheduledE.duration.count()}
+            });
         }
 
-        json_payload.append("]}");
-        
         res.set_header("Access-Control-Allow-Origin", "*");
-        res.set_content(json_payload, "application/json");
+        res.set_content(response.dump(), "application/json");
     });
 }
 
