@@ -1,5 +1,11 @@
 #pragma once
 
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <ctime>
+
 // Weekdays
 enum class Weekday {
     Sunday = 0,
@@ -10,6 +16,28 @@ enum class Weekday {
     Friday = 5,
     Saturday = 6
 };
+
+using WeekdayMask = std::uint8_t;
+
+constexpr WeekdayMask weekdayBit(Weekday weekday)
+{
+    return static_cast<WeekdayMask>(1u << static_cast<unsigned int>(weekday));
+}
+
+constexpr bool includesWeekday(WeekdayMask weekdays, Weekday weekday)
+{
+    return (weekdays & weekdayBit(weekday)) != 0;
+}
+
+inline Weekday get_current_weekday(const std::tm* local_time)
+{
+    if (!local_time)
+    {
+        return Weekday::Sunday;
+    }
+
+    return static_cast<Weekday>(local_time->tm_wday);
+}
 
 // The 3 possible relay configurations
 enum class RelayConfig {
