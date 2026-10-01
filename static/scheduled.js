@@ -200,6 +200,18 @@ class ScheduledTable {
     }
 
     createScheduledRow(event_data) {
+        const weekdays = Number(event_data['weekdays']) || 0;
+
+        const sunday = Boolean((weekdays >> 0) & 1);
+        const monday = Boolean((weekdays >> 1) & 1);
+        const tuesday = Boolean((weekdays >> 2) & 1);
+        const wednesday = Boolean((weekdays >> 3) & 1);
+        const thursday = Boolean((weekdays >> 4) & 1);
+        const friday = Boolean((weekdays >> 5) & 1);
+        const saturday = Boolean((weekdays >> 6) & 1);
+
+        console.log(sunday, monday, tuesday, wednesday, thursday, friday, saturday);
+
         return `
             <div class="scheduled-row">
                 <div class="scheduled-minus tbutton hover-button">
