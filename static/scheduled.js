@@ -223,13 +223,13 @@ class ScheduledTable {
                     <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
                     <div class="expanded-content hidden">
                         <div class="weekday-select">
-                            <span>Sun</span>
-                            <span>Mon</span>
-                            <span>Tue</span>
-                            <span>Wed</span>
-                            <span>Thu</span>
-                            <span>Fri</span>
-                            <span>Sat</span>
+                            <span${sunday ? ' class=selected' : ''}>Sun</span>
+                            <span${monday ? ' class=selected' : ''}>Mon</span>
+                            <span${tuesday ? ' class=selected' : ''}>Tue</span>
+                            <span${wednesday ? ' class=selected' : ''}>Wed</span>
+                            <span${thursday ? ' class=selected' : ''}>Thu</span>
+                            <span${friday ? ' class=selected' : ''}>Fri</span>
+                            <span${saturday ? ' class=selected' : ''}>Sat</span>
                         </div>
                     </div>
                 </div>
