@@ -250,8 +250,30 @@ class ScheduledTable {
 
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
 
+        // EVENT LISTENERS FOR ICONBOXTEXT UPDATES
         this.container.querySelectorAll('.weekday-select').forEach(element => {
             updateWeekdayIconBoxText(element);
+        });
+
+        this.container.querySelectorAll('.time-select').forEach(timeSelect => {
+            const input = timeSelect.querySelector('input');
+            if (!input) {
+                return;
+            }
+
+            const syncTimeValue = () => {
+                input.classList.toggle('selected', input.value.trim() !== '');
+                updateTimeIconBoxText(timeSelect);
+            };
+
+            input.addEventListener('input', syncTimeValue);
+            input.addEventListener('focus', syncTimeValue);
+            input.addEventListener('blur', () => {
+                input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
+                updateTimeIconBoxText(timeSelect);
+            });
+
+            syncTimeValue();
         });
         
         // this.addEventListeners();
@@ -282,27 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const valve6Table = new ScheduledTable('#scheduled-table-6', 6);
     const valve7Table = new ScheduledTable('#scheduled-table-7', 7);
     const valve8Table = new ScheduledTable('#scheduled-table-8', 8);
-
-    document.querySelectorAll('.time-select').forEach(timeSelect => {
-        const input = timeSelect.querySelector('input');
-        if (!input) {
-            return;
-        }
-
-        const syncTimeValue = () => {
-            input.classList.toggle('selected', input.value.trim() !== '');
-            updateTimeIconBoxText(timeSelect);
-        };
-
-        input.addEventListener('input', syncTimeValue);
-        input.addEventListener('focus', syncTimeValue);
-        input.addEventListener('blur', () => {
-            input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
-            updateTimeIconBoxText(timeSelect);
-        });
-
-        syncTimeValue();
-    });
 
     document.querySelectorAll('.duration-select').forEach(durationSelect => {
         const syncDurationValue = () => {
