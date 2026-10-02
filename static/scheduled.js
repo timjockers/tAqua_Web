@@ -163,6 +163,16 @@ class ScheduledTable {
         const friday = Boolean((weekdays >> 5) & 1);
         const saturday = Boolean((weekdays >> 6) & 1);
 
+        const startTime = Number(event_data['time']) || 0;
+        const startH = String(Number(Math.floor(startTime / 60)));
+        let startM = String(Number(startTime % 60));
+
+        if (startM.length < 2) {
+            startM = "0" + startM;
+        }
+
+        const start = startH + ":" + startM;
+
         return `
             <div class="scheduled-row">
                 <div class="scheduled-minus tbutton hover-button">
@@ -190,7 +200,7 @@ class ScheduledTable {
                     <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
                     <div class="expanded-content hidden">
                         <div class="time-select">
-                            <input type="text" pattern="(?:[01]?\d|2[0-3]):[0-5]\d" placeholder="HH:MM" maxlength="5">
+                            <input type="text" pattern="(?:[01]?\d|2[0-3]):[0-5]\d" placeholder="HH:MM" maxlength="5" value="${start}">
                         </div>
                     </div>
                 </div>
