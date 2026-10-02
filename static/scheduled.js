@@ -113,53 +113,6 @@ function updateDurationIconBoxText(duration_select) {
     textObject.textContent = `${minutes}m ${seconds}s`;
 }
 
-// INITIAL CALLS
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.weekday-select').forEach(element => {
-        updateWeekdayIconBoxText(element);
-    });
-
-    document.querySelectorAll('.time-select').forEach(timeSelect => {
-        const input = timeSelect.querySelector('input');
-        if (!input) {
-            return;
-        }
-
-        const syncTimeValue = () => {
-            input.classList.toggle('selected', input.value.trim() !== '');
-            updateTimeIconBoxText(timeSelect);
-        };
-
-        input.addEventListener('input', syncTimeValue);
-        input.addEventListener('focus', syncTimeValue);
-        input.addEventListener('blur', () => {
-            input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
-            updateTimeIconBoxText(timeSelect);
-        });
-
-        syncTimeValue();
-    });
-
-    document.querySelectorAll('.duration-select').forEach(durationSelect => {
-        const syncDurationValue = () => {
-            const groups = durationSelect.querySelectorAll('.duration-input-group');
-            groups.forEach(group => {
-                const input = group.querySelector('input');
-                group.classList.toggle('selected', !!input && input.value.trim() !== '');
-            });
-            updateDurationIconBoxText(durationSelect);
-        };
-
-        durationSelect.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', syncDurationValue);
-            input.addEventListener('focus', syncDurationValue);
-            input.addEventListener('blur', syncDurationValue);
-        });
-
-        syncDurationValue();
-    });
-});
-
 // SCHEDULED TABLE BUILDER
 class ScheduledTable {
     constructor(containerSelector, relayNumber) {
@@ -286,6 +239,10 @@ class ScheduledTable {
         const htmlStructure = event_data.map(e => this.createScheduledRow(e)).join('');
 
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
+
+        this.container.querySelectorAll('.weekday-select').forEach(element => {
+            updateWeekdayIconBoxText(element);
+        });
         
         // this.addEventListeners();
     }
@@ -305,13 +262,54 @@ class ScheduledTable {
     }
 }
 
+// INITIAL CALLS
+document.addEventListener('DOMContentLoaded', function() {
+    const valve1Table = new ScheduledTable('#scheduled-table-1', 1);
+    const valve2Table = new ScheduledTable('#scheduled-table-2', 2);
+    const valve3Table = new ScheduledTable('#scheduled-table-3', 3);
+    const valve4Table = new ScheduledTable('#scheduled-table-4', 4);
+    const valve5Table = new ScheduledTable('#scheduled-table-5', 5);
+    const valve6Table = new ScheduledTable('#scheduled-table-6', 6);
+    const valve7Table = new ScheduledTable('#scheduled-table-7', 7);
+    const valve8Table = new ScheduledTable('#scheduled-table-8', 8);
 
-const valve1Table = new ScheduledTable('#scheduled-table-1', 1);
-const valve2Table = new ScheduledTable('#scheduled-table-2', 2);
-const valve3Table = new ScheduledTable('#scheduled-table-3', 3);
-const valve4Table = new ScheduledTable('#scheduled-table-4', 4);
-const valve5Table = new ScheduledTable('#scheduled-table-5', 5);
-const valve6Table = new ScheduledTable('#scheduled-table-6', 6);
-const valve7Table = new ScheduledTable('#scheduled-table-7', 7);
-const valve8Table = new ScheduledTable('#scheduled-table-8', 8);
+    document.querySelectorAll('.time-select').forEach(timeSelect => {
+        const input = timeSelect.querySelector('input');
+        if (!input) {
+            return;
+        }
 
+        const syncTimeValue = () => {
+            input.classList.toggle('selected', input.value.trim() !== '');
+            updateTimeIconBoxText(timeSelect);
+        };
+
+        input.addEventListener('input', syncTimeValue);
+        input.addEventListener('focus', syncTimeValue);
+        input.addEventListener('blur', () => {
+            input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
+            updateTimeIconBoxText(timeSelect);
+        });
+
+        syncTimeValue();
+    });
+
+    document.querySelectorAll('.duration-select').forEach(durationSelect => {
+        const syncDurationValue = () => {
+            const groups = durationSelect.querySelectorAll('.duration-input-group');
+            groups.forEach(group => {
+                const input = group.querySelector('input');
+                group.classList.toggle('selected', !!input && input.value.trim() !== '');
+            });
+            updateDurationIconBoxText(durationSelect);
+        };
+
+        durationSelect.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', syncDurationValue);
+            input.addEventListener('focus', syncDurationValue);
+            input.addEventListener('blur', syncDurationValue);
+        });
+
+        syncDurationValue();
+    });
+});
