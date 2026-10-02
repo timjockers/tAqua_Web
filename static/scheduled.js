@@ -210,8 +210,6 @@ class ScheduledTable {
         const friday = Boolean((weekdays >> 5) & 1);
         const saturday = Boolean((weekdays >> 6) & 1);
 
-        console.log(sunday, monday, tuesday, wednesday, thursday, friday, saturday);
-
         return `
             <div class="scheduled-row">
                 <div class="scheduled-minus tbutton hover-button">
