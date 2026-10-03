@@ -173,6 +173,10 @@ class ScheduledTable {
 
         const start = startH + ":" + startM;
 
+        const dur = Number(event_data['duration']);
+        const durM = Number(Math.floor(dur / 60));
+        const durS = Number(dur % 60);
+
         return `
             <div class="scheduled-row">
                 <div class="scheduled-minus tbutton hover-button">
@@ -212,14 +216,14 @@ class ScheduledTable {
                         <div class="duration-select">
                             <div class="duration-picker">
                                 <div class="duration-input-group">
-                                    <input id="btn-irr-duration-m" type="number" min="0" max="119" placeholder="0" aria-label="Minutes" value="0">
+                                    <input id="btn-irr-duration-m" type="number" min="0" max="119" placeholder="0" aria-label="Minutes" value="${durM}">
                                     <span>Min</span>
                                 </div>
                                 
                                 <span class="duration-separator">:</span>
                                 
                                 <div class="duration-input-group">
-                                    <input id="btn-irr-duration-s" type="number" min="0" max="59" placeholder="0" aria-label="Seconds" value="0">
+                                    <input id="btn-irr-duration-s" type="number" min="0" max="59" placeholder="0" aria-label="Seconds" value="${durS}">
                                     <span>Sec</span>
                                 </div>
                             </div>
