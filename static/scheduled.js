@@ -249,7 +249,6 @@ class ScheduledTable {
             </div>
         `;
 
-
         const htmlStructure = event_data.map(e => this.createScheduledRow(e)).join('');
 
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
@@ -278,6 +277,25 @@ class ScheduledTable {
             });
 
             syncTimeValue();
+        });
+
+        this.container.querySelectorAll('.duration-select').forEach(durationSelect => {
+            const syncDurationValue = () => {
+                const groups = durationSelect.querySelectorAll('.duration-input-group');
+                groups.forEach(group => {
+                    const input = group.querySelector('input');
+                    group.classList.toggle('selected', !!input && input.value.trim() !== '');
+                });
+                updateDurationIconBoxText(durationSelect);
+            };
+
+            durationSelect.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', syncDurationValue);
+                input.addEventListener('focus', syncDurationValue);
+                input.addEventListener('blur', syncDurationValue);
+            });
+
+            syncDurationValue();
         });
         
         // this.addEventListeners();
@@ -308,23 +326,4 @@ document.addEventListener('DOMContentLoaded', function() {
     const valve6Table = new ScheduledTable('#scheduled-table-6', 6);
     const valve7Table = new ScheduledTable('#scheduled-table-7', 7);
     const valve8Table = new ScheduledTable('#scheduled-table-8', 8);
-
-    document.querySelectorAll('.duration-select').forEach(durationSelect => {
-        const syncDurationValue = () => {
-            const groups = durationSelect.querySelectorAll('.duration-input-group');
-            groups.forEach(group => {
-                const input = group.querySelector('input');
-                group.classList.toggle('selected', !!input && input.value.trim() !== '');
-            });
-            updateDurationIconBoxText(durationSelect);
-        };
-
-        durationSelect.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', syncDurationValue);
-            input.addEventListener('focus', syncDurationValue);
-            input.addEventListener('blur', syncDurationValue);
-        });
-
-        syncDurationValue();
-    });
 });
