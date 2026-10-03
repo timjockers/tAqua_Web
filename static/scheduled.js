@@ -61,58 +61,6 @@ function closeIconBox(clickedBox) {
     expandedContent.classList.add('hidden');
 }
 
-// FUNCTIONS - ICONBOX
-function updateWeekdayIconBoxText(weekday_select) {
-    const iconBox = weekday_select.closest('.icon-box');
-    const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
-
-    if (!textObject) {
-        return;
-    }
-
-    const selectedDays = Array.from(
-        weekday_select.closest('.weekday-select')?.querySelectorAll('span.selected') || []
-    ).map(day => day.textContent.trim()).join(', ');
-
-    textObject.textContent = selectedDays || 'Select weekday(s)';
-}
-
-function updateTimeIconBoxText(time_select) {
-    const iconBox = time_select.closest('.icon-box');
-    const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
-
-    if (!textObject) {
-        return;
-    }
-
-    const input = time_select.querySelector('input');
-    const value = input?.value.trim() || '';
-
-    textObject.textContent = input && input.checkValidity() && value ? value : 'Select time';
-}
-
-function updateDurationIconBoxText(duration_select) {
-    const iconBox = duration_select.closest('.icon-box');
-    const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
-
-    if (!textObject) {
-        return;
-    }
-
-    const minuteInput = duration_select.querySelector('input[aria-label="Minutes"]');
-    const secondInput = duration_select.querySelector('input[aria-label="Seconds"]');
-    const minutes = Number(minuteInput?.value || 0);
-    const seconds = Number(secondInput?.value || 0);
-    const totalSeconds = minutes * 60 + seconds;
-
-    if (totalSeconds <= 0) {
-        textObject.textContent = 'Select duration';
-        return;
-    }
-
-    textObject.textContent = `${minutes}m ${seconds}s`;
-}
-
 // SCHEDULED TABLE BUILDER
 class ScheduledTable {
     constructor(containerSelector, relayNumber) {
@@ -255,7 +203,7 @@ class ScheduledTable {
 
         // EVENT LISTENERS FOR ICONBOXTEXT UPDATES
         this.container.querySelectorAll('.weekday-select').forEach(element => {
-            updateWeekdayIconBoxText(element);
+            this.updateWeekdayIconBoxText(element);
         });
 
         this.container.querySelectorAll('.time-select').forEach(timeSelect => {
@@ -266,14 +214,14 @@ class ScheduledTable {
 
             const syncTimeValue = () => {
                 input.classList.toggle('selected', input.value.trim() !== '');
-                updateTimeIconBoxText(timeSelect);
+                this.updateTimeIconBoxText(timeSelect);
             };
 
             input.addEventListener('input', syncTimeValue);
             input.addEventListener('focus', syncTimeValue);
             input.addEventListener('blur', () => {
                 input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
-                updateTimeIconBoxText(timeSelect);
+                this.updateTimeIconBoxText(timeSelect);
             });
 
             syncTimeValue();
@@ -286,7 +234,7 @@ class ScheduledTable {
                     const input = group.querySelector('input');
                     group.classList.toggle('selected', !!input && input.value.trim() !== '');
                 });
-                updateDurationIconBoxText(durationSelect);
+                this.updateDurationIconBoxText(durationSelect);
             };
 
             durationSelect.querySelectorAll('input').forEach(input => {
@@ -299,6 +247,57 @@ class ScheduledTable {
         });
         
         // this.addEventListeners();
+    }
+
+    updateWeekdayIconBoxText(weekday_select) {
+        const iconBox = weekday_select.closest('.icon-box');
+        const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
+
+        if (!textObject) {
+            return;
+        }
+
+        const selectedDays = Array.from(
+            weekday_select.closest('.weekday-select')?.querySelectorAll('span.selected') || []
+        ).map(day => day.textContent.trim()).join(', ');
+
+        textObject.textContent = selectedDays || 'Select weekday(s)';
+    }
+
+    updateTimeIconBoxText(time_select) {
+        const iconBox = time_select.closest('.icon-box');
+        const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
+
+        if (!textObject) {
+            return;
+        }
+
+        const input = time_select.querySelector('input');
+        const value = input?.value.trim() || '';
+
+        textObject.textContent = input && input.checkValidity() && value ? value : 'Select time';
+    }
+
+    updateDurationIconBoxText(duration_select) {
+        const iconBox = duration_select.closest('.icon-box');
+        const textObject = iconBox ? iconBox.querySelector('.icon-box-text') : null;
+
+        if (!textObject) {
+            return;
+        }
+
+        const minuteInput = duration_select.querySelector('input[aria-label="Minutes"]');
+        const secondInput = duration_select.querySelector('input[aria-label="Seconds"]');
+        const minutes = Number(minuteInput?.value || 0);
+        const seconds = Number(secondInput?.value || 0);
+        const totalSeconds = minutes * 60 + seconds;
+
+        if (totalSeconds <= 0) {
+            textObject.textContent = 'Select duration';
+            return;
+        }
+
+        textObject.textContent = `${minutes}m ${seconds}s`;
     }
 
     addEventListeners() {
