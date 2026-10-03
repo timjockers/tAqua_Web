@@ -1,6 +1,6 @@
+// GENERAL ICON BOX FUNCTIONS
 document.addEventListener('click', (event) => {
     const iconBox = event.target.closest('.icon-box');
-    
     if (iconBox) {
         iconBoxClicked(iconBox);
     }
@@ -9,14 +9,6 @@ document.addEventListener('click', (event) => {
     if (closeIcon) {
         const parentIconBox = closeIcon.closest('.icon-box');
         closeIconBox(parentIconBox);
-    }
-
-    // TOGGLE WEEKDAY SELECT
-    const weekdaySelect = event.target.closest('.weekday-select > span');
-    
-    if (weekdaySelect) {
-        weekdaySelect.classList.toggle('selected');
-        updateWeekdayIconBoxText(weekdaySelect.closest('.weekday-select'));
     }
 });
 
@@ -202,51 +194,7 @@ class ScheduledTable {
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
 
         // EVENT LISTENERS FOR ICONBOXTEXT UPDATES
-        this.container.querySelectorAll('.weekday-select').forEach(element => {
-            this.updateWeekdayIconBoxText(element);
-        });
-
-        this.container.querySelectorAll('.time-select').forEach(timeSelect => {
-            const input = timeSelect.querySelector('input');
-            if (!input) {
-                return;
-            }
-
-            const syncTimeValue = () => {
-                input.classList.toggle('selected', input.value.trim() !== '');
-                this.updateTimeIconBoxText(timeSelect);
-            };
-
-            input.addEventListener('input', syncTimeValue);
-            input.addEventListener('focus', syncTimeValue);
-            input.addEventListener('blur', () => {
-                input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
-                this.updateTimeIconBoxText(timeSelect);
-            });
-
-            syncTimeValue();
-        });
-
-        this.container.querySelectorAll('.duration-select').forEach(durationSelect => {
-            const syncDurationValue = () => {
-                const groups = durationSelect.querySelectorAll('.duration-input-group');
-                groups.forEach(group => {
-                    const input = group.querySelector('input');
-                    group.classList.toggle('selected', !!input && input.value.trim() !== '');
-                });
-                this.updateDurationIconBoxText(durationSelect);
-            };
-
-            durationSelect.querySelectorAll('input').forEach(input => {
-                input.addEventListener('input', syncDurationValue);
-                input.addEventListener('focus', syncDurationValue);
-                input.addEventListener('blur', syncDurationValue);
-            });
-
-            syncDurationValue();
-        });
-        
-        // this.addEventListeners();
+        this.addEventListeners();
     }
 
     updateWeekdayIconBoxText(weekday_select) {
@@ -301,16 +249,58 @@ class ScheduledTable {
     }
 
     addEventListeners() {
-        return;
-        this.container.addEventListener('click', (event) => {
-            const deleteButton = event.target.closest('[data-action="delete"]');
-            if (deleteButton) {
-                const card = deleteButton.closest('.user-card');
-                const userId = card.dataset.id;
+        this.container.querySelectorAll('.weekday-select').forEach(element => {
+            this.updateWeekdayIconBoxText(element);
+
+            element.addEventListener('click', (event) => {
+                // TOGGLE WEEKDAY SELECT
+                const weekdaySelect = event.target.closest('.weekday-select > span');
                 
-                alert(`User mit ID ${userId} wird gelöscht.`);
-                card.remove(); // Entfernt das Element aus dem HTML
+                if (weekdaySelect) {
+                    weekdaySelect.classList.toggle('selected');
+                    this.updateWeekdayIconBoxText(weekdaySelect.closest('.weekday-select'));
+                }
+            });
+        });
+
+        this.container.querySelectorAll('.time-select').forEach(timeSelect => {
+            const input = timeSelect.querySelector('input');
+            if (!input) {
+                return;
             }
+
+            const syncTimeValue = () => {
+                input.classList.toggle('selected', input.value.trim() !== '');
+                this.updateTimeIconBoxText(timeSelect);
+            };
+
+            input.addEventListener('input', syncTimeValue);
+            input.addEventListener('focus', syncTimeValue);
+            input.addEventListener('blur', () => {
+                input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
+                this.updateTimeIconBoxText(timeSelect);
+            });
+
+            syncTimeValue();
+        });
+
+        this.container.querySelectorAll('.duration-select').forEach(durationSelect => {
+            const syncDurationValue = () => {
+                const groups = durationSelect.querySelectorAll('.duration-input-group');
+                groups.forEach(group => {
+                    const input = group.querySelector('input');
+                    group.classList.toggle('selected', !!input && input.value.trim() !== '');
+                });
+                this.updateDurationIconBoxText(durationSelect);
+            };
+
+            durationSelect.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', syncDurationValue);
+                input.addEventListener('focus', syncDurationValue);
+                input.addEventListener('blur', syncDurationValue);
+            });
+
+            syncDurationValue();
         });
     }
 }
