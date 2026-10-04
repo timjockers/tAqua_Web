@@ -198,7 +198,7 @@ class ScheduledTable {
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
 
         // EVENT LISTENERS FOR ICONBOXTEXT UPDATES
-        this.initialIconBoxTextUpdate();
+        this.initialWeekdaySelectSetup();
         this.addEventListeners();
     }
 
@@ -274,7 +274,7 @@ class ScheduledTable {
         syncTimeValue();
     }
 
-    initialIconBoxTextUpdate() {
+    initialWeekdaySelectSetup() {
         this.container.querySelectorAll('.weekday-select').forEach(element => {
             this.updateWeekdayIconBoxText(element);
         });
