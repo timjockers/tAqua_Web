@@ -198,6 +198,7 @@ class ScheduledTable {
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
 
         // EVENT LISTENERS FOR ICONBOXTEXT UPDATES
+        this.initialIconBoxTextUpdate();
         this.addEventListeners();
     }
 
@@ -252,19 +253,21 @@ class ScheduledTable {
         textObject.textContent = `${minutes}m ${seconds}s`;
     }
 
-    addEventListeners() {
+    initialIconBoxTextUpdate() {
         this.container.querySelectorAll('.weekday-select').forEach(element => {
             this.updateWeekdayIconBoxText(element);
+        });
+    }
 
-            element.addEventListener('click', (event) => {
-                // TOGGLE WEEKDAY SELECT
-                const weekdaySelect = event.target.closest('.weekday-select > span');
-                
-                if (weekdaySelect) {
-                    weekdaySelect.classList.toggle('selected');
-                    this.updateWeekdayIconBoxText(weekdaySelect.closest('.weekday-select'));
-                }
-            });
+    addEventListeners() {
+        this.container.addEventListener('click', (event) => {
+            // TOGGLE WEEKDAY SELECT
+            const weekdaySelect = event.target.closest('.weekday-select > span');
+            
+            if (weekdaySelect) {
+                weekdaySelect.classList.toggle('selected');
+                this.updateWeekdayIconBoxText(weekdaySelect.closest('.weekday-select'));
+            }
         });
 
         this.container.querySelectorAll('.time-select').forEach(timeSelect => {
