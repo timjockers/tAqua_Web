@@ -92,6 +92,64 @@ class ScheduledTable {
         return await getJSON(`/api/scheduled?relay=${this.relayNumber}`);
     }
 
+    getScheduledRowString(sun, mon, tue, wed, thu, fri, sat, startStr, durMin, durSec) {
+        return `
+            <div class="scheduled-row">
+                <div class="scheduled-minus tbutton hover-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-minus preview-icon"><path d="M16 18h6"/><path d="M16 2v3"/><path d="M21 14V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3"/><path d="M3 9h18"/><path d="M8 2v3"/></svg>
+                </div>
+                <div class="icon-box">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days preview-icon"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></svg>
+                    <span class="icon-box-text">--</span>
+                    <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
+                    <div class="expanded-content hidden">
+                        <div class="weekday-select">
+                            <span${sun ? ' class=selected' : ''}>Sun</span>
+                            <span${mon ? ' class=selected' : ''}>Mon</span>
+                            <span${tue ? ' class=selected' : ''}>Tue</span>
+                            <span${wed ? ' class=selected' : ''}>Wed</span>
+                            <span${thu ? ' class=selected' : ''}>Thu</span>
+                            <span${fri ? ' class=selected' : ''}>Fri</span>
+                            <span${sat ? ' class=selected' : ''}>Sat</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="icon-box">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock preview-icon"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span class="icon-box-text">--</span>
+                    <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
+                    <div class="expanded-content hidden">
+                        <div class="time-select">
+                            <input type="text" pattern="(?:[01]?\\d|2[0-3]):[0-5]\\d" placeholder="HH:MM" maxlength="5" value="${startStr}">
+                        </div>
+                    </div>
+                </div>
+                <div class="icon-box">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hourglass preview-icon"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+                    <span class="icon-box-text">--</span>
+                    <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
+                    <div class="expanded-content hidden">
+                        <div class="duration-select">
+                            <div class="duration-picker">
+                                <div class="duration-input-group">
+                                    <input id="btn-irr-duration-m" type="number" min="0" max="119" placeholder="0" aria-label="Minutes" value="${durMin}">
+                                    <span>Min</span>
+                                </div>
+                                
+                                <span class="duration-separator">:</span>
+                                
+                                <div class="duration-input-group">
+                                    <input id="btn-irr-duration-s" type="number" min="0" max="59" placeholder="0" aria-label="Seconds" value="${durSec}">
+                                    <span>Sec</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     createScheduledRow(event_data) {
         const weekdays = Number(event_data['weekdays']) || 0;
 
@@ -117,61 +175,7 @@ class ScheduledTable {
         const durM = Number(Math.floor(dur / 60));
         const durS = Number(dur % 60);
 
-        return `
-            <div class="scheduled-row">
-                <div class="scheduled-minus tbutton hover-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-minus preview-icon"><path d="M16 18h6"/><path d="M16 2v3"/><path d="M21 14V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3"/><path d="M3 9h18"/><path d="M8 2v3"/></svg>
-                </div>
-                <div class="icon-box">
-                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days preview-icon"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></svg>
-                    <span class="icon-box-text">--</span>
-                    <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
-                    <div class="expanded-content hidden">
-                        <div class="weekday-select">
-                            <span${sunday ? ' class=selected' : ''}>Sun</span>
-                            <span${monday ? ' class=selected' : ''}>Mon</span>
-                            <span${tuesday ? ' class=selected' : ''}>Tue</span>
-                            <span${wednesday ? ' class=selected' : ''}>Wed</span>
-                            <span${thursday ? ' class=selected' : ''}>Thu</span>
-                            <span${friday ? ' class=selected' : ''}>Fri</span>
-                            <span${saturday ? ' class=selected' : ''}>Sat</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="icon-box">
-                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock preview-icon"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    <span class="icon-box-text">--</span>
-                    <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
-                    <div class="expanded-content hidden">
-                        <div class="time-select">
-                            <input type="text" pattern="(?:[01]?\\d|2[0-3]):[0-5]\\d" placeholder="HH:MM" maxlength="5" value="${start}">
-                        </div>
-                    </div>
-                </div>
-                <div class="icon-box">
-                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hourglass preview-icon"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
-                    <span class="icon-box-text">--</span>
-                    <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
-                    <div class="expanded-content hidden">
-                        <div class="duration-select">
-                            <div class="duration-picker">
-                                <div class="duration-input-group">
-                                    <input id="btn-irr-duration-m" type="number" min="0" max="119" placeholder="0" aria-label="Minutes" value="${durM}">
-                                    <span>Min</span>
-                                </div>
-                                
-                                <span class="duration-separator">:</span>
-                                
-                                <div class="duration-input-group">
-                                    <input id="btn-irr-duration-s" type="number" min="0" max="59" placeholder="0" aria-label="Seconds" value="${durS}">
-                                    <span>Sec</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        return this.getScheduledRowString(sunday, monday, tuesday, wednesday, thursday, friday, saturday, start, durM, durS);
     }
 
     render(event_data) {
