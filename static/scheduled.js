@@ -198,7 +198,7 @@ class ScheduledTable {
         this.container.insertAdjacentHTML('beforeend', htmlStructure);
 
         // EVENT LISTENERS FOR ICONBOXTEXT UPDATES
-        this.initialWeekdaySelectSetup();
+        this.initialSetup();
         this.addEventListeners();
     }
 
@@ -253,6 +253,13 @@ class ScheduledTable {
         textObject.textContent = `${minutes}m ${seconds}s`;
     }
 
+    setupWeekdaySelect(weekday_select) {
+        this.updateWeekdayIconBoxText(weekday_select);
+        weekday_select.addEventListener('click', () => {
+            this.updateWeekdayIconBoxText(weekday_select);
+        });
+    }
+
     setupTimeSelect(time_select) {
         const input = time_select.querySelector('input');
         if (!input) {
@@ -293,21 +300,9 @@ class ScheduledTable {
         syncDurationValue();
     }
 
-    initialWeekdaySelectSetup() {
-        this.container.querySelectorAll('.weekday-select').forEach(element => {
-            this.updateWeekdayIconBoxText(element);
-        });
-    }
-
-    addEventListeners() {
-        this.container.addEventListener('click', (event) => {
-            // TOGGLE WEEKDAY SELECT
-            const weekdaySelect = event.target.closest('.weekday-select > span');
-            
-            if (weekdaySelect) {
-                weekdaySelect.classList.toggle('selected');
-                this.updateWeekdayIconBoxText(weekdaySelect.closest('.weekday-select'));
-            }
+    initialSetup() {
+        this.container.querySelectorAll('.weekday-select').forEach(weekdaySelect => {
+            this.setupWeekdaySelect(weekdaySelect);
         });
 
         this.container.querySelectorAll('.time-select').forEach(timeSelect => {
@@ -316,6 +311,17 @@ class ScheduledTable {
 
         this.container.querySelectorAll('.duration-select').forEach(durationSelect => {
             this.setupDurationSelect(durationSelect);
+        });
+    }
+
+    addEventListeners() {
+        // TOGGLE WEEKDAY SELECT
+        this.container.addEventListener('click', (event) => {
+            const weekdaySelect = event.target.closest('.weekday-select > span');
+            
+            if (weekdaySelect) {
+                weekdaySelect.classList.toggle('selected');
+            }
         });
     }
 }
