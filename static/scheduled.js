@@ -274,6 +274,25 @@ class ScheduledTable {
         syncTimeValue();
     }
 
+    setupDurationSelect(duration_select) {
+        const syncDurationValue = () => {
+            const groups = duration_select.querySelectorAll('.duration-input-group');
+            groups.forEach(group => {
+                const input = group.querySelector('input');
+                group.classList.toggle('selected', !!input && input.value.trim() !== '');
+            });
+            this.updateDurationIconBoxText(duration_select);
+        };
+
+        duration_select.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', syncDurationValue);
+            input.addEventListener('focus', syncDurationValue);
+            input.addEventListener('blur', syncDurationValue);
+        });
+
+        syncDurationValue();
+    }
+
     initialWeekdaySelectSetup() {
         this.container.querySelectorAll('.weekday-select').forEach(element => {
             this.updateWeekdayIconBoxText(element);
@@ -296,22 +315,7 @@ class ScheduledTable {
         });
 
         this.container.querySelectorAll('.duration-select').forEach(durationSelect => {
-            const syncDurationValue = () => {
-                const groups = durationSelect.querySelectorAll('.duration-input-group');
-                groups.forEach(group => {
-                    const input = group.querySelector('input');
-                    group.classList.toggle('selected', !!input && input.value.trim() !== '');
-                });
-                this.updateDurationIconBoxText(durationSelect);
-            };
-
-            durationSelect.querySelectorAll('input').forEach(input => {
-                input.addEventListener('input', syncDurationValue);
-                input.addEventListener('focus', syncDurationValue);
-                input.addEventListener('blur', syncDurationValue);
-            });
-
-            syncDurationValue();
+            this.setupDurationSelect(durationSelect);
         });
     }
 }
