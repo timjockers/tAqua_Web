@@ -330,7 +330,9 @@ class ScheduledTable {
 
             const minusButton = event.target.closest('.scheduled-row > .scheduled-minus');
             if (minusButton) {
-                console.log("Scheduled Minus clicked:", minusButton);
+                const delRow = minusButton.closest('.scheduled-row');
+
+                delRow.remove();
             }
         });
     }
