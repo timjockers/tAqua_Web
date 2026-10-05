@@ -318,7 +318,14 @@ class ScheduledTable {
         this.container.addEventListener('click', (event) => {
             const plusButton = event.target.closest('.scheduled-row > .scheduled-plus');
             if (plusButton) {
-                console.log("Scheduled Plus clicked:", plusButton);
+                const htmlStructure = this.getScheduledRowString(false, false, false, false, false, false, false, "", 0, 0);
+
+                this.container.insertAdjacentHTML('beforeend', htmlStructure);
+
+                const newRow = this.container.lastElementChild;
+                this.setupWeekdaySelect(newRow.querySelector('.weekday-select'));
+                this.setupTimeSelect(newRow.querySelector('.time-select'));
+                this.setupDurationSelect(newRow.querySelector('.duration-select'));
             }
 
             const minusButton = event.target.closest('.scheduled-row > .scheduled-minus');
