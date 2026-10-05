@@ -104,13 +104,13 @@ class ScheduledTable {
                     <svg class="close hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up preview-icon"><path d="m18 15-6-6-6 6"/></svg>
                     <div class="expanded-content hidden">
                         <div class="weekday-select">
-                            <span${sun ? ' class=selected' : ''}>Sun</span>
-                            <span${mon ? ' class=selected' : ''}>Mon</span>
-                            <span${tue ? ' class=selected' : ''}>Tue</span>
-                            <span${wed ? ' class=selected' : ''}>Wed</span>
-                            <span${thu ? ' class=selected' : ''}>Thu</span>
-                            <span${fri ? ' class=selected' : ''}>Fri</span>
-                            <span${sat ? ' class=selected' : ''}>Sat</span>
+                            <span${sun ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Sun</span>
+                            <span${mon ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Mon</span>
+                            <span${tue ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Tue</span>
+                            <span${wed ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Wed</span>
+                            <span${thu ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Thu</span>
+                            <span${fri ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Fri</span>
+                            <span${sat ? ' class=selected' : ''} onclick="this.classList.toggle('selected')">Sat</span>
                         </div>
                     </div>
                 </div>
@@ -316,13 +316,13 @@ class ScheduledTable {
 
     addEventListeners() {
         // TOGGLE WEEKDAY SELECT
-        this.container.addEventListener('click', (event) => {
+        /*this.container.addEventListener('click', (event) => {
             const weekdaySelect = event.target.closest('.weekday-select > span');
             
             if (weekdaySelect) {
                 weekdaySelect.classList.toggle('selected');
             }
-        });
+        });*/
     }
 }
 
