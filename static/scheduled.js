@@ -315,14 +315,17 @@ class ScheduledTable {
     }
 
     addEventListeners() {
-        // TOGGLE WEEKDAY SELECT
-        /*this.container.addEventListener('click', (event) => {
-            const weekdaySelect = event.target.closest('.weekday-select > span');
-            
-            if (weekdaySelect) {
-                weekdaySelect.classList.toggle('selected');
+        this.container.addEventListener('click', (event) => {
+            const plusButton = event.target.closest('.scheduled-row > .scheduled-plus');
+            if (plusButton) {
+                console.log("Scheduled Plus clicked:", plusButton);
             }
-        });*/
+
+            const minusButton = event.target.closest('.scheduled-row > .scheduled-minus');
+            if (minusButton) {
+                console.log("Scheduled Minus clicked:", minusButton);
+            }
+        });
     }
 }
 
