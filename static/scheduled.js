@@ -92,6 +92,10 @@ class ScheduledTable {
         return await getJSON(`/api/scheduled?relay=${this.relayNumber}`);
     }
 
+    async saveData() {
+        
+    }
+
     getScheduledRowString(sun, mon, tue, wed, thu, fri, sat, startStr, durMin, durSec) {
         return `
             <div class="scheduled-row">
