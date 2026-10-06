@@ -184,6 +184,94 @@ void HTTPServer::setupRoutes() {
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_content(response.dump(), "application/json");
     });
+
+    svr.Post("/api/scheduled", [&](const httplib::Request& req, httplib::Response& res) {
+        if (!req.has_param("relay")) {
+            res.status = 400;
+            res.set_content("Missing relay parameter", "text/plain");
+            return;
+        }
+
+        const string relayParam = req.get_param_value("relay");
+        size_t parsedLength = 0;
+        int relayNumber = 0;
+        try {
+            relayNumber = stoi(relayParam, &parsedLength);
+        }
+        catch (const exception&) {
+            relayNumber = 0;
+        }
+
+        if (parsedLength != relayParam.size() || relayNumber < 1 || relayNumber > 8) {
+            res.status = 400;
+            res.set_content("Relay must be a number from 1 to 8", "text/plain");
+            return;
+        }
+
+        try {
+            const auto eventList = json::parse(req.body);
+            if (!eventList.is_array()) {
+                throw std::invalid_argument("Request body must be a JSON array of schedule events");
+            }
+
+            const Relay relay = static_cast<Relay>(relayNumber - 1);
+            vector<scheduledEvent> updatedEvents;
+            updatedEvents.reserve(configM->getScheduledEvents().size());
+
+            for (const auto& scheduledEvent : configM->getScheduledEvents()) {
+                if (static_cast<int>(scheduledEvent.relay) != static_cast<int>(relay)) {
+                    updatedEvents.push_back(scheduledEvent);
+                }
+            }
+
+            for (const auto& event : eventList) {
+                if (!event.is_object()
+                    || event.size() != 3
+                    || !event.contains("weekdays")
+                    || !event.contains("time")
+                    || !event.contains("duration")) {
+                    throw std::invalid_argument(
+                        "Each event must contain only weekdays, time and duration");
+                }
+
+                const int weekdays = event.at("weekdays").get<int>();
+                const int time = event.at("time").get<int>();
+                const int duration = event.at("duration").get<int>();
+
+                if (weekdays < 0 || weekdays > 0x7f
+                    || time < 0 || time >= 24 * 60
+                    || duration < 0) {
+                    throw std::invalid_argument("Invalid schedule event values");
+                }
+
+                updatedEvents.push_back({
+                    relay,
+                    std::chrono::seconds(duration),
+                    static_cast<WeekdayMask>(weekdays),
+                    std::chrono::minutes(time)
+                });
+            }
+
+            configM->setScheduledEvents(updatedEvents);
+
+            if (!configM->writeConfig()) {
+                res.status = 500;
+                res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
+                return;
+            }
+
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_content(eventList.dump(), "application/json");
+        } catch (const json::exception& ex) {
+            cerr << "Invalid schedule JSON: " << ex.what() << endl;
+            res.status = 400;
+            res.set_content("Invalid JSON", "text/plain");
+        } catch (const std::exception& ex) {
+            cerr << "Invalid schedule configuration: " << ex.what() << endl;
+            res.status = 400;
+            res.set_content(ex.what(), "text/plain");
+        }
+    });
 }
 
 void HTTPServer::start(const string& host, int port) {
