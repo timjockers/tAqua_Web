@@ -92,8 +92,48 @@ class ScheduledTable {
         return await getJSON(`/api/scheduled?relay=${this.relayNumber}`);
     }
 
+    collectData() {
+        return Array.from(this.container.querySelectorAll('.scheduled-row'))
+            .filter(row => row.querySelector('.weekday-select'))
+            .map((row, index) => {
+                const days = Array.from(row.querySelectorAll('.weekday-select span'));
+                const weekdays = days.reduce(
+                    (mask, day, dayIndex) =>
+                        mask | (day.classList.contains('selected') ? 1 << dayIndex : 0),
+                    0
+                );
+
+                const timeInput = row.querySelector('.time-select input');
+                const minuteInput = row.querySelector('[aria-label="Minutes"]');
+                const secondInput = row.querySelector('[aria-label="Seconds"]');
+
+                const timeValue = timeInput.value.trim();
+                const minutesValue = minuteInput.value;
+                const secondsValue = secondInput.value;
+
+                // Eine komplett leere neue Zeile wird nicht gesendet.
+                if (!weekdays && !timeValue && !minutesValue && !secondsValue) {
+                    return null;
+                }
+
+                if (!weekdays || !timeValue || !timeInput.checkValidity()) {
+                    throw new Error(`Zeitplan-Zeile ${index + 1} ist unvollständig.`);
+                }
+
+                const [hours, minutes] = timeValue.split(':').map(Number);
+
+                return {
+                    weekdays,
+                    time: hours * 60 + minutes,
+                    duration: Number(minutesValue || 0) * 60 + Number(secondsValue || 0)
+                };
+            })
+            .filter(event => event !== null);
+    }
+
     async saveData() {
-        
+        const data = this.collectData();
+        return await writeJSON(`/api/scheduled?relay=${this.relayNumber}`, data);
     }
 
     getScheduledRowString(sun, mon, tue, wed, thu, fri, sat, startStr, durMin, durSec) {
