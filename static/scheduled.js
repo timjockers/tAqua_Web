@@ -58,6 +58,7 @@ class ScheduledTable {
     constructor(containerSelector, relayNumber) {
         this.container = document.querySelector(containerSelector);
         this.relayNumber = relayNumber;
+        this.saveTimeout = null;
         
         this.init();
     }
@@ -111,13 +112,12 @@ class ScheduledTable {
                 const minutesValue = minuteInput.value;
                 const secondsValue = secondInput.value;
 
-                // Eine komplett leere neue Zeile wird nicht gesendet.
                 if (!weekdays && !timeValue && !minutesValue && !secondsValue) {
                     return null;
                 }
 
                 if (!weekdays || !timeValue || !timeInput.checkValidity()) {
-                    throw new Error(`Zeitplan-Zeile ${index + 1} ist unvollständig.`);
+                    throw new Error(`Row ${index + 1} is incomplete.`);
                 }
 
                 const [hours, minutes] = timeValue.split(':').map(Number);
@@ -134,6 +134,21 @@ class ScheduledTable {
     async saveData() {
         const data = this.collectData();
         return await writeJSON(`/api/scheduled?relay=${this.relayNumber}`, data);
+    }
+
+    scheduleSave() {
+        clearTimeout(this.saveTimeout);
+        this.saveTimeout = setTimeout(() => {
+            try {
+                this.collectData();
+            } catch (error) {
+                return;
+            }
+
+            this.saveData().catch(error => {
+                console.error("Error saving scheduled events:", error);
+            });
+        }, 300);
     }
 
     getScheduledRowString(sun, mon, tue, wed, thu, fri, sat, startStr, durMin, durSec) {
@@ -301,6 +316,7 @@ class ScheduledTable {
         this.updateWeekdayIconBoxText(weekday_select);
         weekday_select.addEventListener('click', () => {
             this.updateWeekdayIconBoxText(weekday_select);
+            this.scheduleSave();
         });
     }
 
@@ -315,11 +331,15 @@ class ScheduledTable {
             this.updateTimeIconBoxText(time_select);
         };
 
-        input.addEventListener('input', syncTimeValue);
+        input.addEventListener('input', () => {
+            syncTimeValue();
+            this.scheduleSave();
+        });
         input.addEventListener('focus', syncTimeValue);
         input.addEventListener('blur', () => {
             input.classList.toggle('selected', input.checkValidity() && input.value.trim() !== '');
             this.updateTimeIconBoxText(time_select);
+            this.scheduleSave();
         });
 
         syncTimeValue();
@@ -336,7 +356,10 @@ class ScheduledTable {
         };
 
         duration_select.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', syncDurationValue);
+            input.addEventListener('input', () => {
+                syncDurationValue();
+                this.scheduleSave();
+            });
             input.addEventListener('focus', syncDurationValue);
             input.addEventListener('blur', syncDurationValue);
         });
@@ -370,6 +393,7 @@ class ScheduledTable {
                 this.setupWeekdaySelect(newRow.querySelector('.weekday-select'));
                 this.setupTimeSelect(newRow.querySelector('.time-select'));
                 this.setupDurationSelect(newRow.querySelector('.duration-select'));
+                this.scheduleSave();
             }
 
             const minusButton = event.target.closest('.scheduled-row > .scheduled-minus');
@@ -377,6 +401,7 @@ class ScheduledTable {
                 const delRow = minusButton.closest('.scheduled-row');
 
                 delRow.remove();
+                this.scheduleSave();
             }
         });
     }
