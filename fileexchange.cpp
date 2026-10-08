@@ -149,6 +149,11 @@ void ConfigManager::store()
         for (size_t i = 0; i < scheduled.getLength(); ++i)
         {
             const Setting& item = scheduled[i];
+            
+            bool valid = true;
+            if (item.exists("valid")) {
+                item.lookupValue("valid", valid);
+            }
 
             int relay = 0;
             int duration = 0;
@@ -199,6 +204,7 @@ void ConfigManager::store()
             }
 
             scheduledEvents.push_back({
+                valid,
                 static_cast<Relay>(relay),
                 std::chrono::seconds(duration),
                 weekdays,
@@ -285,21 +291,15 @@ void ConfigManager::updateScheduledEvents()
     {
         Setting& item = scheduled.add(Setting::TypeGroup);
 
-        item.add("relay", Setting::TypeInt)
-            = static_cast<int>(event.relay);
+        item.add("valid", Setting::TypeBoolean) = event.valid;
 
-        item.add("duration", Setting::TypeInt)
-            = static_cast<int>(event.duration.count());
+        item.add("relay", Setting::TypeInt) = static_cast<int>(event.relay);
 
-        item.add("weekdays", Setting::TypeInt)
-            = static_cast<int>(event.weekdays);
+        item.add("duration", Setting::TypeInt) = static_cast<int>(event.duration.count());
 
-        item.add("start", Setting::TypeInt)
-            = static_cast<int>(
-                std::chrono::duration_cast<std::chrono::minutes>(
-                    event.startTime
-                ).count()
-            );
+        item.add("weekdays", Setting::TypeInt) = static_cast<int>(event.weekdays);
+
+        item.add("start", Setting::TypeInt) = static_cast<int>(chrono::duration_cast<chrono::minutes>(event.startTime).count());
     }
 }
 
