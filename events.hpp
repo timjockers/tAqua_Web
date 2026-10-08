@@ -4,6 +4,7 @@
 #include "types.hpp"
 
 struct scheduledEvent {
+    bool valid;
     Relay relay;
     std::chrono::seconds duration;
     WeekdayMask weekdays;
