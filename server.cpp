@@ -175,6 +175,7 @@ void HTTPServer::setupRoutes() {
             }
 
             response.push_back({
+                {"valid", scheduledE.valid},
                 {"weekdays", static_cast<int>(scheduledE.weekdays)},
                 {"time", scheduledE.startTime.count()},
                 {"duration", scheduledE.duration.count()}
@@ -226,14 +227,15 @@ void HTTPServer::setupRoutes() {
 
             for (const auto& event : eventList) {
                 if (!event.is_object()
-                    || event.size() != 3
+                    || event.size() != 4
+                    || !event.contains("valid")
                     || !event.contains("weekdays")
                     || !event.contains("time")
                     || !event.contains("duration")) {
-                    throw std::invalid_argument(
-                        "Each event must contain only weekdays, time and duration");
+                    throw std::invalid_argument("Each event must contain valid, weekdays, time and duration");
                 }
 
+                const bool valid = event.at("valid").get<bool>();
                 const int weekdays = event.at("weekdays").get<int>();
                 const int time = event.at("time").get<int>();
                 const int duration = event.at("duration").get<int>();
@@ -245,6 +247,7 @@ void HTTPServer::setupRoutes() {
                 }
 
                 updatedEvents.push_back({
+                    valid,
                     relay,
                     std::chrono::seconds(duration),
                     static_cast<WeekdayMask>(weekdays),
