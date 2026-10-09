@@ -249,9 +249,9 @@ void HTTPServer::setupRoutes() {
                 updatedEvents.push_back({
                     valid,
                     relay,
-                    std::chrono::seconds(duration),
+                    chrono::seconds(duration),
                     static_cast<WeekdayMask>(weekdays),
-                    std::chrono::minutes(time)
+                    chrono::minutes(time)
                 });
             }
 
