@@ -197,7 +197,7 @@ void ConfigManager::store()
                 weekdays = weekdayBit(static_cast<Weekday>(weekday));
             }
 
-            if (minutes < 0 || minutes >= 24 * 60)
+            if (minutes < -1 || minutes >= 24 * 60) // time = -1: empty time arg in web interface
             {
                 cerr << "Invalid scheduled event start time" << endl;
                 continue;
