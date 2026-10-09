@@ -241,7 +241,7 @@ void HTTPServer::setupRoutes() {
                 const int duration = event.at("duration").get<int>();
 
                 if (weekdays < 0 || weekdays > 0x7f
-                    || time < 0 || time >= 24 * 60
+                    || time < -1 || time >= 24 * 60 // time = -1: empty time arg in web interface
                     || duration < 0) {
                     throw std::invalid_argument("Invalid schedule event values");
                 }
