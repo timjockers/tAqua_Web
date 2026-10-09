@@ -121,13 +121,14 @@ class ScheduledTable {
                 if (!weekdays || weekdays == 0) {
                     val = false;
                 }
-                // Problem mit let t lösen!!!
+                
+                let t = 0;
                 if (!timeValue || !timeInput.checkValidity()) {
                     val = false;
-                    const t = -1;
+                    t = -1;
                 } else {
                     const [hours, minutes] = timeValue.split(':').map(Number);
-                    const t = hours * 60 + minutes;
+                    t = hours * 60 + minutes;
                 }
 
                 const d = Number(minutesValue || 0) * 60 + Number(secondsValue || 0);
