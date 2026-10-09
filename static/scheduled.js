@@ -236,14 +236,17 @@ class ScheduledTable {
         const saturday = Boolean((weekdays >> 6) & 1);
 
         const startTime = Number(event_data['time']) || 0;
-        const startH = String(Number(Math.floor(startTime / 60)));
-        let startM = String(Number(startTime % 60));
+        let start = "";
+        if (startTime >= 0) {
+            const startH = String(Number(Math.floor(startTime / 60)));
+            let startM = String(Number(startTime % 60));
 
-        if (startM.length < 2) {
-            startM = "0" + startM;
+            if (startM.length < 2) {
+                startM = "0" + startM;
+            }
+
+            start = startH + ":" + startM;
         }
-
-        const start = startH + ":" + startM;
 
         const dur = Number(event_data['duration']);
         const durM = Number(Math.floor(dur / 60));
