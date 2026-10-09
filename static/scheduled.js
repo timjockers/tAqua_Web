@@ -116,16 +116,30 @@ class ScheduledTable {
                     return null;
                 }
 
-                if (!weekdays || !timeValue || !timeInput.checkValidity()) {
-                    throw new Error(`Row ${index + 1} is incomplete.`);
+                let val = true;
+
+                if (!weekdays || weekdays == 0) {
+                    val = false;
+                }
+                // Problem mit let t lösen!!!
+                if (!timeValue || !timeInput.checkValidity()) {
+                    val = false;
+                    const t = -1;
+                } else {
+                    const [hours, minutes] = timeValue.split(':').map(Number);
+                    const t = hours * 60 + minutes;
                 }
 
-                const [hours, minutes] = timeValue.split(':').map(Number);
+                const d = Number(minutesValue || 0) * 60 + Number(secondsValue || 0);
+                if (d == 0) {
+                    val = false;
+                }
 
                 return {
+                    valid: val,
                     weekdays,
-                    time: hours * 60 + minutes,
-                    duration: Number(minutesValue || 0) * 60 + Number(secondsValue || 0)
+                    time: t,
+                    duration: d
                 };
             })
             .filter(event => event !== null);
