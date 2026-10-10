@@ -84,6 +84,8 @@ class ScheduledTable {
             const eventData = await this.fetchData();
             
             this.render(eventData);
+
+            this.collectData();
         } catch (error) {
             console.error("Error loading scheduled events from server:", error);
         }
