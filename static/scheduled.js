@@ -116,24 +116,41 @@ class ScheduledTable {
                     return null;
                 }
 
+                const iconBoxWeekdays = row.querySelector('.weekday-select')?.closest('.icon-box');
+                const iconBoxTime = row.querySelector('.time-select')?.closest('.icon-box');
+                const iconBoxDuration = row.querySelector('.duration-select')?.closest('.icon-box');
+
+
                 let val = true;
 
                 if (!weekdays || weekdays == 0) {
                     val = false;
+
+                    iconBoxWeekdays.classList.add('invalid');
+                } else {
+                    iconBoxWeekdays.classList.remove('invalid');
                 }
                 
                 let t = 0;
                 if (!timeValue || !timeInput.checkValidity()) {
                     val = false;
                     t = -1;
+
+                    iconBoxTime.classList.add('invalid');
                 } else {
                     const [hours, minutes] = timeValue.split(':').map(Number);
                     t = hours * 60 + minutes;
+
+                    iconBoxTime.classList.remove('invalid');
                 }
 
                 const d = Number(minutesValue || 0) * 60 + Number(secondsValue || 0);
                 if (d == 0) {
                     val = false;
+
+                    iconBoxDuration.classList.add('invalid');
+                } else {
+                    iconBoxDuration.classList.remove('invalid');
                 }
 
                 return {
