@@ -278,30 +278,49 @@ Then compile the project:
 make
 ```
 
-### 4. Allow the web server to use port 80
-
-The web server listens on port 80, which is a privileged port on Linux. By default, only processes with elevated privileges can bind to ports below 1024.
-
-Instead of running the web server as `root` using `sudo`, the required network capability can be assigned directly to the compiled executable. This allows the web server to listen on port 80 while still running as a regular user.
-
-Run the following command from the ~/taqua/tAqua_Web/ directory:
-```text
-sudo setcap 'cap_net_bind_service=+ep' ./_web
-```
-
-After assigning the capability, the web server can be started without `sudo`.
-
 ### 5. Start the web server
-
 After successful compilation, the web server can be started manually with:
 
 ```text
-./_web
+sudo ./_web
 ```
-It is recommended to start `tAqua_Web` automatically when the Raspberry Pi boots, just like `tAqua_Daemon`. We use a systemd service for this purpose. Run the following commands to set this up:
 
+It is recommended to start `tAqua_Web` automatically when the Raspberry Pi boots, just like `tAqua_Daemon`. We use a **systemd service** for this purpose.
+This service is configured to automatically wait until tAqua_Daemon is fully up and running before it attempts to start.
+
+Create a new service file for tAqua_Web:
+```bash
+cd /etc/systemd/system/
+sudo nano taqua_w.service
+```
+
+Paste the following lines into the file:
 ```text
-Add instructions here
+[Unit]
+Description=tAqua Web Service
+Requires=taqua_d.service
+After=network.target taqua_d.service
+
+[Service]
+Type=simple
+ExecStart=/home/YOUR_USERNAME/taqua/tAqua_Web/_web
+WorkingDirectory=/home/YOUR_USERNAME/taqua/tAqua_Web/
+User=root
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+**Important:** Just like in tAqua_Daemon, replace YOUR_USERNAME in the file with your actual Raspberry Pi username so the paths are correct.
+
+Save and close the file (in nano, `press Ctrl+O`, `Enter`, then `Ctrl+X`).
+
+Finally, run the following commands to reload systemd, enable the autostart for the web service, and start it:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable taqua_w.service
+sudo systemctl start taqua_w.service
 ```
 
 ## Remote Access
