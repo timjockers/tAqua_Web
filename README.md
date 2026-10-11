@@ -314,7 +314,7 @@ WantedBy=multi-user.target
 ```
 **Important:** Just like in tAqua_Daemon, replace YOUR_USERNAME in the file with your actual Raspberry Pi username so the paths are correct.
 
-Save and close the file (in nano, `press Ctrl+O`, `Enter`, then `Ctrl+X`).
+Save and close the file (in nano, press `Ctrl+O`, `Enter`, then `Ctrl+X`).
 
 Finally, run the following commands to reload systemd, enable the autostart for the web service, and start it:
 ```bash
