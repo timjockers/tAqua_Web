@@ -96,7 +96,7 @@ Multiple irrigation events can be configured for different days and valves.
 
 Irrigation is handled by the event queue of `tAqua_Daemon`.
 
-The web interface can be used to create manual irrigation events in addition to the automatically scheduled events.
+The web interface can be used to create manual irrigation events in addition to the automatically scheduled events. (not implemented yet)
 
 For example:
 
@@ -118,7 +118,7 @@ This means that manual operation through the web interface uses the same event-b
 
 In the future, the web interface is also intended to provide functionality for cancelling or stopping events. The exact behavior of event cancellation, especially for events that are already being executed, is still being developed.
 
-## Status
+## Status (not implemented yet)
 
 The web interface is intended to provide a live overview of the current state of the irrigation controller.
 
@@ -130,15 +130,7 @@ This should include information corresponding to the hardware status LEDs, such 
 
 The exact presentation of this information has not yet been defined. The goal is to provide a clear overview without simply reproducing the physical LED indicators of the controller.
 
-## Upcoming Irrigation Events
-
-The web interface is intended to display upcoming irrigation events.
-
-This allows users to see when the next irrigation events are expected to start and which valves will be activated.
-
-The exact layout and amount of information shown are still under development.
-
-## Irrigation Log
+## Irrigation Log (not implemented yet)
 
 A log is planned to provide information about recent irrigation events.
 
@@ -146,7 +138,7 @@ This can be used to see, for example, which valves were irrigated recently and w
 
 The exact contents and storage of the log are not yet finalized.
 
-## Weather Conditions
+## Weather Conditions (not implemented yet)
 
 One of the planned features of tAqua is weather-dependent irrigation.
 
@@ -214,8 +206,6 @@ The project uses:
 * **libconfig**
 
 The web server is implemented in C++ using `httplib.h`.
-
-The exact implementation and project structure are still under development.
 
 ## Installation
 
@@ -339,13 +329,11 @@ finalized.
 
 `tAqua_Web` is currently **under development**.
 
-The web component is planned as the corresponding user interface for the daemon and the overall tAqua system.
-
-The architecture, configuration format, web interface, event handling and individual features may change during development.
+A first release is already available.
 
 Some features described in this README are therefore planned functionality rather than currently implemented functionality.
 
-## Planned Features
+## Planned Features - Summary
 
 Possible future features include:
 
