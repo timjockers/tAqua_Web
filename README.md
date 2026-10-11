@@ -252,7 +252,7 @@ cd ~/taqua/
 Then clone the `tAqua_Web` Git repository:
 
 ```text
-git clone https://github.com/timjockers/tAqua_Web
+git clone --branch v1.0 --depth 1 https://github.com/timjockers/tAqua_Web
 ```
 
 The directory `tAqua_Web/` should have been created automatically.
