@@ -62,6 +62,8 @@ control logic.
 
 The exact design of the web interface is still under development. The following functionality is planned or currently being considered.
 
+The exact design of the web interface has already been determined, but not all functions are implemented in the first version.
+
 ### Relay Configuration
 
 Each of the eight relays can be configured through the web interface.
@@ -74,7 +76,9 @@ The available relay types are:
 
 These relay types correspond to the functionality implemented by `tAqua_Daemon`.
 
-The configuration is stored in `taqua.cfg`.
+### Button irrigation time
+
+In the web interface, you can configure the irrigation time when a button is pressed.
 
 ### Irrigation Scheduling
 
@@ -83,9 +87,8 @@ For each relay configured as a valve, irrigation events can be defined.
 A scheduled irrigation event is defined in `taqua.cfg` as follows:
 
 * Relay
-* Start (Weekday and start time)
+* Start (Weekday(s) and start time)
 * Irrigation duration
-* Conditions under which the event should be executed (e.g., weather conditions)
 
 Multiple irrigation events can be configured for different days and valves.
 
