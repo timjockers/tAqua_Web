@@ -16,6 +16,13 @@ const scheduledPopup = document.querySelector('.scheduled-popup');
 scheduledPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
 scheduledButton.addEventListener('click', function(event) { openPopup(scheduledPopup); });
 
+// LOG-POPUP
+const logButton = document.querySelector('.bottom-log');
+const logPopup = document.querySelector('.log-popup');
+
+logPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
+logButton.addEventListener('click', function(event) { openPopup(logPopup); });
+
 // RELAIS-CONFIGURATION
 function loadConfig() {
     getJSON('/api/relayConfig').then(conf => {
