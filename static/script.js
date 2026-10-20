@@ -41,6 +41,8 @@ function updateLogContent() {
             }[char]));
 
             logPopup.querySelector('.log-content').innerHTML = escapedLog.replace(/(\[[^\]\r\n]*\])/g, '<span class="log-time">$1</span>');
+            const logScrollBox = logPopup.querySelector('.log-scroll-box');
+            logScrollBox.scrollTop = logScrollBox.scrollHeight;
         })
         .catch(error => {
             console.error("Error:", error);
