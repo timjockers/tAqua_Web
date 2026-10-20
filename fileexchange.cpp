@@ -4,8 +4,24 @@
 #include <cstddef>
 #include <stdexcept>
 #include <csignal>
+#include <fstream>
+#include <sstream>
 using namespace libconfig;
 using namespace std;
+
+std::string readFile(const std::string& filepath) {
+    std::ifstream file(filepath);
+    
+    if (!file.is_open()) {
+        return ""; 
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+
+    return buffer.str();
+}
+
 
 
 ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_pid_path)

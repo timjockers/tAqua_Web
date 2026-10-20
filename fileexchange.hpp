@@ -8,21 +8,8 @@
 #include <libconfig.h++>
 #include "types.hpp"
 #include "events.hpp"
-#include <fstream>
-#include <sstream>
 
-std::string readFile(const std::string& filepath) {
-    std::ifstream file(filepath);
-    
-    if (!file.is_open()) {
-        return ""; 
-    }
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-
-    return buffer.str();
-}
+std::string readFile(const std::string& filepath);
 
 
 class ConfigManager {
