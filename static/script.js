@@ -32,7 +32,15 @@ function updateLogContent() {
             return response.text();
         })
         .then(l => {
-            logPopup.querySelector('.log-content').textContent = l;
+            const escapedLog = l.replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+
+            logPopup.querySelector('.log-content').innerHTML = escapedLog.replace(/(\[[^\]\r\n]*\])/g, '<span class="log-time">$1</span>');
         })
         .catch(error => {
             console.error("Error:", error);
