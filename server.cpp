@@ -275,6 +275,15 @@ void HTTPServer::setupRoutes() {
             res.set_content(ex.what(), "text/plain");
         }
     });
+
+    svr.Get("/api/log", [&](const httplib::Request& req, httplib::Response& res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_content(
+            readFile(
+                "../tAqua_Daemon/taqua.log"
+            ),
+            "application/json");
+    });
 }
 
 void HTTPServer::start(const string& host, int port) {
