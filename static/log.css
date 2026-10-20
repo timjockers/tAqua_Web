@@ -1,0 +1,8 @@
+.log-popup {
+    width: 80vw;
+    height: 85vh;
+    min-width: 200px;
+    min-height: 100px;
+    max-width: 500px;
+    max-height: 1000px;
+}
