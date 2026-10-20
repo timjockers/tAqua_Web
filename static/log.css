@@ -6,3 +6,8 @@
     max-width: 500px;
     max-height: 1000px;
 }
+
+.log-content {
+    white-space: pre-wrap;
+    font-family: monospace;
+}
