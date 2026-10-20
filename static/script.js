@@ -21,7 +21,24 @@ const logButton = document.querySelector('.bottom-log');
 const logPopup = document.querySelector('.log-popup');
 
 logPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
-logButton.addEventListener('click', function(event) { openPopup(logPopup); });
+logButton.addEventListener('click', function(event) { openPopup(logPopup); updateLogContent(); });
+
+function updateLogContent() {
+    fetch('/api/log')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP-Error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(l => {
+            logPopup.querySelector('.log-content').textContent = l;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            throw error;
+        });
+}
 
 // RELAIS-CONFIGURATION
 function loadConfig() {
