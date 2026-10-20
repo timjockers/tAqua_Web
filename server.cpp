@@ -282,7 +282,7 @@ void HTTPServer::setupRoutes() {
             readFile(
                 "../tAqua_Daemon/taqua.log"
             ),
-            "application/json");
+            "text/plain");
     });
 }
 
