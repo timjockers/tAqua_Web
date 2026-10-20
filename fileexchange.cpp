@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <cstddef>
-#include <fstream>
 #include <stdexcept>
 #include <csignal>
 using namespace libconfig;
