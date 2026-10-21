@@ -50,3 +50,13 @@ private:
     std::chrono::seconds buttonIrrTime;
     std::vector<scheduledEvent> scheduledEvents;
 };
+
+class StatusManager {
+public:
+    StatusManager(const std::string& filepath);
+
+private:
+    const std::string path;
+
+    std::array<StatusIndicator, 8> irrigationStatus;
+};

@@ -360,3 +360,10 @@ void ConfigManager::setScheduledEvents(const std::vector<scheduledEvent>& schedu
         scheduledEvents.push_back(event);
     }
 }
+
+
+StatusManager::StatusManager(const string& filepath)
+    : path(filepath)
+{
+    irrigationStatus = {StatusIndicator::None};
+}
