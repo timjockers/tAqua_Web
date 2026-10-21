@@ -15,6 +15,7 @@ std::string readFile(const std::string& filepath);
 class ConfigManager {
 public:
     ConfigManager(const std::string& taqua_cfg_path, const std::string& taqua_pid_path);
+    ~ConfigManager();
 
     const std::array<RelayConfig, 8>& getRelayConfig() const;
     const std::chrono::seconds& getButtonIrrTime() const;
@@ -28,6 +29,8 @@ public:
     bool writeConfig();
 
 private:
+    pid_t my_pid;
+
     bool readDaemonPID();
     bool notifyDaemonConfigChanged();
     pid_t daemon_pid;

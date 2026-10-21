@@ -37,8 +37,15 @@ ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_p
         cout << "WARNING: Could not find taqua.pid in " << pid_path
              << ". Please start the daemon first, then restart the web server." << endl;
     }
+
+    
 }
 
+ConfigManager::~ConfigManager()
+{
+    my_pid = -99;
+    // UPDATE CONFIG FILE
+}
 
 bool ConfigManager::readDaemonPID()
 {
