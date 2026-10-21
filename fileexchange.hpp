@@ -21,7 +21,7 @@ public:
     const std::array<RelayConfig, 8>& getRelayConfig() const;
     const std::chrono::seconds& getButtonIrrTime() const;
     const std::vector<scheduledEvent>& getScheduledEvents() const;
-    
+
     void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
     void setRelayConfigR(const Relay& relay, const RelayConfig& relay_config);
     void setButtonIrrTime(const std::chrono::seconds& irrigation_time);
@@ -41,6 +41,7 @@ private:
     void read();
     void store();
 
+    void updatePid();
     void updateRelayConfig();
     void updateButtonIrrTime();
     void updateScheduledEvents();

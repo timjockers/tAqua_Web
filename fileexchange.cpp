@@ -39,12 +39,19 @@ ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_p
     }
 
     my_pid = getpid();
+    if (!writeConfig())
+    {
+        cerr << "Error writing config file!" << endl;
+    }
 }
 
 ConfigManager::~ConfigManager()
 {
     my_pid = -99;
-    // UPDATE CONFIG FILE
+    if (!writeConfig())
+    {
+        cerr << "Error writing config file!" << endl;
+    }
 }
 
 bool ConfigManager::readDaemonPID()
@@ -244,7 +251,8 @@ void ConfigManager::store()
 bool ConfigManager::writeConfig()
 {
     try
-    {
+    {   
+        updatePid();
         updateRelayConfig();
         updateButtonIrrTime();
         updateScheduledEvents();
@@ -276,6 +284,13 @@ bool ConfigManager::writeConfig()
     }
 
     return false;
+}
+
+void ConfigManager::updatePid()
+{
+    Setting& r = cfg.lookup("web_pid");
+
+    r = static_cast<int>(my_pid);
 }
 
 void ConfigManager::updateRelayConfig()
