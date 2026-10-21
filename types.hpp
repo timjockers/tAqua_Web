@@ -57,3 +57,10 @@ enum class Relay {
     R7 = 6,
     R8 = 7
 };
+
+// Status Indicator
+enum class StatusIndicator {
+    None,
+    Scheduled,
+    Active
+};
