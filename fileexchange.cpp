@@ -38,7 +38,7 @@ ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_p
              << ". Please start the daemon first, then restart the web server." << endl;
     }
 
-    
+    my_pid = getpid();
 }
 
 ConfigManager::~ConfigManager()

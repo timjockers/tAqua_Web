@@ -6,6 +6,7 @@
 #include <chrono>
 #include <unistd.h>
 #include <libconfig.h++>
+#include <sys/types.h>
 #include "types.hpp"
 #include "events.hpp"
 
