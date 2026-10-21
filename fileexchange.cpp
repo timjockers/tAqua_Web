@@ -9,10 +9,6 @@
 using namespace libconfig;
 using namespace std;
 
-#ifdef HAS_LIBSYSTEMD
-#include <systemd/sd-daemon.h>
-#endif
-
 std::string readFile(const std::string& filepath) {
     std::ifstream file(filepath);
     
