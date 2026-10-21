@@ -20,22 +20,3 @@ add_executable(_web
 target_link_libraries(_web PRIVATE ${LIBCONFIGPP_LIBRARIES})
 target_include_directories(_web PRIVATE ${LIBCONFIGPP_INCLUDE_DIRS})
 target_link_libraries(_web PRIVATE nlohmann_json::nlohmann_json)
-
-# Linux / Raspberry Pi
-if(UNIX AND NOT APPLE)
-    # Require libsystemd
-    pkg_check_modules(SYSTEMD REQUIRED IMPORTED_TARGET libsystemd)
-
-
-    target_link_libraries(_daemon
-        PRIVATE
-            PkgConfig::SYSTEMD
-    )
-
-    target_compile_definitions(_daemon
-        PRIVATE
-            HAS_LIBSYSTEMD
-    )
-
-endif()
-
