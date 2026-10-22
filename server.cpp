@@ -287,15 +287,19 @@ void HTTPServer::setupRoutes() {
     });
 
     svr.Get("/api/irrigationStatus", [&](const httplib::Request& req, httplib::Response& res) {
-        const auto& irrigationStatus = statusM->getIrrigationStatus();
-        json response = json::array();
+        const auto& irrStatus = statusM->getIrrigationStatus();
 
-        for (uint i = 0; i < irrigationStatus.size(); i++)
-        {
-            response.push_back(static_cast<int>(irrigationStatus[i]));
+        string json_payload = "{";
+        for (int i = 0; i < 8; i++) {
+            json_payload.append("\"" + to_string(i) + "\": " + to_string(static_cast<int>(irrStatus[i])));
+            if (i < 7) {
+                json_payload.append(", ");
+            }
         }
+        json_payload.append("}");
+        
         res.set_header("Access-Control-Allow-Origin", "*");
-        res.set_content(response.dump(), "application/json");
+        res.set_content(json_payload, "application/json");
     });
 }
 
