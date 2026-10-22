@@ -24,8 +24,9 @@ static string read_html_file(const string& path) {
 
 
 
-HTTPServer::HTTPServer(ConfigManager* configManager)
-    : configM(configManager)
+HTTPServer::HTTPServer(ConfigManager* configManager, StatusManager* statusManager)
+    : configM(configManager),
+      statusM(statusManager)
 {
     setupWebpage();
     setupRoutes();
@@ -283,6 +284,18 @@ void HTTPServer::setupRoutes() {
                 "../tAqua_Daemon/taqua.log"
             ),
             "text/plain");
+    });
+
+    svr.Get("/api/irrigationStatus", [&](const httplib::Request& req, httplib::Response& res) {
+        const auto& irrigationStatus = statusM->getIrrigationStatus();
+        json response = json::array();
+
+        for (uint i = 0; i < irrigationStatus.size(); i++)
+        {
+            response.push_back(static_cast<int>(irrigationStatus[i]));
+        }
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_content(response.dump(), "application/json");
     });
 }
 
