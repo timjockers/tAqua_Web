@@ -11,10 +11,16 @@ using namespace std;
 
 namespace {
     atomic_bool shutdownRequested{false};
+    volatile sig_atomic_t statusReloadRequested = 0;
 
     void requestShutdown(int)
     {
         shutdownRequested.store(true, memory_order_relaxed);
+    }
+
+    void requestStatusReload(int)
+    {
+        statusReloadRequested = 1;
     }
 }
 
@@ -57,6 +63,8 @@ void tAquaWeb::run()
     signal(SIGINT, requestShutdown);
     signal(SIGTERM, requestShutdown);
 
+    signal(SIGUSR1, requestStatusReload);
+
     writePID();
     configM.notifyWebPIDReady();
 
@@ -67,7 +75,13 @@ void tAquaWeb::run()
     });
 
     while (!shutdownRequested.load(memory_order_relaxed) && !serverStopped.load(memory_order_relaxed)) {
-        this_thread::sleep_for(chrono::milliseconds(100));
+        this_thread::sleep_for(chrono::milliseconds(50));
+        
+        if (statusReloadRequested)
+        {
+            statusReloadRequested = 0;
+            reloadStatus();
+        }
     }
 
     stop();
