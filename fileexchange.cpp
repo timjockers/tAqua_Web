@@ -89,6 +89,11 @@ bool ConfigManager::notifyDaemonConfigChanged()
     return true;
 }
 
+void ConfigManager::notifyWebPIDReady()
+{
+    notifyDaemonConfigChanged();
+}
+
 
 void ConfigManager::loadConfig()
 {

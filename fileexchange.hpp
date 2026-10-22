@@ -28,6 +28,8 @@ public:
 
     bool writeConfig();
 
+    void notifyWebPIDReady();
+
 private:
     bool readDaemonPID();
     bool notifyDaemonConfigChanged();
