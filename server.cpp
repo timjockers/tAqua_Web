@@ -301,21 +301,20 @@ void HTTPServer::setupRoutes() {
 
             const auto& irrStatus = statusM->getIrrigationStatus();
 
-            std::string json_payload = "{";
+            string json_payload = "{";
             for (int i = 0; i < 8; i++) {
-                json_payload.append("\"" + std::to_string(i) + "\": " + std::to_string(static_cast<int>(irrStatus[i])));
+                json_payload.append("\"" + to_string(i) + "\": " + to_string(static_cast<int>(irrStatus[i])));
                 if (i < 7) {
                     json_payload.append(", ");
                 }
             }
             json_payload.append("}");
             
-            std::string sse_frame = "data: " + json_payload + "\n\n";
+            string sse_frame = "data: " + json_payload + "\n\n";
 
             sink.write(sse_frame.data(), sse_frame.size());
 
             this_thread::sleep_for(chrono::milliseconds(500)); // Send update when status changes.
-
             return true;
         });
     });
