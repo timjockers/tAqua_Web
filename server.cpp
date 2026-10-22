@@ -293,21 +293,33 @@ void HTTPServer::setupRoutes() {
         res.set_header("Cache-Control", "no-cache");
         res.set_header("Connection", "keep-alive");
 
-        res.set_chunked_content_provider("text/event-stream", [statusM = this->statusM](size_t offset, httplib::DataSink &sink) {
-            while (!statusM->statusChanged())
-            {
-                this_thread::sleep_for(chrono::milliseconds(50));
+        res.set_chunked_content_provider(
+            "text/event-stream",
+            [statusM = this->statusM, sentInitial = false,
+             lastVersion = std::uint64_t{0}](size_t, httplib::DataSink& sink) mutable {
+            if (!sink.is_writable()) {
+                return false;
             }
+
+            const auto snapshot = sentInitial
+                ? statusM->waitForChange(lastVersion, chrono::seconds(1))
+                : statusM->getSnapshot();
 
             if (!sink.is_writable()) {
                 return false;
             }
 
-            const auto& irrStatus = statusM->getIrrigationStatus();
+            if (sentInitial && snapshot.version == lastVersion) {
+                const string heartbeat = ": keepalive\n\n";
+                return sink.write(heartbeat.data(), heartbeat.size());
+            }
+
+            sentInitial = true;
+            lastVersion = snapshot.version;
 
             string json_payload = "{";
             for (int i = 0; i < 8; i++) {
-                json_payload.append("\"" + to_string(i) + "\": " + to_string(static_cast<int>(irrStatus[i])));
+                json_payload.append("\"" + to_string(i) + "\": " + to_string(static_cast<int>(snapshot.status[i])));
                 if (i < 7) {
                     json_payload.append(", ");
                 }
@@ -316,9 +328,7 @@ void HTTPServer::setupRoutes() {
             
             string sse_frame = "data: " + json_payload + "\n\n";
 
-            sink.write(sse_frame.data(), sse_frame.size());
-
-            return true;
+            return sink.write(sse_frame.data(), sse_frame.size());
         });
     });
 }
