@@ -57,6 +57,7 @@ void tAquaWeb::run()
     signal(SIGTERM, requestShutdown);
 
     writePID();
+    configM.notifyWebPIDReady();
 
     atomic_bool serverStopped{false};
     thread serverThread([this, &serverStopped]() {
