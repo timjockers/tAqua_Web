@@ -27,7 +27,7 @@ namespace {
 tAquaWeb::tAquaWeb()
     : configM("../tAqua_Daemon/taqua.cfg", "../tAqua_Daemon/taqua.pid"),
       statusM("../tAqua_Daemon/status.cfg"),
-      httpserver(&configM)
+      httpserver(&configM, &statusM)
 {}
 
 tAquaWeb::~tAquaWeb()
