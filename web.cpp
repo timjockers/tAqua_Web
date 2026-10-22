@@ -83,5 +83,5 @@ void tAquaWeb::stop() noexcept
 
 void tAquaWeb::reloadStatus()
 {
-    
+    statusM.updateStatus();
 }
