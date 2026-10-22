@@ -60,7 +60,7 @@ private:
 class StatusManager {
 public:
     struct Snapshot {
-        std::array<StatusIndicator, 8> status;
+        std::array<StatusIndicator, 8> irrStatus;
         std::uint64_t version;
     };
 
