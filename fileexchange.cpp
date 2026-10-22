@@ -370,24 +370,44 @@ StatusManager::StatusManager(const string& filepath)
     : path(filepath)
 {
     irrigationStatus = {StatusIndicator::None};
-    status_changed = true;
 }
 
-bool StatusManager::statusChanged()
+StatusManager::Snapshot StatusManager::getSnapshot() const
 {
-    if (status_changed)
-    {
-        status_changed = false;
-        return true;
-    }
-    return false;
+    lock_guard<mutex> lock(statusMutex);
+    return {irrigationStatus, statusVersion};
+}
+
+StatusManager::Snapshot StatusManager::waitForChange(
+    std::uint64_t version,
+    chrono::milliseconds timeout) const
+{
+    unique_lock<mutex> lock(statusMutex);
+    statusChanged.wait_for(lock, timeout, [this, version]() {
+        return statusVersion != version;
+    });
+    return {irrigationStatus, statusVersion};
 }
 
 void StatusManager::updateStatus()
 {
-    read();
-    store();
-    status_changed = true;
+    bool changed = false;
+    {
+        lock_guard<mutex> lock(statusMutex);
+        const auto previousStatus = irrigationStatus;
+        read();
+        store();
+        changed = irrigationStatus != previousStatus;
+        if (changed)
+        {
+            ++statusVersion;
+        }
+    }
+
+    if (changed)
+    {
+        statusChanged.notify_all();
+    }
 }
 
 void StatusManager::read()
@@ -430,10 +450,4 @@ void StatusManager::store()
     {
         cerr << "Error: irrigationStatus could not be found." << endl;
     }
-}
-
-
-array<StatusIndicator, 8> StatusManager::getIrrigationStatus()
-{
-    return irrigationStatus;
 }

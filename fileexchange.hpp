@@ -4,6 +4,9 @@
 #include <array>
 #include <vector>
 #include <chrono>
+#include <condition_variable>
+#include <cstdint>
+#include <mutex>
 #include <unistd.h>
 #include <libconfig.h++>
 #include <sys/types.h>
@@ -56,12 +59,16 @@ private:
 
 class StatusManager {
 public:
+    struct Snapshot {
+        std::array<StatusIndicator, 8> status;
+        std::uint64_t version;
+    };
+
     StatusManager(const std::string& filepath);
 
     void updateStatus();
-    std::array<StatusIndicator, 8> getIrrigationStatus();
-    
-    bool statusChanged();
+    Snapshot getSnapshot() const;
+    Snapshot waitForChange(std::uint64_t version, std::chrono::milliseconds timeout) const;
 
 private:
     void read();
@@ -72,6 +79,7 @@ private:
     libconfig::Config cfg;
 
     std::array<StatusIndicator, 8> irrigationStatus;
-
-    bool status_changed;
+    mutable std::mutex statusMutex;
+    mutable std::condition_variable statusChanged;
+    std::uint64_t statusVersion = 0;
 };
