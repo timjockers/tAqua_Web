@@ -27,16 +27,14 @@ const eventSource = new EventSource("/api/status");
 eventSource.onmessage = function(event) {
     const status = JSON.parse(event.data);
     
-    console.log("New Data:", status);
-    
     for (let i = 0; i <= 7; i++) {
         const el = document.getElementById(`irrigation-status-${i}`);
         el.classList.remove('y');
         el.classList.remove('g');
 
-        if (status[`${i}`] == 1) {
+        if (status["irrigationStatus"][i] == 1) {
             el.classList.add('y');
-        } else if (status[`${i}`] == 2) {
+        } else if (status["irrigationStatus"][i] == 2) {
             el.classList.add('g');
         }
     }
