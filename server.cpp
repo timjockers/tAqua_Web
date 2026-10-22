@@ -294,6 +294,10 @@ void HTTPServer::setupRoutes() {
         res.set_header("Connection", "keep-alive");
 
         res.set_chunked_content_provider("text/event-stream", [statusM = this->statusM](size_t offset, httplib::DataSink &sink) {
+            while (!statusM->statusChanged())
+            {
+                this_thread::sleep_for(chrono::milliseconds(50));
+            }
 
             if (!sink.is_writable()) {
                 return false;
@@ -314,7 +318,6 @@ void HTTPServer::setupRoutes() {
 
             sink.write(sse_frame.data(), sse_frame.size());
 
-            this_thread::sleep_for(chrono::milliseconds(500)); // Send update when status changes.
             return true;
         });
     });
