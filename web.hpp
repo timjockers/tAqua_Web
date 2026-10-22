@@ -22,6 +22,7 @@ private:
     void reloadStatus();
 
     ConfigManager configM;
+    StatusManager statusM;
     HTTPServer httpserver;
 };
 
