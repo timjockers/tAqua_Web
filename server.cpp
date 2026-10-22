@@ -317,16 +317,17 @@ void HTTPServer::setupRoutes() {
             sentInitial = true;
             lastVersion = snapshot.version;
 
-            string json_payload = "{";
-            for (int i = 0; i < 8; i++) {
-                json_payload.append("\"" + to_string(i) + "\": " + to_string(static_cast<int>(snapshot.status[i])));
-                if (i < 7) {
-                    json_payload.append(", ");
-                }
+            json response;
+
+            response["irrigationStatus"] = json::array();
+
+            for (int i = 0; i < 8; ++i) {
+                response["irrigationStatus"].push_back(static_cast<int>(snapshot.irrStatus[i]));
             }
-            json_payload.append("}");
-            
-            string sse_frame = "data: " + json_payload + "\n\n";
+
+            string sse_frame = "data: ";
+            sse_frame += response.dump();
+            sse_frame += "\n\n";
 
             return sink.write(sse_frame.data(), sse_frame.size());
         });
