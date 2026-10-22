@@ -371,3 +371,52 @@ StatusManager::StatusManager(const string& filepath)
 {
     irrigationStatus = {StatusIndicator::None};
 }
+
+void StatusManager::updateStatus()
+{
+    read();
+    store();
+}
+
+void StatusManager::read()
+{
+    try
+    {
+        cfg.readFile(path.c_str());
+    }
+    catch(const FileIOException &fioex)
+    {
+        cerr << "I/O error while reading file." << endl;
+    }
+    catch(const ParseException &pex)
+    {
+        cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
+                << " - " << pex.getError() << std::endl;
+    }
+}
+
+void StatusManager::store()
+{
+    try
+    {
+        const Setting& irr = cfg.lookup("irrigationStatus");
+
+        if (irr.getLength() != static_cast<int>(irrigationStatus.size()))
+        {
+            cerr << "Length of irrigationStatus is not " << irrigationStatus.size() << endl;
+            return;
+        }
+
+        for (size_t i = 0; i < irrigationStatus.size(); ++i)
+        {
+            irrigationStatus[i] = static_cast<StatusIndicator>(
+                static_cast<int>(irr[i])
+            );
+        }
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: irrigationStatus could not be found." << endl;
+    }
+}
+

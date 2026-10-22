@@ -58,8 +58,15 @@ class StatusManager {
 public:
     StatusManager(const std::string& filepath);
 
+    void updateStatus();
+
 private:
+    void read();
+    void store();
+
     const std::string path;
+
+    libconfig::Config cfg;
 
     std::array<StatusIndicator, 8> irrigationStatus;
 };
