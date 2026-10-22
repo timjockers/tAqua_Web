@@ -59,7 +59,9 @@ public:
     StatusManager(const std::string& filepath);
 
     void updateStatus();
-    std::array<StatusIndicator, 8> getIrrigationStatus();    
+    std::array<StatusIndicator, 8> getIrrigationStatus();
+    
+    bool statusChanged();
 
 private:
     void read();
@@ -70,4 +72,6 @@ private:
     libconfig::Config cfg;
 
     std::array<StatusIndicator, 8> irrigationStatus;
+
+    bool status_changed;
 };

@@ -370,12 +370,24 @@ StatusManager::StatusManager(const string& filepath)
     : path(filepath)
 {
     irrigationStatus = {StatusIndicator::None};
+    status_changed = true;
+}
+
+bool StatusManager::statusChanged()
+{
+    if (status_changed)
+    {
+        status_changed = false;
+        return true;
+    }
+    return false;
 }
 
 void StatusManager::updateStatus()
 {
     read();
     store();
+    status_changed = true;
 }
 
 void StatusManager::read()
