@@ -4,6 +4,8 @@
 #include <chrono>
 #include <csignal>
 #include <thread>
+#include <fstream>
+#include <filesystem>
 
 using namespace std;
 
@@ -24,10 +26,37 @@ tAquaWeb::tAquaWeb()
 tAquaWeb::~tAquaWeb()
 {}
 
+void tAquaWeb::writePID()
+{
+    pid_t pid = getpid();
+
+    ofstream pidFile(pidPath);
+    if (!pidFile)
+    {
+        cerr << "Could not open PID file" << endl;
+        return;
+    }
+    pidFile << pid << '\n';
+    if (!pidFile)
+    {
+        cerr << "Could not write PID file" << endl;
+        return;
+    }
+
+    pidFile.close();
+}
+
+void tAquaWeb::deletePID()
+{
+    filesystem::remove(pidPath);
+}
+
 void tAquaWeb::run()
 {
     signal(SIGINT, requestShutdown);
     signal(SIGTERM, requestShutdown);
+
+    writePID();
 
     atomic_bool serverStopped{false};
     thread serverThread([this, &serverStopped]() {
@@ -41,6 +70,8 @@ void tAquaWeb::run()
 
     stop();
     serverThread.join();
+
+    deletePID();
 }
 
 void tAquaWeb::stop() noexcept

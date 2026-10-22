@@ -13,6 +13,10 @@ public:
     void run();
 
 private:
+    void writePID();
+    void deletePID();
+    const std::filesystem::path pidPath = "taqua.pid";
+
     void stop() noexcept;
 
     ConfigManager configM;
