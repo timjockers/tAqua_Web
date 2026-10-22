@@ -59,6 +59,7 @@ public:
     StatusManager(const std::string& filepath);
 
     void updateStatus();
+    std::array<StatusIndicator, 8> getIrrigationStatus;    
 
 private:
     void read();

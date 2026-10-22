@@ -420,3 +420,8 @@ void StatusManager::store()
     }
 }
 
+
+array<StatusIndicator, 8> StatusManager::getIrrigationStatus()
+{
+    return irrigationStatus;
+}
