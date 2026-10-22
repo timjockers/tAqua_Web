@@ -79,3 +79,8 @@ void tAquaWeb::stop() noexcept
 {
     httpserver.stop();
 }
+
+void tAquaWeb::reloadStatus()
+{
+    
+}

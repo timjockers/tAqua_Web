@@ -19,6 +19,8 @@ private:
 
     void stop() noexcept;
 
+    void reloadStatus();
+
     ConfigManager configM;
     HTTPServer httpserver;
 };
