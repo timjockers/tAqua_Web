@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <thread>
 
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
@@ -286,20 +287,37 @@ void HTTPServer::setupRoutes() {
             "text/plain");
     });
 
-    svr.Get("/api/irrigationStatus", [&](const httplib::Request& req, httplib::Response& res) {
-        const auto& irrStatus = statusM->getIrrigationStatus();
-
-        string json_payload = "{";
-        for (int i = 0; i < 8; i++) {
-            json_payload.append("\"" + to_string(i) + "\": " + to_string(static_cast<int>(irrStatus[i])));
-            if (i < 7) {
-                json_payload.append(", ");
-            }
-        }
-        json_payload.append("}");
-        
+    svr.Get("/api/status", [&](const httplib::Request& req, httplib::Response& res) {
         res.set_header("Access-Control-Allow-Origin", "*");
-        res.set_content(json_payload, "application/json");
+        res.set_header("Content-Type", "text/event-stream");
+        res.set_header("Cache-Control", "no-cache");
+        res.set_header("Connection", "keep-alive");
+
+        res.set_chunked_content_provider("text/event-stream", [statusM = this->statusM](size_t offset, httplib::DataSink &sink) {
+
+            if (!sink.is_writable()) {
+                return false;
+            }
+
+            const auto& irrStatus = statusM->getIrrigationStatus();
+
+            std::string json_payload = "{";
+            for (int i = 0; i < 8; i++) {
+                json_payload.append("\"" + std::to_string(i) + "\": " + std::to_string(static_cast<int>(irrStatus[i])));
+                if (i < 7) {
+                    json_payload.append(", ");
+                }
+            }
+            json_payload.append("}");
+            
+            std::string sse_frame = "data: " + json_payload + "\n\n";
+
+            sink.write(sse_frame.data(), sse_frame.size());
+
+            this_thread::sleep_for(chrono::milliseconds(500)); // Send update when status changes.
+
+            return true;
+        });
     });
 }
 
