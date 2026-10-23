@@ -99,10 +99,6 @@
     }
 }
 
-.next-events-widget {
-    height: 130px;
-}
-
 @media (max-height: 415px) {
     .fixed-box-area {
         position: static;
@@ -118,4 +114,8 @@
     .box-vertical {
         height: auto;
     }
+}
+
+.next-events-widget {
+    height: 130px;
 }
