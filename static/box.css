@@ -1,10 +1,10 @@
 .border-box {
     border-radius: 20px;   
 }
-.border-box:hover {
+.border-box.hover-button:hover {
     transform: scale(1.02);
 }
-.border-box:active {
+.border-box.hover-button:active {
     transform: scale(0.98);
 }
 
