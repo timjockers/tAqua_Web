@@ -41,5 +41,5 @@ eventSource.onmessage = function(event) {
 };
 
 eventSource.onerror = function(err) {
-    console.error("SSE-Verbindungsfehler:", err);
+    console.error("SSE-Connectionerror:", err);
 };
