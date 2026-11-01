@@ -13,6 +13,9 @@
 #include "types.hpp"
 #include "events.hpp"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 std::string readFile(const std::string& filepath);
 
 
@@ -61,6 +64,7 @@ class StatusManager {
 public:
     struct Snapshot {
         std::array<StatusIndicator, 8> irrStatus;
+        json queueInfo;
         std::uint64_t version;
     };
 
@@ -79,6 +83,7 @@ private:
     libconfig::Config cfg;
 
     std::array<StatusIndicator, 8> irrigationStatus;
+    json queueInformation;
     mutable std::mutex statusMutex;
     mutable std::condition_variable statusChanged;
     std::uint64_t statusVersion = 0;

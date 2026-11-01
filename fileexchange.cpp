@@ -375,29 +375,33 @@ StatusManager::StatusManager(const string& filepath)
 StatusManager::Snapshot StatusManager::getSnapshot() const
 {
     lock_guard<mutex> lock(statusMutex);
-    return {irrigationStatus, statusVersion};
+    return {irrigationStatus, queueInformation, statusVersion};
 }
 
-StatusManager::Snapshot StatusManager::waitForChange(
-    std::uint64_t version,
-    chrono::milliseconds timeout) const
+StatusManager::Snapshot StatusManager::waitForChange(uint64_t version, chrono::milliseconds timeout) const
 {
     unique_lock<mutex> lock(statusMutex);
     statusChanged.wait_for(lock, timeout, [this, version]() {
         return statusVersion != version;
     });
-    return {irrigationStatus, statusVersion};
+    return {irrigationStatus, queueInformation, statusVersion};
 }
 
 void StatusManager::updateStatus()
 {
     bool changed = false;
+
     {
         lock_guard<mutex> lock(statusMutex);
-        const auto previousStatus = irrigationStatus;
+        const auto previousIS = irrigationStatus;
+        const auto previousQI = queueInformation;
+
         read();
         store();
-        changed = irrigationStatus != previousStatus;
+
+        changed = ((irrigationStatus != previousIS) ||
+                  (queueInformation != previousQI));
+
         if (changed)
         {
             ++statusVersion;
@@ -416,14 +420,14 @@ void StatusManager::read()
     {
         cfg.readFile(path.c_str());
     }
-    catch(const FileIOException &fioex)
+    catch (const FileIOException& fioex)
     {
         cerr << "I/O error while reading file." << endl;
     }
-    catch(const ParseException &pex)
+    catch (const ParseException& pex)
     {
         cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-                << " - " << pex.getError() << std::endl;
+             << " - " << pex.getError() << std::endl;
     }
 }
 
@@ -441,13 +445,38 @@ void StatusManager::store()
 
         for (size_t i = 0; i < irrigationStatus.size(); ++i)
         {
-            irrigationStatus[i] = static_cast<StatusIndicator>(
-                static_cast<int>(irr[i])
-            );
+            irrigationStatus[i] = static_cast<StatusIndicator>(static_cast<int>(irr[i]));
         }
     }
     catch (const SettingNotFoundException&)
     {
         cerr << "Error: irrigationStatus could not be found." << endl;
+    }
+
+    try
+    {
+        const Setting& qi = cfg.lookup("queueInformation");
+        const auto parsedQueueInformation = json::parse(static_cast<const char*>(qi));
+
+        if (!parsedQueueInformation.is_array())
+        {
+            cerr << "Error: queueInformation is not a JSON array." << endl;
+            return;
+        }
+
+        queueInformation = parsedQueueInformation;
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: queueInformation could not be found." << endl;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: queueInformation is not a string." << endl;
+    }
+    catch (const json::parse_error& error)
+    {
+        cerr << "Error: queueInformation contains invalid JSON: "
+             << error.what() << endl;
     }
 }
