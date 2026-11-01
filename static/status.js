@@ -22,6 +22,11 @@ function updateStatusHTML() {
 updateStatusHTML();
 
 
+function updateQueueInformation(queueEvents) {
+    console.log(queueEvents);
+}
+
+
 const eventSource = new EventSource("/api/status");
 
 eventSource.onmessage = function(event) {
@@ -38,6 +43,8 @@ eventSource.onmessage = function(event) {
             el.classList.add('g');
         }
     }
+
+    updateQueueInformation(status["queueInformation"]);
 };
 
 eventSource.onerror = function(err) {
