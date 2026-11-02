@@ -295,8 +295,7 @@ void HTTPServer::setupRoutes() {
 
         res.set_chunked_content_provider(
             "text/event-stream",
-            [statusM = this->statusM, sentInitial = false,
-             lastVersion = std::uint64_t{0}](size_t, httplib::DataSink& sink) mutable {
+            [statusM = this->statusM, sentInitial = false, lastVersion = std::uint64_t{0}](size_t, httplib::DataSink& sink) mutable {
             if (!sink.is_writable()) {
                 return false;
             }
@@ -324,6 +323,8 @@ void HTTPServer::setupRoutes() {
             for (int i = 0; i < 8; ++i) {
                 response["irrigationStatus"].push_back(static_cast<int>(snapshot.irrStatus[i]));
             }
+
+            response["queueInformation"] = snapshot.queueInfo;
 
             string sse_frame = "data: ";
             sse_frame += response.dump();
