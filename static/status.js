@@ -36,13 +36,20 @@ function updateQueueInformation(queueEvents) {
     } else {
         container.innerHTML = "";
 
+        let evN = 0;
+
         queueEvents.forEach(event => {
-            console.log(event);
-            container.insertAdjacentHTML("beforeend", `
-                <span>EVENT</span>
-            `);
+            evN += 1;
+            if (evN < 3) {
+                const relayStr = `<span class="valve-status y">${event?.relay + 1 ?? ""}</span>`;
+
+                container.insertAdjacentHTML("beforeend", `
+                    <div class="event-overview">
+                        ${relayStr}
+                    </div>
+                `);
+            }
         });
-        console.log(queueEvents);
     }
 }
 
