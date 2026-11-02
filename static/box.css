@@ -142,7 +142,7 @@
     font-size: 1.3rem;
 }
 
-.next-event-message {
+.next-event-content {
     flex: 1 1 auto;
     min-height: 0;
     margin-bottom: 5px;
@@ -151,7 +151,7 @@
     align-items: center;
     justify-content: center;
 }
-.next-event-message > span {
+.next-event-content > span {
     color: #666666;
     font-size: 0.9rem;
 }
