@@ -23,7 +23,27 @@ updateStatusHTML();
 
 
 function updateQueueInformation(queueEvents) {
-    console.log(queueEvents);
+    if (queueEvents == null) {
+        return;
+    }
+
+    const container = document.getElementById("queued-events");
+
+    if (Array.isArray(queueEvents) && queueEvents.length === 0) {
+        container.innerHTML = `
+            <span>No events in the Queue.</span>
+        `;
+    } else {
+        container.innerHTML = "";
+
+        queueEvents.forEach(event => {
+            console.log(event);
+            container.insertAdjacentHTML("beforeend", `
+                <span>EVENT</span>
+            `);
+        });
+        console.log(queueEvents);
+    }
 }
 
 
