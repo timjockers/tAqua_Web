@@ -60,6 +60,10 @@ function updateQueueInformation(queueEvents) {
                 `);
             }
         });
+
+        if (evN >= 3) {
+            container.insertAdjacentHTML("beforeend", `<span class="more-events">+${evN-2} more</p>`);
+        }
     }
 }
 
