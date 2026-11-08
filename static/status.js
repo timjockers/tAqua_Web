@@ -67,6 +67,10 @@ function updateQueueInformation(queueEvents) {
     }
 }
 
+function updateScheduledInformation(scheduledEvents) {
+    console.log(scheduledEvents);
+}
+
 
 const eventSource = new EventSource("/api/status");
 
@@ -86,6 +90,7 @@ eventSource.onmessage = function(event) {
     }
 
     updateQueueInformation(status["queueInformation"]);
+    updateScheduledInformation(status["scheduledInformation"]);
 };
 
 eventSource.onerror = function(err) {
