@@ -325,6 +325,7 @@ void HTTPServer::setupRoutes() {
             }
 
             response["queueInformation"] = snapshot.queueInfo;
+            response["scheduledInformation"] = snapshot.scheduledInfo;
 
             string sse_frame = "data: ";
             sse_frame += response.dump();
