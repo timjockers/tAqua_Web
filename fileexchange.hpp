@@ -65,6 +65,7 @@ public:
     struct Snapshot {
         std::array<StatusIndicator, 8> irrStatus;
         json queueInfo;
+        json scheduledInfo;
         std::uint64_t version;
     };
 
@@ -84,6 +85,7 @@ private:
 
     std::array<StatusIndicator, 8> irrigationStatus;
     json queueInformation;
+    json scheduledInformation;
     mutable std::mutex statusMutex;
     mutable std::condition_variable statusChanged;
     std::uint64_t statusVersion = 0;

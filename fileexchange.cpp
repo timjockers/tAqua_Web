@@ -375,7 +375,7 @@ StatusManager::StatusManager(const string& filepath)
 StatusManager::Snapshot StatusManager::getSnapshot() const
 {
     lock_guard<mutex> lock(statusMutex);
-    return {irrigationStatus, queueInformation, statusVersion};
+    return {irrigationStatus, queueInformation, scheduledInformation, statusVersion};
 }
 
 StatusManager::Snapshot StatusManager::waitForChange(uint64_t version, chrono::milliseconds timeout) const
@@ -384,7 +384,7 @@ StatusManager::Snapshot StatusManager::waitForChange(uint64_t version, chrono::m
     statusChanged.wait_for(lock, timeout, [this, version]() {
         return statusVersion != version;
     });
-    return {irrigationStatus, queueInformation, statusVersion};
+    return {irrigationStatus, queueInformation, scheduledInformation, statusVersion};
 }
 
 void StatusManager::updateStatus()
@@ -395,12 +395,16 @@ void StatusManager::updateStatus()
         lock_guard<mutex> lock(statusMutex);
         const auto previousIS = irrigationStatus;
         const auto previousQI = queueInformation;
+        const auto previousSI = scheduledInformation;
 
         read();
         store();
 
-        changed = ((irrigationStatus != previousIS) ||
-                  (queueInformation != previousQI));
+        changed = (
+            (irrigationStatus != previousIS) ||
+            (queueInformation != previousQI) ||
+            (scheduledInformation != previousSI)
+        );
 
         if (changed)
         {
@@ -477,6 +481,33 @@ void StatusManager::store()
     catch (const json::parse_error& error)
     {
         cerr << "Error: queueInformation contains invalid JSON: "
+             << error.what() << endl;
+    }
+
+    try
+    {
+        const Setting& si = cfg.lookup("scheduledInformation");
+        const auto parsedScheduledInformation = json::parse(static_cast<const char*>(si));
+
+        if (!parsedScheduledInformation.is_array())
+        {
+            cerr << "Error: scheduledInformation is not a JSON array." << endl;
+            return;
+        }
+
+        scheduledInformation = parsedScheduledInformation;
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: scheduledInformation could not be found." << endl;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: scheduledInformation is not a string." << endl;
+    }
+    catch (const json::parse_error& error)
+    {
+        cerr << "Error: scheduledInformation contains invalid JSON: "
              << error.what() << endl;
     }
 }
