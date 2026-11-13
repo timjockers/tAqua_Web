@@ -68,7 +68,7 @@ function updateQueueInformation(queueEvents) {
 }
 
 function updateScheduledInformation(scheduledEvents) {
-    console.log(scheduledEvents);
+    alert(scheduledEvents);
 }
 
 
