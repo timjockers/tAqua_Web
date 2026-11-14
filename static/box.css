@@ -174,7 +174,8 @@
     height: 50px;
 }
 
-.duration-info-box {
+.duration-info-box,
+.append-time-info-box {
     border: 2px solid #333333;
     height: 75%;
     border-radius: 50px;
@@ -186,6 +187,7 @@
     gap: 3px;
     padding: 0 3px;
 }
-.duration-info-box > svg {
+.duration-info-box > svg,
+.append-time-info-box > svg {
     height: 75%;
 }
