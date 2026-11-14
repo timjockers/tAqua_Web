@@ -67,8 +67,33 @@ function updateQueueInformation(queueEvents) {
     }
 }
 
+function getNext24HoursEvents(scheduledEvents) {
+    const now = new Date();
+
+    const nowDay1 = now.getDay();
+    const nowDay2 = (nowDay1 + 1) % 7;
+
+    const nowTime = now.getHours() * 60 + now.getMinutes();
+
+    let validEvents = [];
+
+    scheduledEvents.forEach(event => {
+        const t = event.start;
+        const wd = event.weekdays;
+
+        if ((t > nowTime && Boolean((weekdays >> nowDay1) & 1)) || (t <= nowTime && Boolean((weekdays >> nowDay2) & 1))) {
+            validEvents.push(event);
+        }
+    });
+
+    return validEvents;
+}
+
 function updateScheduledInformation(scheduledEvents) {
-    alert(scheduledEvents);
+    console.log(scheduledEvents);
+
+    const nextEvents = getNext24HoursEvents(scheduledEvents);
+    console.log(nextEvents);
 }
 
 
