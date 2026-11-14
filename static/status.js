@@ -75,13 +75,17 @@ function getNext24HoursEvents(scheduledEvents) {
 
     const nowTime = now.getHours() * 60 + now.getMinutes();
 
-    let validEvents = [];
+    let validEvents = {};
 
     scheduledEvents.forEach(event => {
         const t = event.start;
         const wd = event.weekdays;
 
-        if ((t > nowTime && Boolean((wd >> nowDay1) & 1)) || (t <= nowTime && Boolean((wd >> nowDay2) & 1))) {
+        if (t > nowTime && Boolean((wd >> nowDay1) & 1)) {
+            event["dynamic_append_time"] = t - nowTime;
+            validEvents.push(event);
+        } else if (t <= nowTime && Boolean((wd >> nowDay2) & 1)) {
+            event["dynamic_append_time"] = t + 24 * 60 - nowTime;
             validEvents.push(event);
         }
     });
@@ -90,10 +94,9 @@ function getNext24HoursEvents(scheduledEvents) {
 }
 
 function updateScheduledInformation(scheduledEvents) {
-    console.log(scheduledEvents);
-
     const nextEvents = getNext24HoursEvents(scheduledEvents);
-    console.log("NEXT 24 HOURS", nextEvents);
+    
+    
 }
 
 
