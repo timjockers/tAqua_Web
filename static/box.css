@@ -191,3 +191,17 @@
 .append-time-info-box > svg {
     height: 75%;
 }
+
+.append-time-info-box > svg > .timer-hand {
+    
+    transform-origin: 12px 14px;
+    animation: tick-timer 4s ease-in-out infinite;
+}
+
+@keyframes tick-timer {
+    0%, 18%   { transform: rotate(0deg); }
+    25%, 43%  { transform: rotate(90deg); }
+    50%, 68%  { transform: rotate(180deg); }
+    75%, 93%  { transform: rotate(270deg); }
+    100%      { transform: rotate(360deg); }
+}
