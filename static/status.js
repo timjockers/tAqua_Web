@@ -81,7 +81,7 @@ function getNext24HoursEvents(scheduledEvents) {
         const t = event.start;
         const wd = event.weekdays;
 
-        if ((t > nowTime && Boolean((weekdays >> nowDay1) & 1)) || (t <= nowTime && Boolean((weekdays >> nowDay2) & 1))) {
+        if ((t > nowTime && Boolean((wd >> nowDay1) & 1)) || (t <= nowTime && Boolean((wd >> nowDay2) & 1))) {
             validEvents.push(event);
         }
     });
@@ -93,7 +93,7 @@ function updateScheduledInformation(scheduledEvents) {
     console.log(scheduledEvents);
 
     const nextEvents = getNext24HoursEvents(scheduledEvents);
-    console.log(nextEvents);
+    console.log("NEXT 24 HOURS", nextEvents);
 }
 
 
