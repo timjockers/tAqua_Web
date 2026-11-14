@@ -75,7 +75,7 @@ function getNext24HoursEvents(scheduledEvents) {
 
     const nowTime = now.getHours() * 60 + now.getMinutes();
 
-    let validEvents = {};
+    let validEvents = [];
 
     scheduledEvents.forEach(event => {
         const t = event.start;
@@ -90,13 +90,17 @@ function getNext24HoursEvents(scheduledEvents) {
         }
     });
 
+    validEvents.sort((a, b) => 
+        (a.dynamic_append_time - b.dynamic_append_time) || (a.relay - b.relay)
+    );
+
     return validEvents;
 }
 
 function updateScheduledInformation(scheduledEvents) {
     const nextEvents = getNext24HoursEvents(scheduledEvents);
     
-    
+    console.log(nextEvents);
 }
 
 
