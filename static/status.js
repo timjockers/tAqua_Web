@@ -156,6 +156,25 @@ function updateScheduledInformation() {
     }
 }
 
+function onMinuteChange(callback, bufferMs = 50) {
+    function scheduleNext() {
+        const now = new Date();
+        const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds() + bufferMs;
+
+        setTimeout(() => {
+            callback(new Date());
+            scheduleNext();
+        }, msUntilNextMinute);
+    }
+
+    scheduleNext();
+}
+
+
+onMinuteChange((time) => {
+    updateScheduledInformation();
+});
+
 
 const eventSource = new EventSource("/api/status");
 
