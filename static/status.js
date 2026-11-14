@@ -67,7 +67,7 @@ function updateQueueInformation(queueEvents) {
     }
 }
 
-function getNext24HoursEvents(scheduledEvents) {
+function getNext24HoursEvents() {
     const now = new Date();
 
     const nowDay1 = now.getDay();
@@ -77,7 +77,7 @@ function getNext24HoursEvents(scheduledEvents) {
 
     let validEvents = [];
 
-    scheduledEvents.forEach(event => {
+    scheduledEventsStorage.forEach(event => {
         const t = event.start;
         const wd = event.weekdays;
 
@@ -97,8 +97,10 @@ function getNext24HoursEvents(scheduledEvents) {
     return validEvents;
 }
 
-function updateScheduledInformation(scheduledEvents) {
-    const nextEvents = getNext24HoursEvents(scheduledEvents);
+let scheduledEventsStorage = [];
+
+function updateScheduledInformation() {
+    const nextEvents = getNext24HoursEvents();
     
     console.log(nextEvents);
     
@@ -173,7 +175,8 @@ eventSource.onmessage = function(event) {
     }
 
     updateQueueInformation(status["queueInformation"]);
-    updateScheduledInformation(status["scheduledInformation"]);
+    scheduledEventsStorage = status["scheduledInformation"];
+    updateScheduledInformation();
 };
 
 eventSource.onerror = function(err) {
