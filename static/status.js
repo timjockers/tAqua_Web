@@ -21,6 +21,14 @@ function updateStatusHTML() {
 
 updateStatusHTML();
 
+document.querySelectorAll('.valve-status').forEach(valve => {
+    valve.addEventListener('click', () => {
+        const statusSVG = valve.parentElement.querySelector(':scope > .bottom-status-svg');
+        console.log(statusSVG);
+        statusSVG.classList.add("hidden");
+    });
+});
+
 
 function updateQueueInformation(queueEvents) {
     if (queueEvents == null) {
