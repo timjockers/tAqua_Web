@@ -18,10 +18,6 @@ span {
     font-weight: 550;
 }
 
-.hidden {
-    display: none;
-}
-
 .overlay {
     position: fixed;
     left: 0;
@@ -184,3 +180,6 @@ body {
     }
 }
 
+.hidden {
+    display: none;
+}
