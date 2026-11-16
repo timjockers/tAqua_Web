@@ -40,13 +40,10 @@ function showStatusPopup(valve_status_element) {
     valve_status_element.classList.add("popup-open");
     if (valve_status_element.classList.contains('y')) {
         statusPopupText.innerHTML = "Cancel queued irrigation event?";
-        statusPopupText.dataset.action = 1;
     } else if (valve_status_element.classList.contains('g')) {
         statusPopupText.innerHTML = "Cancel active irrigation?";
-        statusPopupText.dataset.action = 2;
     } else {
         statusPopupText.innerHTML = "Add manual irrigation event?";
-        statusPopupText.dataset.action = 0;
     }
 }
 
@@ -60,7 +57,6 @@ function hideStatusPopup() {
 }
 
 function sendStatusPopupAction() {
-    const actionType = statusPopupText.dataset.action;
     const valve = Number(statusContainer.querySelector('.valve-status:not(.hidden)').innerHTML) - 1;
 }
 
