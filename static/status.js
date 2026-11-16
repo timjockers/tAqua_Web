@@ -61,7 +61,7 @@ function hideStatusPopup() {
 
 function sendStatusPopupAction() {
     const actionType = statusPopupText.dataset.action;
-    const valve = 0; // Read active valve popup here.
+    const valve = Number(statusContainer.querySelector('.valve-status:not(.hidden)').innerHTML) - 1;
 }
 
 statusContainer.querySelectorAll('.valve-status').forEach(valve => {
