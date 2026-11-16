@@ -78,7 +78,7 @@ document.querySelectorAll('.settings-valve').forEach(valve => {
 
         try {
             await writeJSON("/api/relayConfig", "{\"id\": " + valve.getAttribute('data-id') + ", \"status\": " + s + "}");
-            updateStatusHTML();
+            hideStatusPopup();
         } catch (error) {
             console.error('Error saving relay configuration: ', error);
         }
