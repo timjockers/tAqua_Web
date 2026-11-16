@@ -12,6 +12,7 @@ function updateStatusHTML() {
         const scheduledPElements = scheduledPopupWrapper.querySelectorAll('.popup-content');
 
         for (let v = 0; v < 8; v++) {
+            statusElements.item(v).classList.remove("popup-open");
             if (conf[v] == 1) {
                 statusElements.item(v).classList.remove("hidden");
                 scheduledPElements.item(v).classList.remove("hidden");
@@ -46,12 +47,22 @@ function showStatusPopup(valve_status_element) {
     }
 }
 
+function hideStatusPopup() {
+    updateStatusHTML();
+
+    statusSVG.classList.remove("hidden");
+    statusPopupCheck.classList.add("hidden");
+    statusPopupX.classList.add("hidden");
+    statusPopupText.classList.add("hidden");
+}
+
 
 statusContainer.querySelectorAll('.valve-status').forEach(valve => {
     valve.addEventListener('click', () => {
         showStatusPopup(valve);
     });
 });
+statusPopupX.addEventListener('click', hideStatusPopup);
 updateStatusHTML();
 
 ////////////////////////////////////////
