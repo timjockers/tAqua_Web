@@ -150,8 +150,6 @@ let scheduledEventsStorage = [];
 function updateScheduledInformation() {
     const nextEvents = getNext24HoursEvents();
     
-    console.log(nextEvents);
-    
     if (nextEvents == null) {
         return;
     }
