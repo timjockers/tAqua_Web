@@ -1,3 +1,19 @@
+.bottom-log {
+    height: 100%;
+    aspect-ratio: 1/1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+
+.bottom-log-svg {
+    height: 75%;
+    aspect-ratio: 1/1;
+}
+
 .log-popup {
     width: 80vw;
     height: 85vh;
