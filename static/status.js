@@ -1,4 +1,8 @@
-const statusContainer = document.querySelector(".bottom-status");
+const statusContainer = document.querySelector('.bottom-status');
+const statusSVG = statusContainer.querySelector('.bottom-status-info');
+const statusPopupCheck = statusContainer.querySelector('.bottom-popup-checkmark');
+const statusPopupX = statusContainer.querySelector('.bottom-popup-x');
+const statusPopupText = statusContainer.querySelector('.status-popup-text');
 const scheduledPopupWrapper = document.querySelector(".popup-wrapper-scheduled-popup");
 
 function updateStatusHTML() {
@@ -19,16 +23,38 @@ function updateStatusHTML() {
     });
 }
 
-updateStatusHTML();
+function showStatusPopup(valve_status_element) {
+    const statusElements = statusContainer.querySelectorAll('.valve-status');
+    statusElements.forEach(el => {
+        if (el != valve_status_element) { 
+            el.classList.add("hidden");
+        }
+    })
 
-document.querySelectorAll('.valve-status').forEach(valve => {
+    statusSVG.classList.add("hidden");
+    statusPopupCheck.classList.remove("hidden");
+    statusPopupX.classList.remove("hidden");
+    statusPopupText.classList.remove("hidden");
+
+    valve_status_element.classList.add("popup-open");
+    if (valve_status_element.classList.contains('y')) {
+        statusPopupText.innerHTML = "Cancel queued irrigation event?";
+    } else if (valve_status_element.classList.contains('g')) {
+        statusPopupText.innerHTML = "Cancel active irrigation?";
+    } else {
+        statusPopupText.innerHTML = "Add manual irrigation event?";
+    }
+}
+
+
+statusContainer.querySelectorAll('.valve-status').forEach(valve => {
     valve.addEventListener('click', () => {
-        const statusSVG = valve.parentElement.querySelector(':scope > .bottom-status-svg');
-        console.log(statusSVG);
-        statusSVG.classList.add("hidden");
+        showStatusPopup(valve);
     });
 });
+updateStatusHTML();
 
+////////////////////////////////////////
 
 function updateQueueInformation(queueEvents) {
     if (queueEvents == null) {
