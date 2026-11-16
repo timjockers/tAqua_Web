@@ -80,6 +80,7 @@
 .valve-status.popup-open {
     transform: scale(0.9);
     cursor: default;
+    pointer-events: none;
 }
 
 .valve-status.y {
