@@ -59,6 +59,10 @@ function hideStatusPopup() {
     statusPopupText.classList.add("hidden");
 }
 
+function sendStatusPopupAction() {
+    const actionType = statusPopupText.dataset.action;
+    const valve = 0; // Read active valve popup here.
+}
 
 statusContainer.querySelectorAll('.valve-status').forEach(valve => {
     valve.addEventListener('click', () => {
@@ -66,6 +70,7 @@ statusContainer.querySelectorAll('.valve-status').forEach(valve => {
     });
 });
 statusPopupX.addEventListener('click', hideStatusPopup);
+statusPopupCheck.addEventListener('click', sendStatusPopupAction);
 updateStatusHTML();
 
 ////////////////////////////////////////
@@ -227,17 +232,37 @@ const eventSource = new EventSource("/api/status");
 eventSource.onmessage = function(event) {
     const status = JSON.parse(event.data);
     
+    irrigationStatusChanged = false;
+
     for (let i = 0; i <= 7; i++) {
         const el = document.getElementById(`irrigation-status-${i}`);
+
+        type_before = 0;
+        if (el.classList.contains('y')) {
+            type_before = 1;
+        } else if (el.classList.contains('g')) {
+            type_before = 2;
+        }
+
         el.classList.remove('y');
         el.classList.remove('g');
 
         if (status["irrigationStatus"][i] == 1) {
             el.classList.add('y');
+
+            if (type_before != 1) { irrigationStatusChanged = true; }
         } else if (status["irrigationStatus"][i] == 2) {
             el.classList.add('g');
+
+            if (type_before != 2) { irrigationStatusChanged = true; }
         }
     }
+
+    if (irrigationStatusChanged) {
+        hideStatusPopup();
+    }
+
+    //////////
 
     updateQueueInformation(status["queueInformation"]);
     scheduledEventsStorage = status["scheduledInformation"];
