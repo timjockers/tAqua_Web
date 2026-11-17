@@ -30,6 +30,7 @@ ConfigManager::ConfigManager(const string& taqua_cfg_path, const string& taqua_p
     relayConfig = {RelayConfig::UNUSED};
 
     loadConfig();
+    resetButtonPress();
 
     daemon_pid_loaded = readDaemonPID();
     if (!daemon_pid_loaded)
@@ -245,6 +246,7 @@ bool ConfigManager::writeConfig()
         updateRelayConfig();
         updateButtonIrrTime();
         updateScheduledEvents();
+        updateButtonPressAction();
 
         cfg.writeFile(path.c_str());
 
@@ -322,6 +324,13 @@ void ConfigManager::updateScheduledEvents()
     }
 }
 
+void ConfigManager::updateButtonPressAction()
+{
+    Setting& bpa = cfg.lookup("buttonPressAction");
+
+    bpa = buttonPressAction;
+}
+
 
 const array<RelayConfig, 8>& ConfigManager::getRelayConfig() const
 {
@@ -336,6 +345,11 @@ const chrono::seconds& ConfigManager::getButtonIrrTime() const
 const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 {
     return scheduledEvents;
+}
+
+const int& ConfigManager::getButtonPress() const
+{
+    return buttonPressAction;
 }
 
 
@@ -364,6 +378,18 @@ void ConfigManager::setScheduledEvents(const std::vector<scheduledEvent>& schedu
         scheduledEvents.push_back(event);
     }
 }
+
+void ConfigManager::setButtonPress(const int& btnNumber)
+{
+    buttonPressAction = btnNumber;
+}
+
+
+void ConfigManager::resetButtonPress()
+{
+    buttonPressAction = -1;
+}
+
 
 
 StatusManager::StatusManager(const string& filepath)

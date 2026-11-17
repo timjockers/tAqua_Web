@@ -26,15 +26,19 @@ public:
     const std::array<RelayConfig, 8>& getRelayConfig() const;
     const std::chrono::seconds& getButtonIrrTime() const;
     const std::vector<scheduledEvent>& getScheduledEvents() const;
+    const int& getButtonPress() const;
 
     void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
     void setRelayConfigR(const Relay& relay, const RelayConfig& relay_config);
     void setButtonIrrTime(const std::chrono::seconds& irrigation_time);
     void setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events);
+    void setButtonPress(const int& btnNumber);
 
     bool writeConfig();
 
     void notifyWebPIDReady();
+
+    void resetButtonPress();
 
 private:
     bool readDaemonPID();
@@ -49,6 +53,7 @@ private:
     void updateRelayConfig();
     void updateButtonIrrTime();
     void updateScheduledEvents();
+    void updateButtonPressAction();
 
     const std::string path;
     const std::string pid_path;
@@ -58,6 +63,7 @@ private:
     std::array<RelayConfig, 8> relayConfig;
     std::chrono::seconds buttonIrrTime;
     std::vector<scheduledEvent> scheduledEvents;
+    int buttonPressAction;
 };
 
 class StatusManager {
