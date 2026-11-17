@@ -58,6 +58,10 @@ function hideStatusPopup() {
 
 function sendStatusPopupAction() {
     const valve = Number(statusContainer.querySelector('.valve-status:not(.hidden)').innerHTML) - 1;
+
+    // FETCH HERE (CPP SERVER AND JS)
+
+    hideStatusPopup();
 }
 
 statusContainer.querySelectorAll('.valve-status').forEach(valve => {
