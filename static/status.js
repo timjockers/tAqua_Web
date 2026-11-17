@@ -41,7 +41,7 @@ function showStatusPopup(valve_status_element) {
     if (valve_status_element.classList.contains('y')) {
         statusPopupText.innerHTML = "Cancel queued irrigation event?";
     } else if (valve_status_element.classList.contains('g')) {
-        statusPopupText.innerHTML = "Cancel active irrigation?";
+        statusPopupText.innerHTML = "Stop active irrigation?";
     } else {
         statusPopupText.innerHTML = "Add manual irrigation event?";
     }
