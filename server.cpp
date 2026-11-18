@@ -279,37 +279,24 @@ void HTTPServer::setupRoutes() {
     });
 
     svr.Post("/api/buttonPressAction", [&](const httplib::Request& req, httplib::Response& res) {
-        if (!req.has_param("button")) {
-            res.status = 400;
-            res.set_content("Missing button parameter", "text/plain");
-            return;
-        }
-
-        const string buttonParam = req.get_param_value("button");
-        size_t parsedLength = 0;
-        int buttonNumber = 0;
         try {
-            buttonNumber = stoi(buttonParam, &parsedLength);
-        } catch (const exception&) {
-            parsedLength = 0;
-        }
+            auto j = json::parse(req.body);
+            const int buttonNumber = j.at("button").get<int>();
+            
+            configM->setButtonPress(buttonNumber);
+            if (!configM->writeConfig()) {
+                res.status = 500;
+                res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
+                return;
+            }
 
-        if (parsedLength != buttonParam.size() || buttonNumber < 0 || buttonNumber > 7) {
-            res.status = 400;
-            res.set_content("Button must be a number from 0 to 7", "text/plain");
-            return;
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_content("Button press action updated successfully", "text/plain");
+        } catch (...) {
+            // Invalid JSON
         }
-
-        configM->setButtonPress(buttonNumber);
-        configM->writeConfig();
-        if (!configM->writeConfig()) {
-            res.status = 500;
-            res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
-            return;
-        }
-
-        res.set_header("Access-Control-Allow-Origin", "*");
-        res.set_content("Button press action updated successfully", "text/plain");
+        res.status = 400;
+        res.set_content("Invalid JSON", "text/plain");
     });
 
     svr.Get("/api/log", [&](const httplib::Request& req, httplib::Response& res) {
