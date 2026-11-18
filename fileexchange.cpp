@@ -260,18 +260,15 @@ bool ConfigManager::writeConfig()
     }
     catch (const FileIOException& ex)
     {
-        cerr << "I/O error while writing config file: "
-             << ex.what() << endl;
+        cerr << "I/O error while writing config file: " << ex.what() << endl;
     }
     catch (const SettingNotFoundException& ex)
     {
-        cerr << "Config setting not found while writing file: "
-             << ex.getPath() << endl;
+        cerr << "Config setting not found while writing file: " << ex.getPath() << endl;
     }
     catch (const SettingTypeException& ex)
     {
-        cerr << "Config setting has wrong type while writing file: "
-             << ex.getPath() << endl;
+        cerr << "Config setting has wrong type while writing file: " << ex.getPath() << endl;
     }
 
     return false;
