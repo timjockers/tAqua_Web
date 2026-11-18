@@ -59,7 +59,9 @@ function hideStatusPopup() {
 function sendStatusPopupAction() {
     const valve = Number(statusContainer.querySelector('.valve-status:not(.hidden)').innerHTML) - 1;
 
-    // FETCH HERE (CPP SERVER AND JS)
+    writeJSON('/api/buttonPressAction', JSON.stringify({
+        button: valve
+    }));
 
     hideStatusPopup();
 }
