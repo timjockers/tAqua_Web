@@ -301,6 +301,7 @@ void HTTPServer::setupRoutes() {
         }
 
         configM->setButtonPress(buttonNumber);
+        configM->writeConfig();
         if (!configM->writeConfig()) {
             res.status = 500;
             res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
