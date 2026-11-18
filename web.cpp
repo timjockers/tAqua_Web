@@ -81,7 +81,12 @@ void tAquaWeb::run()
         {
             statusReloadRequested = 0;
             reloadStatus();
-            configM.resetButtonPress();
+            
+            if (configM.getButtonPress() > -1)
+            {
+                configM.resetButtonPress();
+                configM.writeConfig();
+            }
 
             cout << "Status file reload requested by daemon" << endl;
         }
