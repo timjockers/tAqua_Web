@@ -162,12 +162,36 @@
     padding: 0;
     margin-bottom: 3px;
     cursor: pointer;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
-.more-events::before {
-  content: attr(data-default);
+
+.more-events::before,
+.more-events::after {
+    transition: opacity 0.2s ease-in-out;
 }
+
+.more-events:before {
+    content: attr(data-default);
+    opacity: 1;
+}
+
+.more-events::after {
+    content: attr(data-hover);
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    white-space: nowrap;
+}
+
 .more-events:hover::before {
-  content: attr(data-hover);
+    opacity: 0;
+}
+
+.more-events:hover::after {
+    opacity: 1;
 }
 
 .event-overview {
