@@ -117,7 +117,7 @@ function updateQueueInformation(queueEvents) {
         });
 
         if (evN >= 3) {
-            container.insertAdjacentHTML("beforeend", `<span class="more-events">+${evN-2} more</p>`);
+            container.insertAdjacentHTML("beforeend", `<span class="more-events" data-default="+${evN-2} more" data-hover="show all"></span>`);
         }
     }
 }
@@ -204,7 +204,7 @@ function updateScheduledInformation() {
         });
 
         if (evN >= 3) {
-            container.insertAdjacentHTML("beforeend", `<span class="more-events">+${evN-2} more</p>`);
+            container.insertAdjacentHTML("beforeend", `<span class="more-events" data-default="+${evN-2} more" data-hover="show all"></span>`);
         }
     }
 }
