@@ -161,10 +161,8 @@
     margin: 0;
     padding: 0;
     margin-bottom: 3px;
-    cursor: pointer;
     position: relative;
     display: inline-block;
-    cursor: pointer;
 }
 
 .more-events::before,
@@ -186,11 +184,17 @@
     white-space: nowrap;
 }
 
-.more-events:hover::before {
+.next-event-box.queued:hover .more-events.queued::before {
     opacity: 0;
 }
+.next-event-box.queued:hover .more-events.queued::after {
+    opacity: 1;
+}
 
-.more-events:hover::after {
+.next-event-box.scheduled:hover .more-events.scheduled::before {
+    opacity: 0;
+}
+.next-event-box.scheduled:hover .more-events.scheduled::after {
     opacity: 1;
 }
 
