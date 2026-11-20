@@ -9,12 +9,26 @@ const settingsPopup = document.querySelector('.settings-popup');
 settingsPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
 settingsButton.addEventListener('click', function(event) { openPopup(settingsPopup); });
 
-// SCHEDULED-POPUP
+// SCHEDULE-POPUP
 const scheduledButton = document.querySelector('.scheduled-box');
 const scheduledPopup = document.querySelector('.scheduled-popup');
 
 scheduledPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
 scheduledButton.addEventListener('click', function(event) { openPopup(scheduledPopup); });
+
+// QUEUED-POPUP
+const queuedButton = document.querySelector('.next-event-box.queued');
+const queuedPopup = document.querySelector('.queued-popup');
+
+queuedPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
+queuedButton.addEventListener('click', function(event) { openPopup(queuedPopup); });
+
+// SCHEDULED-24H-POPUP
+const scheduled24hButton = document.querySelector('.next-event-box.scheduled');
+const scheduled24hPopup = document.querySelector('.scheduled-24h-popup');
+
+scheduled24hPopup.querySelector('.popup-close-button').addEventListener('click', closeAllPopup);
+scheduled24hButton.addEventListener('click', function(event) { openPopup(scheduled24hPopup); });
 
 // LOG-POPUP
 const logButton = document.querySelector('.bottom-log');

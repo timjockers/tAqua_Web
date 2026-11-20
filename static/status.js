@@ -3,7 +3,7 @@ const statusSVG = statusContainer.querySelector('.bottom-status-info');
 const statusPopupCheck = statusContainer.querySelector('.bottom-popup-checkmark');
 const statusPopupX = statusContainer.querySelector('.bottom-popup-x');
 const statusPopupText = statusContainer.querySelector('.status-popup-text');
-const scheduledPopupWrapper = document.querySelector(".popup-wrapper-scheduled-popup");
+const scheduledPopupWrapper = document.querySelector('.popup-wrapper-scheduled-popup');
 
 function updateStatusHTML() {
     getJSON('/api/relayConfig').then(conf => {
