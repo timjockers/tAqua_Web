@@ -240,3 +240,14 @@
     75%, 93%  { transform: rotate(270deg); }
     100%      { transform: rotate(360deg); }
 }
+
+/* POPUPS */
+.queued-popup,
+.scheduled-24h-popup {
+    width: 80vw;
+    height: 85vh;
+    min-width: 200px;
+    min-height: 100px;
+    max-width: 900px;
+    max-height: 600px;
+}
