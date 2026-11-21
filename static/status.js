@@ -82,44 +82,46 @@ function updateQueueInformation(queueEvents) {
         return;
     }
 
-    const container = document.getElementById("queued-events");
+    const containers = document.querySelectorAll('.container-queued-events');
 
-    if (Array.isArray(queueEvents) && queueEvents.length === 0) {
-        container.innerHTML = `
-            <span>No events in the Queue.</span>
-        `;
-    } else {
-        container.innerHTML = "";
+    containers.forEach((container) => {
+        if (!Array.isArray(queueEvents) || queueEvents.length === 0) {
+            container.innerHTML = `
+                <span>No events in the Queue.</span>
+            `;
+        } else {
+            container.innerHTML = "";
 
-        let evN = 0;
+            let evN = 0;
 
-        queueEvents.forEach(event => {
-            evN += 1;
-            if (evN < 3) {
-                const relayStr = event?.relay != null
-                    ? `<span class="valve-status y">${event.relay + 1}</span>`
-                    : "";
+            queueEvents.forEach(event => {
+                evN += 1;
+                if (evN < 3) {
+                    const relayStr = event?.relay != null
+                        ? `<span class="valve-status y">${event.relay + 1}</span>`
+                        : "";
 
-                const durationStr = event?.duration != null
-                    ? `<div class="duration-info-box">
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>
-                           <span>${Number(Math.floor(event.duration / 60))}m ${Number(event.duration % 60)}s</span>
-                       </div>`
-                    : "";
+                    const durationStr = event?.duration != null
+                        ? `<div class="duration-info-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>
+                            <span>${Number(Math.floor(event.duration / 60))}m ${Number(event.duration % 60)}s</span>
+                        </div>`
+                        : "";
 
-                container.insertAdjacentHTML("beforeend", `
-                    <div class="event-overview">
-                        ${relayStr}
-                        ${durationStr}
-                    </div>
-                `);
+                    container.insertAdjacentHTML("beforeend", `
+                        <div class="event-overview">
+                            ${relayStr}
+                            ${durationStr}
+                        </div>
+                    `);
+                }
+            });
+
+            if (evN >= 3) {
+                container.insertAdjacentHTML("beforeend", `<span class="more-events queued" data-default="+${evN-2} more" data-hover="show all"></span>`);
             }
-        });
-
-        if (evN >= 3) {
-            container.insertAdjacentHTML("beforeend", `<span class="more-events queued" data-default="+${evN-2} more" data-hover="show all"></span>`);
         }
-    }
+    });
 }
 
 function getNext24HoursEvents() {
@@ -161,52 +163,54 @@ function updateScheduledInformation() {
         return;
     }
 
-    const container = document.getElementById("scheduled-events");
+    const containers = document.querySelectorAll('.container-scheduled-events');
 
-    if (Array.isArray(nextEvents) && nextEvents.length === 0) {
-        container.innerHTML = `
-            <span>Nothing scheduled for the next 24 hours.</span>
-        `;
-    } else {
-        container.innerHTML = "";
+    containers.forEach((container) => {
+        if (Array.isArray(nextEvents) && nextEvents.length === 0) {
+            container.innerHTML = `
+                <span>Nothing scheduled for the next 24 hours.</span>
+            `;
+        } else {
+            container.innerHTML = "";
 
-        let evN = 0;
+            let evN = 0;
 
-        nextEvents.forEach(event => {
-            evN += 1;
-            if (evN < 3) {
-                const appendTimeStr = event?.dynamic_append_time != null
-                    ? `<div class="append-time-info-box">
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-timer preview-icon"><line x1="10" x2="14" y1="2" y2="2"/><line class="timer-hand" x1="12" x2="12" y1="14" y2="10"/><circle cx="12" cy="14" r="8"/></svg>
-                           <span>${Math.floor(event.dynamic_append_time / 60) !== 0 ? `${Math.floor(event.dynamic_append_time / 60)}h ` : ""}${Number(event.dynamic_append_time % 60)}m</span> 
-                       </div>`
-                    : "";
+            nextEvents.forEach(event => {
+                evN += 1;
+                if (evN < 3) {
+                    const appendTimeStr = event?.dynamic_append_time != null
+                        ? `<div class="append-time-info-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-timer preview-icon"><line x1="10" x2="14" y1="2" y2="2"/><line class="timer-hand" x1="12" x2="12" y1="14" y2="10"/><circle cx="12" cy="14" r="8"/></svg>
+                            <span>${Math.floor(event.dynamic_append_time / 60) !== 0 ? `${Math.floor(event.dynamic_append_time / 60)}h ` : ""}${Number(event.dynamic_append_time % 60)}m</span> 
+                        </div>`
+                        : "";
 
-                const relayStr = event?.relay != null
-                    ? `<span class="valve-status">${event.relay + 1}</span>`
-                    : "";
+                    const relayStr = event?.relay != null
+                        ? `<span class="valve-status">${event.relay + 1}</span>`
+                        : "";
 
-                const durationStr = event?.duration != null
-                    ? `<div class="duration-info-box">
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>
-                           <span>${Number(Math.floor(event.duration / 60))}m ${Number(event.duration % 60)}s</span>
-                       </div>`
-                    : "";
+                    const durationStr = event?.duration != null
+                        ? `<div class="duration-info-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>
+                            <span>${Number(Math.floor(event.duration / 60))}m ${Number(event.duration % 60)}s</span>
+                        </div>`
+                        : "";
 
-                container.insertAdjacentHTML("beforeend", `
-                    <div class="event-overview">
-                        ${appendTimeStr}
-                        ${relayStr}
-                        ${durationStr}
-                    </div>
-                `);
+                    container.insertAdjacentHTML("beforeend", `
+                        <div class="event-overview">
+                            ${appendTimeStr}
+                            ${relayStr}
+                            ${durationStr}
+                        </div>
+                    `);
+                }
+            });
+
+            if (evN >= 3) {
+                container.insertAdjacentHTML("beforeend", `<span class="more-events scheduled" data-default="+${evN-2} more" data-hover="show all"></span>`);
             }
-        });
-
-        if (evN >= 3) {
-            container.insertAdjacentHTML("beforeend", `<span class="more-events scheduled" data-default="+${evN-2} more" data-hover="show all"></span>`);
         }
-    }
+    });
 }
 
 function onMinuteChange(callback, bufferMs = 50) {
