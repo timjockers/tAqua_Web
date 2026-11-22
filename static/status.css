@@ -48,6 +48,8 @@
 
 
 .valve-status {
+    position: relative;
+
     border: 2px solid #333333;
     height: 75%;
     aspect-ratio: 1/1;
@@ -88,4 +90,30 @@
 }
 .valve-status.g {
     background-color: #55ff55;
+}
+
+.valve-status.interactive.g::before {
+    content: "";
+    position: absolute;
+    
+    inset: -6px; 
+    border-radius: 50%;
+    
+    background: conic-gradient(
+        #3b82f6 var(--percent, 0%), 
+        rgba(0, 0, 0, 0.1) 0
+    );
+    
+    -webkit-mask: radial-gradient(
+        farthest-side, 
+        transparent calc(100% - 4px), 
+        #000 calc(100% - 3px)
+    );
+    mask: radial-gradient(
+        farthest-side, 
+        transparent calc(100% - 4px), 
+        #000 calc(100% - 3px)
+    );
+    
+    pointer-events: none; 
 }
