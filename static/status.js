@@ -258,11 +258,11 @@ eventSource.onmessage = function(event) {
         if (status["irrigationStatus"][i] == 1) {
             el.classList.add('y');
 
-            el.style = `--percent: ${100 - status["irrigationProgress"][i]}%;`;
-
             if (type_before != 1) { irrigationStatusChanged = true; }
         } else if (status["irrigationStatus"][i] == 2) {
             el.classList.add('g');
+            
+            el.style.setProperty('--percent', `${100 - status["irrigationProgress"][i]}%`);
 
             if (type_before != 2) { irrigationStatusChanged = true; }
         }
