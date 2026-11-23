@@ -282,6 +282,11 @@ void HTTPServer::setupRoutes() {
         try {
             auto j = json::parse(req.body);
             const int buttonNumber = j.at("button").get<int>();
+            if (buttonNumber < 0 || buttonNumber >= 8) {
+                res.status = 400;
+                res.set_content("Invalid button number", "text/plain");
+                return;
+            }
             
             configM->setButtonPress(buttonNumber);
             if (!configM->writeConfig()) {
@@ -292,6 +297,7 @@ void HTTPServer::setupRoutes() {
 
             res.set_header("Access-Control-Allow-Origin", "*");
             res.set_content("Button press action updated successfully", "text/plain");
+            return;
         } catch (...) {
             // Invalid JSON
         }
