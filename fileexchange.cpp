@@ -393,12 +393,13 @@ StatusManager::StatusManager(const string& filepath)
     : path(filepath)
 {
     irrigationStatus = {StatusIndicator::None};
+    irrigationProgress = {0};
 }
 
 StatusManager::Snapshot StatusManager::getSnapshot() const
 {
     lock_guard<mutex> lock(statusMutex);
-    return {irrigationStatus, queueInformation, scheduledInformation, statusVersion};
+    return {irrigationStatus, irrigationProgress, queueInformation, scheduledInformation, statusVersion};
 }
 
 StatusManager::Snapshot StatusManager::waitForChange(uint64_t version, chrono::milliseconds timeout) const
@@ -407,7 +408,7 @@ StatusManager::Snapshot StatusManager::waitForChange(uint64_t version, chrono::m
     statusChanged.wait_for(lock, timeout, [this, version]() {
         return statusVersion != version;
     });
-    return {irrigationStatus, queueInformation, scheduledInformation, statusVersion};
+    return {irrigationStatus, irrigationProgress, queueInformation, scheduledInformation, statusVersion};
 }
 
 void StatusManager::updateStatus()
@@ -417,6 +418,7 @@ void StatusManager::updateStatus()
     {
         lock_guard<mutex> lock(statusMutex);
         const auto previousIS = irrigationStatus;
+        const auto previousIP = irrigationProgress;
         const auto previousQI = queueInformation;
         const auto previousSI = scheduledInformation;
 
@@ -425,6 +427,7 @@ void StatusManager::updateStatus()
 
         changed = (
             (irrigationStatus != previousIS) ||
+            (irrigationProgress != previousIP) ||
             (queueInformation != previousQI) ||
             (scheduledInformation != previousSI)
         );
@@ -478,6 +481,26 @@ void StatusManager::store()
     catch (const SettingNotFoundException&)
     {
         cerr << "Error: irrigationStatus could not be found." << endl;
+    }
+
+    try
+    {
+        const Setting& irrp = cfg.lookup("irrigationProgress");
+
+        if (irrp.getLength() != static_cast<int>(irrigationProgress.size()))
+        {
+            cerr << "Length of irrigationProgress is not " << irrigationProgress.size() << endl;
+            return;
+        }
+
+        for (size_t i = 0; i < irrigationProgress.size(); ++i)
+        {
+            irrigationProgress[i] = static_cast<unsigned int>(irrp[i]);
+        }
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: irrigationProgress could not be found." << endl;
     }
 
     try

@@ -70,6 +70,7 @@ class StatusManager {
 public:
     struct Snapshot {
         std::array<StatusIndicator, 8> irrStatus;
+        std::array<unsigned int, 8> irrProgress;
         json queueInfo;
         json scheduledInfo;
         std::uint64_t version;
@@ -90,6 +91,7 @@ private:
     libconfig::Config cfg;
 
     std::array<StatusIndicator, 8> irrigationStatus;
+    std::array<unsigned int, 8> irrigationProgress;
     json queueInformation;
     json scheduledInformation;
     mutable std::mutex statusMutex;
