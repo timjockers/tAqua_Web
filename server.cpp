@@ -340,9 +340,13 @@ void HTTPServer::setupRoutes() {
             json response;
 
             response["irrigationStatus"] = json::array();
-
             for (int i = 0; i < 8; ++i) {
                 response["irrigationStatus"].push_back(static_cast<int>(snapshot.irrStatus[i]));
+            }
+
+            response["irrigationProgress"] = json::array();
+            for (int i = 0; i < 8; ++i) {
+                response["irrigationProgress"].push_back(snapshot.irrProgress[i]);
             }
 
             response["queueInformation"] = snapshot.queueInfo;
