@@ -23,16 +23,20 @@ class ConfigManager {
 public:
     ConfigManager(const std::string& taqua_cfg_path, const std::string& taqua_pid_path);
 
+    const Mode& getMode() const;
     const std::array<RelayConfig, 8>& getRelayConfig() const;
     const std::chrono::seconds& getButtonIrrTime() const;
     const std::vector<scheduledEvent>& getScheduledEvents() const;
     const int& getButtonPress() const;
+    const std::uint8_t& getQCStates() const;
 
+    void setMode(const Mode m);
     void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
     void setRelayConfigR(const Relay& relay, const RelayConfig& relay_config);
     void setButtonIrrTime(const std::chrono::seconds& irrigation_time);
     void setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events);
     void setButtonPress(const int& btnNumber);
+    void setQCStates() const;
 
     bool writeConfig();
 
@@ -50,10 +54,12 @@ private:
     void read();
     void store();
 
+    void updateMode();
     void updateRelayConfig();
     void updateButtonIrrTime();
     void updateScheduledEvents();
     void updateButtonPressAction();
+    void updateQCStates();
 
     const std::string path;
     const std::string pid_path;
