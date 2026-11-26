@@ -6,6 +6,14 @@
 #include <cstdint>
 #include <ctime>
 
+
+// Modes
+enum class Mode {
+    Standard = 0,
+    QuickControl = 1
+};
+
+
 // Weekdays
 enum class Weekday {
     Sunday = 0,
