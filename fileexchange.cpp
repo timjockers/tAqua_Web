@@ -274,6 +274,13 @@ bool ConfigManager::writeConfig()
     return false;
 }
 
+void ConfigManager::updateMode()
+{
+    Setting& setting = cfg.lookup("mode");
+
+    setting = static_cast<int>(mode);
+}
+
 void ConfigManager::updateRelayConfig()
 {
     Setting& r = cfg.lookup("relayConfig");
@@ -328,6 +335,18 @@ void ConfigManager::updateButtonPressAction()
     bpa = buttonPressAction;
 }
 
+void ConfigManager::updateQCStates()
+{
+    Setting& setting = cfg.lookup("qc_states");
+
+    setting = static_cast<int>(qc_states);
+}
+
+
+const Mode& ConfigManager::getMode() const
+{
+    return mode;
+}
 
 const array<RelayConfig, 8>& ConfigManager::getRelayConfig() const
 {
@@ -349,6 +368,16 @@ const int& ConfigManager::getButtonPress() const
     return buttonPressAction;
 }
 
+const uint8_t& ConfigManager::getQCStates() const
+{
+    return qc_states;
+}
+
+
+void ConfigManager::setMode(const Mode& m)
+{
+    mode = m;
+}
 
 void ConfigManager::setRelayConfig(const array<RelayConfig, 8>& relay_config)
 {
@@ -379,6 +408,11 @@ void ConfigManager::setScheduledEvents(const std::vector<scheduledEvent>& schedu
 void ConfigManager::setButtonPress(const int& btnNumber)
 {
     buttonPressAction = btnNumber;
+}
+
+void ConfigManager::setQCStates(const uint8_t& states)
+{
+    qc_states = states;
 }
 
 
