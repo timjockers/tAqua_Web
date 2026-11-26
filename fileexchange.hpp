@@ -60,10 +60,12 @@ private:
 
     libconfig::Config cfg;
 
+    Mode mode;
     std::array<RelayConfig, 8> relayConfig;
     std::chrono::seconds buttonIrrTime;
     std::vector<scheduledEvent> scheduledEvents;
     int buttonPressAction;
+    std::uint8_t qc_states;
 };
 
 class StatusManager {
