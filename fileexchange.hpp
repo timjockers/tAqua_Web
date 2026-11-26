@@ -30,13 +30,13 @@ public:
     const int& getButtonPress() const;
     const std::uint8_t& getQCStates() const;
 
-    void setMode(const Mode m);
+    void setMode(const Mode& m);
     void setRelayConfig(const std::array<RelayConfig, 8>& relay_config);
     void setRelayConfigR(const Relay& relay, const RelayConfig& relay_config);
     void setButtonIrrTime(const std::chrono::seconds& irrigation_time);
     void setScheduledEvents(const std::vector<scheduledEvent>& scheduled_events);
     void setButtonPress(const int& btnNumber);
-    void setQCStates() const;
+    void setQCStates(const std::uint8_t& states);
 
     bool writeConfig();
 
