@@ -60,6 +60,41 @@ void HTTPServer::setupWebpage() {
 }
 
 void HTTPServer::setupRoutes() {
+    svr.Get("/api/mode", [&](const httplib::Request& req, httplib::Response& res) {
+        const auto& m = configM->getMode();
+
+        string json_payload = "{\"mode\": " + to_string(static_cast<int>(m)) + "}";
+        
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_content(json_payload, "application/json");
+    });
+
+    svr.Post("/api/mode", [&](const httplib::Request& req, httplib::Response& res) {
+        try {
+            auto j = json::parse(req.body);
+            const Mode m = static_cast<Mode>(j.at("mode").get<int>());
+            
+            configM->setMode(m);
+            if (configM->writeConfig())
+            {
+                res.status = 200;
+                res.set_content("Configuration updated successfully", "text/plain");
+                return;
+            }
+            else
+            {
+                cerr << "Error writing config file after setMode!" << endl;
+                res.status = 500;
+                res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
+                return;
+            }
+        } catch (...) {
+            // Invalid JSON
+        }
+        res.status = 400;
+        res.set_content("Invalid JSON", "text/plain");
+    });
+
     svr.Get("/api/relayConfig", [&](const httplib::Request& req, httplib::Response& res) {
         const auto& conf = configM->getRelayConfig();
 
