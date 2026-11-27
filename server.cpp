@@ -161,7 +161,7 @@ void HTTPServer::setupRoutes() {
             }
             else
             {
-                cerr << "Error writing config file after setRelayConfigR!" << endl;
+                cerr << "Error writing config file after setButtonIrrTime!" << endl;
                 res.status = 500;
                 res.set_content("Internal Server Error: Failed to save configuration", "text/plain");
                 return;
