@@ -123,6 +123,32 @@ void ConfigManager::store()
 {
     try
     {
+        int value = 0;
+        cfg.lookupValue("mode", value);
+        if (value == static_cast<int>(Mode::Standard)
+            || value == static_cast<int>(Mode::QuickControl))
+        {
+            mode = static_cast<Mode>(value);
+        }
+        else
+        {
+            cerr << "Invalid mode value: " << value << "; using Standard mode." << endl;
+            mode = Mode::Standard;
+        }
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: mode could not be found." << endl;
+        mode = Mode::Standard;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: mode is not an integer." << endl;
+        mode = Mode::Standard;
+    }
+
+    try
+    {
         const Setting& r = cfg.lookup("relayConfig");
 
         if (r.getLength() != static_cast<int>(relayConfig.size()))
@@ -158,6 +184,23 @@ void ConfigManager::store()
     catch (const SettingTypeException&)
     {
         cerr << "Error: buttonIrrigationTime is not an integer." << endl;
+    }
+
+    try
+    {
+        int value = 0;
+        cfg.lookupValue("qc_states", value);
+        qc_states = static_cast<uint8_t>(value);
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: qc_states could not be found." << endl;
+        qc_states = 0;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: qc_states is not an integer." << endl;
+        qc_states = 0;
     }
 
     try
@@ -243,10 +286,12 @@ bool ConfigManager::writeConfig()
 {
     try
     {
+        updateMode();
         updateRelayConfig();
         updateButtonIrrTime();
         updateScheduledEvents();
         updateButtonPressAction();
+        updateQCStates();
 
         cfg.writeFile(path.c_str());
 
